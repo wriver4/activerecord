@@ -5,15 +5,15 @@
 Uses Composer to manage autoload.
 In bootstrap file assuming root directory.
 ```php
+$loader = require_once 'vendor/autoload.php';
+$loader->addPsr4('Models\\', __dir__.'\Models');
+// What? Why? Composers base path is vendor and I don't want to update Composer for every new Model.
+
 //Simple Config
 $cfg = Activerecord\Config::instance();
 $cfg->set_connections(array(
     'development' =>
     'mysql://root:root@localhost/treebark?charset=utf8'));
-
-$loader = require_once 'vendor/autoload.php';
-$loader->addPsr4('Models\\', __dir__.'\Models');
-// What? Why? Composers base path is vendor and I don't want to update Composer for every new Model.
 ```
 Model classes
 ```php
