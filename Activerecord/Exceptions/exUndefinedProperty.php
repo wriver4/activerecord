@@ -27,7 +27,7 @@ class exUndefinedProperty
 {
 
     /**
-     * Sets the exception message to show the undefined property's name.
+     * Sets the Exceptions message to show the undefined property's name.
      *
      * @param str $property_name name of undefined property
      * @return void

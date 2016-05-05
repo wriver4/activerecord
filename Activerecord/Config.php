@@ -1,16 +1,15 @@
 <?php
-
-use \Activerecord\Cache;
-use \Activerecord\Exception\exConfig;
-use \Activerecord\Reflections;
-use \Activerecord\Serialization;
-use \Activerecord\Singleton;
-
 /**
  * @package ActiveRecord
  */
 
 namespace Activerecord;
+
+use \Activerecord\Cache;
+use \Activerecord\Exceptions\exConfig;
+use \Activerecord\Reflections;
+use \Activerecord\Serialization;
+use \Activerecord\Singleton;
 
 /**
  * Manages configuration options for ActiveRecord.

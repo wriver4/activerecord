@@ -1,7 +1,7 @@
 <?php
 
 use \Activerecord\DateTime;
-use \Activerecord\Exception\exDatabase;
+use \Activerecord\Exceptions\exDatabase;
 use \Activerecord\Config;
 
 /**

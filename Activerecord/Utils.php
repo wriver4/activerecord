@@ -28,7 +28,7 @@ use function \ActiveRecord\has_namespace;
  *   Expanded on the list of exceptions for *o -> *oes, and removed rule for buffalo -> buffaloes
  *   Removed dangerous singularization rule for /([^f])ves$/ => $1fe
  *   Added more specific rules for singularizing lives, wives, knives, sheaves, loaves, and leaves and thieves
- *   Added exception to /(us)es$/ => $1 rule for houses => house and blouses => blouse
+ *   Added Exceptions to /(us)es$/ => $1 rule for houses => house and blouses => blouse
  *   Added excpetions for feet, geese and teeth
  *   Added rule for deer -> deer
  *

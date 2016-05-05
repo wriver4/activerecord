@@ -164,7 +164,7 @@ class CallBack
      *
      * @param string $model Model to invoke the callback on.
      * @param string $name Name of the callback to invoke
-     * @param boolean $must_exist Set to true to raise an exception if the callback does not exist.
+     * @param boolean $must_exist Set to true to raise an Exceptions if the callback does not exist.
      * @return mixed null if $name was not a valid callback type or false if a method was invoked
      * that was for a before_* callback and that method returned false. If this happens, execution
      * of any other callbacks after the offending callback will not occur.

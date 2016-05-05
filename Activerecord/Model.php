@@ -763,10 +763,10 @@ class Model
     }
 
     /**
-     * Throws an exception if this model is set to readonly.
+     * Throws an Exceptions if this model is set to readonly.
      *
      * @throws \Activerecord\Exceptions\ReadOnlyn
-     * @param string $method_name Name of method that was invoked on model for exception message
+     * @param string $method_name Name of method that was invoked on model for Exceptions message
      */
     private function verify_not_readonly($method_name)
     {
@@ -1307,7 +1307,7 @@ class Model
     }
 
     /**
-     * Passing $guard_attributes as true will throw an exception if an
+     * Passing $guard_attributes as true will throw an Exceptions if an
      * attribute does not exist.
      *
      * @throws UndefinedProperty
@@ -1904,7 +1904,7 @@ class Model
      * Determines if the specified array is a valid Activerecord options array.
      *
      * @param array $array An options array
-     * @param bool $throw True to throw an exception if not valid
+     * @param bool $throw True to throw an Exceptions if not valid
      * @return boolean True if valid otherwise valse
      * @throws {@link Activerecord} if the array contained any invalid options
      */
@@ -2070,7 +2070,7 @@ class Model
      * Invokes the specified callback on this model.
      *
      * @param string $method_name Name of the call back to run.
-     * @param boolean $must_exist Set to true to raise an exception if the callback does not exist.
+     * @param boolean $must_exist Set to true to raise an Exceptions if the callback does not exist.
      * @return boolean True if invoked or null if not
      */
     private function invoke_callback($method_name, $must_exist = true)
@@ -2089,7 +2089,7 @@ class Model
      * });
      * </code>
      *
-     * If an exception is thrown inside the closure the transaction will
+     * If an Exceptions is thrown inside the closure the transaction will
      * automatically be rolled back. You can also return false from your
      * closure to cause a rollback:
      *
@@ -2097,7 +2097,7 @@ class Model
      * YourModel::transaction(function()
      * {
      *   YourModel::create(array("name" => "blah"));
-     *   throw new Exception("rollback!");
+     *   throw new Exceptions("rollback!");
      * });
      *
      * YourModel::transaction(function()
@@ -2107,7 +2107,7 @@ class Model
      * });
      * </code>
      *
-     * @param callable $closure The closure to execute. To cause a rollback have your closure return false or throw an exception.
+     * @param callable $closure The closure to execute. To cause a rollback have your closure return false or throw an Exceptions.
      * @return boolean True if the transaction was committed, False if rolled back.
      */
     public static function transaction($closure)
@@ -2128,7 +2128,7 @@ class Model
                 $connection->commit();
             }
         }
-        catch (\Exception $e)
+        catch (\Exceptions $e)
         {
             $connection->rollback();
             throw $e;

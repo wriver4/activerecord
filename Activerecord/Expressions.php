@@ -1,6 +1,6 @@
 <?php
 
-use \Activerecord\Exception\exExpressions;
+use \Activerecord\Exceptions\exExpressions;
 
 /**
  * @package ActiveRecord
@@ -54,7 +54,7 @@ class Expressions
 
     /**
      * Bind a value to the specific one based index. There must be a bind marker
-     * for each value bound or to_s() will throw an exception.
+     * for each value bound or to_s() will throw an Exceptions.
      */
     public function bind($parameter_number, $value)
     {
