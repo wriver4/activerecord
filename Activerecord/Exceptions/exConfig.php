@@ -1,8 +1,8 @@
 <?php
 
-use \Activerecord\Execption\exActiverecord;
-
 namespace Activerecord\Execption;
+
+use \Activerecord\Execption\exActiverecord;
 
 /**
  * Summary of file Config.

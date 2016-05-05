@@ -1,8 +1,8 @@
 <?php
 
-use \Activerecord\Execption\exActiverecord;
-
 Namespace Activerecord\Execption;
+
+use \Activerecord\Execption\exActiverecord;
 
 /**
  * Summary of file RecordNotFound.

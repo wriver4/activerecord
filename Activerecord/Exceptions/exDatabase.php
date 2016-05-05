@@ -1,9 +1,9 @@
 <?php
 
+namespace Activerecord\Execption;
+
 use \Activerecord\Connection;
 use \Activerecord\Execption\exActiverecord;
-
-namespace Activerecord\Execption;
 
 /**
  * Summary of file Database.

@@ -1,5 +1,7 @@
 <?php
 
+namespace Activerecord\Execption;
+
 use \Activerecord\Execption\exActiverecord;
 
 /**

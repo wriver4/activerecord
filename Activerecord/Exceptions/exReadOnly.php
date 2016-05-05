@@ -1,8 +1,8 @@
 <?php
 
-use \Activerecord\Execption\exModel;
-
 namespace Activerecord\Execption;
+
+use \Activerecord\Execption\exModel;
 
 /**
  * Summary of file ReadOnly.

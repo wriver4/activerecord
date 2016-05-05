@@ -1,8 +1,8 @@
 <?php
 
-use \Activerecord\Execption\exRelationship;
-
 namespace Activerecord\Execption;
+
+use \Activerecord\Execption\exRelationship;
 
 /**
  * Summary of file HasManyThroughAssociation.
