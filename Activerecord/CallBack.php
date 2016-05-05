@@ -1,7 +1,7 @@
 <?php
 
 use \Activerecord\CallBack;
-use \Activerecord\Execption\exActiveRecord;
+use \Activerecord\Exceptions\exActiveRecord;
 use \Activerecord\Reflections;
 
 /**

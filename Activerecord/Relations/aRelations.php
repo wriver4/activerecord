@@ -1,6 +1,6 @@
 <?php
 
-use \Activerecord\Execption\exRelationship;
+use \Activerecord\Exceptions\exRelationship;
 use \Activerecord\Inflector;
 use \Activerecord\Model;
 use \Activerecord\Reflections;

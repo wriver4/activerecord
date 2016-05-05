@@ -1,6 +1,6 @@
 <?php
 
-use \Activerecord\Execption\exActiverecord;
+use \Activerecord\Exceptions\exActiverecord;
 use \Activerecord\Reflections;
 use \Activerecord\Singleton;
 

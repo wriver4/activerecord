@@ -1,6 +1,6 @@
 <?php
 
-use \Activerecord\Execption\exHasManyThroughAssociation;
+use \Activerecord\Exceptions\exHasManyThroughAssociation;
 use \Activerecord\Inflector;
 use \Activerecord\Model;
 use \Activerecord\Relations\aRelations;

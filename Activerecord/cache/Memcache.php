@@ -2,7 +2,7 @@
 
 namespace Activerecord;
 
-use \Activerecord\Execption\exCache;
+use \Activerecord\Exceptions\exCache;
 
 class Memcache
 {

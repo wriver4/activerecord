@@ -452,7 +452,7 @@ class Model
             }
         }
 
-        throw new \Activerecord\Execption\exUndefinedProperty(get_called_class(),
+        throw new \Activerecord\Exceptions\exUndefinedProperty(get_called_class(),
         $name);
     }
 
@@ -765,7 +765,7 @@ class Model
     /**
      * Throws an exception if this model is set to readonly.
      *
-     * @throws \Activerecord\Execption\ReadOnlyn
+     * @throws \Activerecord\Exceptions\ReadOnlyn
      * @param string $method_name Name of method that was invoked on model for exception message
      */
     private function verify_not_readonly($method_name)

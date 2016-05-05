@@ -1,6 +1,6 @@
 <?php
 
-namespace Activerecord\Execption;
+namespace Activerecord\Exceptions;
 
 /**
  * Summary of file Activerecord.
@@ -23,7 +23,7 @@ namespace Activerecord\Execption;
  * @package Activerecord
  */
 class exActiverecord
-        extends \Execption
+        extends \Exceptions
 {
 
 }

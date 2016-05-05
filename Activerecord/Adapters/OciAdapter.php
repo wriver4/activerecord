@@ -7,7 +7,7 @@ namespace Activerecord\Adapters;
 
 use \Activerecord\Column;
 use \Activerecord\Connection;
-use \Activerecord\Execption\exDatabase;
+use \Activerecord\Exceptions\exDatabase;
 use \Activerecord\Inflector;
 
 /**

@@ -8,7 +8,7 @@ use \Activerecord\Relations\HasMany;
 use \Activerecord\Relations\HasOne;
 use \Activerecord\Model;
 use \Activerecord\PgsqlAdapter;
-use \Activerecord\Execption\exRelationship;
+use \Activerecord\Exceptions\exRelationship;
 use \Activerecord\SQLBuilder;
 use \Activerecord\Table;
 use \Activerecord\Utils;

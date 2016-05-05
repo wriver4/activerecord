@@ -1,9 +1,9 @@
 <?php
 
-namespace Activerecord\Execption;
+namespace Activerecord\Exceptions;
 
 use \Activerecord\Connection;
-use \Activerecord\Execption\exActiverecord;
+use \Activerecord\Exceptions\exActiverecord;
 
 /**
  * Summary of file Database.

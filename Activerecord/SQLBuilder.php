@@ -1,6 +1,6 @@
 <?php
 
-use \Activerecord\Execption\exActiverecord;
+use \Activerecord\Exceptions\exActiverecord;
 use \Activerecord\Connection;
 use \Activerecord\Expressions;
 use \Activerecord\SQLBuilder;

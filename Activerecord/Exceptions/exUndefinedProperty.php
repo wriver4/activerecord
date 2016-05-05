@@ -1,6 +1,6 @@
 <?php
 
-namespace Activerecord\Execption;
+namespace Activerecord\Exceptions;
 
 /**
  * Summary of file UndefinedProperty.
@@ -23,7 +23,7 @@ namespace Activerecord\Execption;
  * @package Activerecord
  */
 class exUndefinedProperty
-        extends Activerecord\Execption\exModel
+        extends Activerecord\Exceptions\exModel
 {
 
     /**
