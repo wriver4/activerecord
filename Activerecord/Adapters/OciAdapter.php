@@ -110,8 +110,14 @@ class OciAdapter
 
         if ($column['data_type'] == 'number')
         {
-            if ($column['data_scale'] > 0) $column['data_type'] = 'decimal';
-            elseif ($column['data_scale'] == 0) $column['data_type'] = 'int';
+            if ($column['data_scale'] > 0)
+            {
+                $column['data_type'] = 'decimal';
+            }
+            elseif ($column['data_scale'] == 0)
+            {
+                $column['data_type'] = 'int';
+            }
         }
 
         $c = new Column();
