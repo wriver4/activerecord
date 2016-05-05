@@ -1,9 +1,4 @@
 <?php
-
-use \Activerecord\Column;
-use \Activerecord\Connection;
-use \Activerecord\Inflector;
-
 /**
  * @package Activerecord
  */
