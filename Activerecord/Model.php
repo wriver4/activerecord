@@ -5,6 +5,9 @@
 
 namespace Activerecord;
 
+use Activerecord\Exceptions\exUndefinedProperty;
+use Activerecord\Validations;
+
 /**
  * The base class for your models.
  *
@@ -452,8 +455,7 @@ class Model
             }
         }
 
-        throw new \Activerecord\Exceptions\exUndefinedProperty(get_called_class(),
-        $name);
+        throw new exUndefinedProperty(get_called_class(), $name);
     }
 
     public function __wakeup()
@@ -684,7 +686,7 @@ class Model
     public function get_validation_rules()
     {
         require_once 'Validations.php';
-        $validator = new \Activerecord\Validations($this);
+        $validator = new Validations($this);
         return $validator->rules();
     }
 

@@ -1,23 +1,21 @@
 <?php
-
-use \Activerecord\Relations\BelongsTo;
-use \Activerecord\Cache;
-use \Activerecord\CallBack;
-use \Activerecord\ConnectionManager;
-use \Activerecord\Relations\HasMany;
-use \Activerecord\Relations\HasOne;
-use \Activerecord\Model;
-use \Activerecord\PgsqlAdapter;
-use \Activerecord\Exceptions\exRelationship;
-use \Activerecord\SQLBuilder;
-use \Activerecord\Table;
-use \Activerecord\Utils;
-
 /**
  * @package Activerecord
  */
 
 namespace Activerecord;
+
+use Activerecord\Relations\BelongsTo;
+use Activerecord\Cache;
+use Activerecord\CallBack;
+use Activerecord\ConnectionManager;
+use Activerecord\Relations\HasMany;
+use Activerecord\Relations\HasOne;
+use Activerecord\Model;
+use Activerecord\PgsqlAdapter;
+use Activerecord\Exceptions\exRelationship;
+use Activerecord\SQLBuilder;
+use Activerecord\Table;
 
 /**
  * Manages reading and writing to a database table.

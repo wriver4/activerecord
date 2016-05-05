@@ -1,12 +1,11 @@
 <?php
-
-use \Activerecord\Exceptions\exExpressions;
-
 /**
  * @package ActiveRecord
  */
 
 namespace Activerecord;
+
+use Activerecord\Exceptions\exExpressions;
 
 /**
  * Templating like class for building SQL statements.

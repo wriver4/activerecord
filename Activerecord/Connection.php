@@ -1,16 +1,13 @@
 <?php
-
-use \Activerecord\DateTime;
-use \Activerecord\Exceptions\exDatabase;
-use \Activerecord\Config;
-
 /**
  * @package ActiveRecord
  */
 
 namespace Activerecord;
 
-//require_once 'Column.php';
+use Activerecord\DateTime;
+use Activerecord\Exceptions\exDatabase;
+use Activerecord\Config;
 
 /**
  * The base class for database connection adapters.
@@ -390,7 +387,8 @@ abstract class Connection
     }
 
     /**
-     * Execute a query that returns maximum of one row with one field and return it.
+     * Execute a query that returns maximum of one row with one field
+     * and return it.
      *
      * @param string $sql Raw SQL string to execute.
      * @param array &$values Optional array of values to bind to the query.

@@ -5,10 +5,10 @@
 
 namespace Activerecord\Adapters;
 
-use \Activerecord\Column;
-use \Activerecord\Connection;
-use \Activerecord\Exceptions\exDatabase;
-use \Activerecord\Inflector;
+use Activerecord\Column;
+use Activerecord\Connection;
+use Activerecord\Exceptions\exDatabase;
+use Activerecord\Inflector;
 
 /**
  * Adapter for OCI (not completed yet).

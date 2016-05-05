@@ -5,7 +5,7 @@
 
 namespace Activerecord\Serializers;
 
-use \Activerecord\Model;
+use Activerecord\Model;
 
 /**
  * Base class for Model serializers.

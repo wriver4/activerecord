@@ -2,7 +2,7 @@
 
 namespace Activerecord;
 
-use \Activerecord\Exceptions\exCache;
+use Activerecord\Exceptions\exCache;
 
 class Memcache
 {
@@ -27,8 +27,7 @@ class Memcache
         $this->memcache = new \Memcache();
         $options['port'] = isset($options['port']) ? $options['port'] : self::DEFAULT_PORT;
 
-        if (!$this->memcache->connect($options['host'], $options['port']))
-                throw new exCache("Could not connect to $options[host]:$options[port]");
+        if (!$this->memcache->connect($options['host'], $options['port'])) throw new exCache("Could not connect to $options[host]:$options[port]");
     }
 
     public function flush()

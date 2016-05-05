@@ -1,14 +1,13 @@
 <?php
-
-use \Activerecord\Config;
-use \Activerecord\Connection;
-use \Activerecord\Singleton;
-
 /**
  * @package ActiveRecord
  */
 
 namespace Activerecord;
+
+use Activerecord\Config;
+use Activerecord\Connection;
+use Activerecord\Singleton;
 
 /**
  * Singleton to manage any and all database connections.

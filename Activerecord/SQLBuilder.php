@@ -1,16 +1,15 @@
 <?php
-
-use \Activerecord\Exceptions\exActiverecord;
-use \Activerecord\Connection;
-use \Activerecord\Expressions;
-use \Activerecord\SQLBuilder;
-use \Activerecord\Utils;
-
 /**
  * @package Activerecord
  */
 
 namespace Activerecord;
+
+use Activerecord\Exceptions\exActiverecord;
+use Activerecord\Connection;
+use Activerecord\Expressions;
+use Activerecord\SQLBuilder;
+use Activerecord\Utils;
 
 /**
  * Helper class for building sql statements progmatically.
@@ -365,7 +364,7 @@ class SQLBuilder
                     $e = new Expressions($this->connection, $args[0]);
                     $e->bind_values($values);
                     $this->where = $e->to_s();
-                    $this->where_values = \ActiveRecord\Utils::array_flatten($e->values());
+                    $this->where_values = Utils::array_flatten($e->values());
                     return;
                 }
             }
@@ -408,8 +407,10 @@ class SQLBuilder
 
         if ($this->sequence)
         {
-            $sql = "INSERT INTO $this->table($keys,".$this->connection->quote_name($this->sequence[0]).
-                    ") VALUES(?,".$this->connection->next_sequence_value($this->sequence[1]).")";
+            $sql = "INSERT INTO $this->table($keys,"
+                    .$this->connection->quote_name($this->sequence[0])
+                    .") VALUES(?,".$this->connection->next_sequence_value($this->sequence[1])
+                    .")";
         }
         else
         {

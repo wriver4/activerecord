@@ -1,10 +1,4 @@
 <?php
-
-use \Activerecord\Inflector;
-use \Activerecord\Utils;
-use function \ActiveRecord\array_flatten;
-use function \ActiveRecord\has_namespace;
-
 /**
  *
  * @package Activerecord
@@ -39,6 +33,11 @@ use function \ActiveRecord\has_namespace;
  */
 
 namespace Activerecord;
+
+use Activerecord\Inflector;
+use Activerecord\Utils;
+use function ActiveRecord\array_flatten;
+use function ActiveRecord\has_namespace;
 
 /**
  * Some internal utility functions.
@@ -384,10 +383,9 @@ class Utils
 
         foreach ($enumerable as $value)
         {
-            if (is_string($name_or_closure))
-                    $ret[] = is_array($value) ? $value[$name_or_closure] : $value->$name_or_closure;
-            elseif ($name_or_closure instanceof \Closure)
-                    $ret[] = $name_or_closure($value);
+            if (is_string($name_or_closure)) $ret[] = is_array($value) ? $value[$name_or_closure]
+                            : $value->$name_or_closure;
+            elseif ($name_or_closure instanceof \Closure) $ret[] = $name_or_closure($value);
         }
         return $ret;
     }

@@ -106,7 +106,10 @@ class Errors
      */
     public function __get($attribute)
     {
-        if (!isset($this->errors[$attribute])) return null;
+        if (!isset($this->errors[$attribute]))
+        {
+            return null;
+        }
 
         return $this->errors[$attribute];
     }

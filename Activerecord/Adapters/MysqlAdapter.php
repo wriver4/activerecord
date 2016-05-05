@@ -11,7 +11,7 @@ namespace Activerecord\Adapters;
  * @package Activerecord
  */
 class MysqlAdapter
-        extends \Activerecord\Connection
+        extends Activerecord\Connection
 {
 
     static $DEFAULT_PORT = 3306;

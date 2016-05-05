@@ -1,9 +1,9 @@
 <?php
 
-use \Activerecord\Inflector;
-use \Activerecord\Utils;
-
 namespace Activerecord;
+
+use Activerecord\Inflector;
+use Activerecord\Utils;
 
 /**
  * @package Activerecord

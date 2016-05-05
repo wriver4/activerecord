@@ -1,12 +1,11 @@
 <?php
-
-use \Activerecord\Connection;
-
 /**
  * @package ActiveRecord
  */
 
 namespace Activerecord;
+
+use Activerecord\Connection;
 
 /**
  * Class for a table column.

@@ -1,14 +1,13 @@
 <?php
-
-use \Activerecord\Exceptions\exActiverecord;
-use \Activerecord\Reflections;
-use \Activerecord\Singleton;
-
 /**
  * @package Activerecord
  */
 
 namespace Activerecord;
+
+use Activerecord\Exceptions\exActiverecord;
+use Activerecord\Reflections;
+use Activerecord\Singleton;
 
 /**
  * Simple class that caches reflections of classes.

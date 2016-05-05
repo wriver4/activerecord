@@ -1,14 +1,13 @@
 <?php
-
-use \Activerecord\CallBack;
-use \Activerecord\Exceptions\exActiveRecord;
-use \Activerecord\Reflections;
-
 /**
  * @package ActiveRecord
  */
 
 namespace Activerecord;
+
+use Activerecord\CallBack;
+use Activerecord\Exceptions\exActiveRecord;
+use Activerecord\Reflections;
 
 /**
  * Callbacks allow the programmer to hook into the life cycle of a {@link Model}.
