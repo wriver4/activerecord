@@ -1,15 +1,14 @@
 <?php
-
-use \Activerecord\Column;
-use \Activerecord\Connection;
-use \Activerecord\Execption\exDatabase;
-use \Activerecord\Inflector;
-
 /**
  * @package Activerecord
  */
 
 namespace Activerecord\Adapters;
+
+use \Activerecord\Column;
+use \Activerecord\Connection;
+use \Activerecord\Execption\exDatabase;
+use \Activerecord\Inflector;
 
 /**
  * Adapter for OCI (not completed yet).
@@ -106,8 +105,8 @@ class OciAdapter
         $column['data_type'] = strtolower(preg_replace('/\(.*?\)/', '',
                         $column['data_type']));
 
-        if ($column['data_default'] !== null)
-                $column['data_default'] = trim($column['data_default'], "' ");
+        if ($column['data_default'] !== null) $column['data_default'] = trim($column['data_default'],
+                    "' ");
 
         if ($column['data_type'] == 'number')
         {

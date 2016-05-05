@@ -1,17 +1,16 @@
 <?php
+/**
+ * @package Activerecord
+ */
+
+namespace Activerecord\Adapters;
 
 use \Activerecord\Column;
 use \Activerecord\Connection;
 use \Activerecord\Execption\exActiverecord;
 use \Activerecord\Execption\exDatabase;
 use \ActiveRecord\Utils;
-use \League\Container\Inflector\Inflector;
-
-/**
- * @package Activerecord
- */
-
-namespace Activerecord\Adapters;
+use \Activerecord\Inflector;
 
 /**
  * Adapter for SQLite.
