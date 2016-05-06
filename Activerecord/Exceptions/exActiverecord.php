@@ -23,7 +23,7 @@ namespace Activerecord\Exceptions;
  * @package Activerecord
  */
 class exActiverecord
-        extends \Exceptions
+        extends Exception
 {
 
 }
