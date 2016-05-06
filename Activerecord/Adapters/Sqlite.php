@@ -5,12 +5,12 @@
 
 namespace Activerecord\Adapters;
 
-use \Activerecord\Column;
-use \Activerecord\Connection;
-use \Activerecord\Exceptions\exActiverecord;
-use \Activerecord\Exceptions\exDatabase;
-use \ActiveRecord\Utils;
-use \Activerecord\Inflector;
+use Activerecord\Column;
+use Activerecord\Connection;
+use Activerecord\Exceptions\exActiverecord;
+use Activerecord\Exceptions\exDatabase;
+use ActiveRecord\Utils;
+use Activerecord\Inflector;
 
 /**
  * Adapter for SQLite.

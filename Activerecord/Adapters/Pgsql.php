@@ -5,9 +5,9 @@
 
 namespace Activerecord\Adapters;
 
-use \Activerecord\Column;
-use \Activerecord\Connection;
-use \Activerecord\Inflector;
+use Activerecord\Column;
+use Activerecord\Connection;
+use Activerecord\Inflector;
 
 /**
  * Adapter for Postgres (not completed yet)
