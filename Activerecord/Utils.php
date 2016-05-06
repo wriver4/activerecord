@@ -393,7 +393,7 @@ class Utils
     /**
      * Wrap string definitions (if any) into arrays.
      */
-    public function wrap_strings_in_arrays(&$strings)
+    public static function wrap_strings_in_arrays(&$strings)
     {
         if (!is_array($strings))
         {
