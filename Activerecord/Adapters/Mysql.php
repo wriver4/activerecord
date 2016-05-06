@@ -9,7 +9,7 @@ use Activerecord\Connection;
 
 /**
  * Adapter for MySQL.
- *
+ * comment
  * @package Activerecord
  */
 class Mysql
