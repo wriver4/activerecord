@@ -132,7 +132,7 @@ class Config
      */
     public function setConnections($connections, $default_connection = null)
     {
-        if (!is_array($connections))
+        if (!\is_array($connections))
         {
             throw new exConfig("Connections must be an array");
         }
@@ -176,7 +176,7 @@ class Config
      *
      * @return string
      */
-    public function getDefaultConnection_string()
+    public function getDefaultConnectionString()
     {
         return \array_key_exists($this->default_connection, $this->connections) ?
                 $this->connections[$this->default_connection] : null;
@@ -223,11 +223,11 @@ class Config
     public function getModelDirectory()
     {
 
-        foreach (glob("$this->model_directory/*.php") as $filename)
+        foreach (\glob("$this->model_directory/*.php") as $filename)
         {
             require_once $filename;
         }
-        if ($this->model_directory && !file_exists($this->model_directory))
+        if ($this->model_directory && !\file_exists($this->model_directory))
         {
             throw new exConfig('Invalid or non-existent directory: '.$this->model_directory);
         }

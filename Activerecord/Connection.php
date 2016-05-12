@@ -92,7 +92,7 @@ abstract class Connection
      *   A connection name that is set in ActiveRecord\Config
      *   If null it will use the default connection specified by ActiveRecord\Config->set_default_connection
      * @return Connection
-     * @see parse_connection_url
+     * @see parseConnectionUrl
      */
     public static function instance($connection_string_or_connection_name = null)
     {
@@ -101,9 +101,9 @@ abstract class Connection
         if (strpos($connection_string_or_connection_name, '://') === false)
         {
             $connection_string = $connection_string_or_connection_name ?
-                    $config->get_connection($connection_string_or_connection_name)
+                    $config->getConnection($connection_string_or_connection_name)
                         :
-                    $config->get_default_connection_string();
+                    $config->getDefaultConnectionString();
         }
         else
         {
@@ -115,19 +115,19 @@ abstract class Connection
             throw new exDatabase("Empty connection string");
         }
 
-        $info = static::parse_connection_url($connection_string);
-        $fqclass = static::load_adapter_class($info->protocol);
+        $info = static::parseConnectionUrl($connection_string);
+        $fqclass = static::loadAdapter($info->protocol);
 
         try
         {
             $connection = new $fqclass($info);
             $connection->protocol = $info->protocol;
-            $connection->logging = $config->get_logging();
-            $connection->logger = $connection->logging ? $config->get_logger() : null;
+            $connection->logging = $config->getLogging();
+            $connection->logger = $connection->logging ? $config->getLogger() : null;
 
             if (isset($info->charset))
             {
-                $connection->set_encoding($info->charset);
+                $connection->setEncoding($info->charset);
             }
         }
         catch (\PDOException $e)
@@ -143,7 +143,7 @@ abstract class Connection
      * @param string $adapter Name of the adapter.
      * @return string The full name of the class including namespace.
      */
-    private static function load_adapter_class($adapter)
+    private static function loadAdapter($adapter)
     {
         $class = ucwords($adapter);
         $fqclass = 'ActiveRecord\\Adapters\\'.$class;
@@ -180,7 +180,7 @@ abstract class Connection
      * @param string $connection_url A connection URL
      * @return object the parsed URL as an object.
      */
-    public static function parse_connection_url($connection_url)
+    public static function parseConnectionUrl($connection_url)
     {
         $url = @parse_url($connection_url);
 
@@ -306,7 +306,7 @@ abstract class Connection
     public function columns($table)
     {
         $columns = [];
-        $sth = $this->query_column_info($table);
+        $sth = $this->queryColumnInfo($table);
 
         while (($row = $sth->fetch()))
         {
@@ -333,7 +333,7 @@ abstract class Connection
      * @param string $sequence Optional name of a sequence to use
      * @return int
      */
-    public function insert_id($sequence = null)
+    public function insertId($sequence = null)
     {
         return $this->connection->lastInsertId($sequence);
     }
@@ -394,7 +394,7 @@ abstract class Connection
      * @param array &$values Optional array of values to bind to the query.
      * @return string
      */
-    public function query_and_fetch_one($sql, &$values = [])
+    public function queryAndFetchOne($sql, &$values = [])
     {
         $sth = $this->query($sql, $values);
         $row = $sth->fetch(\PDO::FETCH_NUM);
@@ -407,7 +407,7 @@ abstract class Connection
      * @param string $sql Raw SQL string to execute.
      * @param \Closure $handler Closure that will be passed the fetched results.
      */
-    public function query_and_fetch($sql, \Closure $handler)
+    public function queryAndFetch($sql, \Closure $handler)
     {
         $sth = $this->query($sql);
 
@@ -472,7 +472,7 @@ abstract class Connection
      *
      * @return boolean
      */
-    function supports_sequences()
+    function supportsSequences()
     {
         return false;
     }
@@ -484,18 +484,18 @@ abstract class Connection
      * @param string $column_name Name of column sequence is for
      * @return string sequence name or null if not supported.
      */
-    public function get_sequence_name($table, $column_name)
+    public function getSequenceName($table, $column_name)
     {
         return "{$table}_seq";
     }
 
-    /**
+    /** todo fix this and model
      * Return SQL for getting the next value in a sequence.
      *
      * @param string $sequence_name Name of the sequence
      * @return string
      */
-    public function next_sequence_value($sequence_name)
+    public function nextSequenceValue($sequence_name)
     {
         return null;
     }
@@ -506,7 +506,7 @@ abstract class Connection
      * @param string $string String to quote.
      * @return string
      */
-    public function quote_name($string)
+    public function quoteName($string)
     {
         return $string[0] === static::$QUOTE_CHARACTER || $string[strlen($string)
                 - 1] === static::$QUOTE_CHARACTER ?
@@ -519,7 +519,7 @@ abstract class Connection
      * @param DateTime $datetime The DateTime object
      * @return string
      */
-    public function date_to_string($datetime)
+    public function dateToString($datetime)
     {
         return $datetime->format(static::$date_format);
     }
@@ -530,7 +530,7 @@ abstract class Connection
      * @param DateTime $datetime The DateTime object
      * @return string
      */
-    public function datetime_to_string($datetime)
+    public function datetimeToString($datetime)
     {
         return $datetime->format(static::$datetime_format);
     }
@@ -541,7 +541,7 @@ abstract class Connection
      * @param string $string A datetime in the form accepted by date_create()
      * @return DateTime
      */
-    public function string_to_datetime($string)
+    public function stringToDatetime($string)
     {
         $date = date_create($string);
         $errors = \DateTime::getLastErrors();
@@ -570,18 +570,18 @@ abstract class Connection
      * @param string $table Name of a table
      * @return \PDOStatement
      */
-    abstract public function query_column_info($table);
+    abstract public function queryColumnInfo($table);
 
     /**
      * Executes query to specify the character set for this connection.
      */
-    abstract function set_encoding($charset);
+    abstract function setEncoding($charset);
 
     /*
      * Returns an array mapping of native database types
      */
 
-    abstract public function native_database_types();
+    abstract public function nativeDatabaseTypes();
 
     /**
      * Specifies whether or not adapter can use LIMIT/ORDER clauses with
@@ -590,7 +590,7 @@ abstract class Connection
      * @internal
      * @returns boolean (FALSE by default)
      */
-    public function accepts_limit_and_order_for_update_and_delete()
+    public function acceptsLimitAndOrderForUpdateAndDelete()
     {
         return false;
     }

@@ -2,6 +2,8 @@
 
 namespace Activerecord;
 
+use Activerecord\Inflector;
+
 /**
  * Cache::get('the-cache-key', function() {
  * 	 # this gets executed when cache is stale
@@ -42,15 +44,15 @@ class Cache
     {
         if ($url)
         {
-            $url = parse_url($url);
-            $file = ucwords(\Activerecord\Inflector::instance()->camelize($url['scheme']));
+            $url = \parse_url($url);
+            $file = \ucwords(Inflector::instance()->camelize($url['scheme']));
             $class = "ActiveRecord\\$file";
             require_once __DIR__."/cache/$file.php";
             static::$adapter = new $class($url);
         }
         else static::$adapter = null;
 
-        static::$options = array_merge([
+        static::$options = \array_merge([
             'expire' => 30,
             'namespace' => ''], $options);
     }
@@ -83,7 +85,7 @@ class Cache
             $expire = static::$options['expire'];
         }
 
-        $key = static::get_namespace().$key;
+        $key = static::getNamespace().$key;
 
         if (!($value = static::$adapter->read($key)))
         {
@@ -105,7 +107,7 @@ class Cache
             $expire = static::$options['expire'];
         }
 
-        $key = static::get_namespace().$key;
+        $key = static::getNamespace().$key;
         return static::$adapter->write($key, $var, $expire);
     }
 
@@ -116,13 +118,13 @@ class Cache
             return;
         }
 
-        $key = static::get_namespace().$key;
+        $key = static::getNamespace().$key;
         return static::$adapter->delete($key);
     }
 
-    private static function get_namespace()
+    private static function getNamespace()
     {
-        return (isset(static::$options['namespace']) && strlen(static::$options['namespace'])
+        return (isset(static::$options['namespace']) && \strlen(static::$options['namespace'])
                 > 0) ? (static::$options['namespace']."::") : "";
     }
 

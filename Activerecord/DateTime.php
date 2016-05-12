@@ -66,7 +66,7 @@ class DateTime
     private $model;
     private $attribute_name;
 
-    public function attribute_of($model, $attribute_name)
+    public function attributeOf($model, $attribute_name)
     {
         $this->model = $model;
         $this->attribute_name = $attribute_name;
@@ -82,13 +82,13 @@ class DateTime
      * </code>
      *
      * @see FORMATS
-     * @see get_format
-     * @param string $format A format string accepted by get_format()
+     * @see getFormat
+     * @param string $format A format string accepted by getFormat()
      * @return string formatted date and time string
      */
     public function format($format = null)
     {
-        return parent::format(self::get_format($format));
+        return parent::format(self::getFormat($format));
     }
 
     /**
@@ -101,7 +101,7 @@ class DateTime
      * @param string $format A pre-defined string format or a raw format string
      * @return string a format string
      */
-    public static function get_format($format = null)
+    public static function getFormat($format = null)
     {
         // use default format if no format specified
         if (!$format)
@@ -124,44 +124,44 @@ class DateTime
         return $this->format();
     }
 
-    private function flag_dirty()
+    private function flagDirty()
     {
         if ($this->model)
         {
-            $this->model->flag_dirty($this->attribute_name);
+            $this->model->flagDirty($this->attribute_name);
         }
     }
 
     public function setDate($year, $month, $day)
     {
-        $this->flag_dirty();
+        $this->flagDirty();
         \call_user_func_array([
             $this,
-            'parent::setDate'], func_get_args());
+            'parent::setDate'], \func_get_args());
     }
 
     public function setISODate($year, $week, $day = null)
     {
-        $this->flag_dirty();
+        $this->flagDirty();
         \call_user_func_array([
             $this,
-            'parent::setISODate'], func_get_args());
+            'parent::setISODate'], \func_get_args());
     }
 
     public function setTime($hour, $minute, $second = null)
     {
-        $this->flag_dirty();
+        $this->flagDirty();
         \call_user_func_array([
             $this,
-            'parent::setTime'], func_get_args());
+            'parent::setTime'], \func_get_args());
     }
 
     public function setTimestamp($unixtimestamp)
     {
-        $this->flag_dirty();
+        $this->flagDirty();
         \call_user_func_array([
             $this,
-            'parent::setTimestamp'], func_get_args());
+            'parent::setTimestamp'], \func_get_args());
     }
 
 }

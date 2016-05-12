@@ -83,31 +83,31 @@ class SQLBuilder
      *
      * @return array
      */
-    public function bind_values()
+    public function bindValues()
     {
         $ret = [];
 
         if ($this->data)
         {
-            $ret = array_values($this->data);
+            $ret = \array_values($this->data);
         }
 
-        if ($this->get_where_values())
+        if ($this->getWhereValues())
         {
-            $ret = array_merge($ret, $this->get_where_values());
+            $ret = \array_merge($ret, $this->getWhereValues());
         }
 
-        return \ActiveRecord\Utils::array_flatten($ret);
+        return Utils::array_flatten($ret);
     }
 
-    public function get_where_values()
+    public function getWhereValues()
     {
         return $this->where_values;
     }
 
     public function where(/* (conditions, values) || (hash) */)
     {
-        $this->apply_where_conditions(func_get_args());
+        $this->applyWhereConditions(\func_get_args());
         return $this;
     }
 
@@ -197,16 +197,16 @@ class SQLBuilder
     public function delete()
     {
         $this->operation = 'DELETE';
-        $this->apply_where_conditions(func_get_args());
+        $this->applyWhereConditions(func_get_args());
         return $this;
     }
 
     /**
      * Reverses an order clause.
      */
-    public static function reverse_order($order)
+    public static function reverseOrder($order)
     {
-        if (!trim($order))
+        if (!\trim($order))
         {
             return $order;
         }
@@ -244,7 +244,7 @@ class SQLBuilder
      * @param $map A hash of "mapped_column_name" => "real_column_name"
      * @return A conditions array in the form array(sql_string, value1, value2,...)
      */
-    public static function create_conditions_from_underscored_string(Connection $connection,
+    public static function createConditionsFromUnderscoredString(Connection $connection,
             $name, &$values = [], &$map = null)
     {
         if (!$name)
@@ -261,7 +261,7 @@ class SQLBuilder
         {
             if ($i >= 2)
             {
-                $conditions[0] .= preg_replace([
+                $conditions[0] .= \preg_replace([
                     '/_and_/i',
                     '/_or_/i'],
                         [
@@ -271,9 +271,9 @@ class SQLBuilder
 
             if ($j < $num_values)
             {
-                if (!is_null($values[$j]))
+                if (!\is_null($values[$j]))
                 {
-                    $bind = is_array($values[$j]) ? ' IN(?)' : '=?';
+                    $bind = \is_array($values[$j]) ? ' IN(?)' : '=?';
                     $conditions[] = $values[$j];
                 }
                 else
@@ -289,13 +289,13 @@ class SQLBuilder
             // map to correct name if $map was supplied
             $name = $map && isset($map[$parts[$i]]) ? $map[$parts[$i]] : $parts[$i];
 
-            $conditions[0] .= $connection->quote_name($name).$bind;
+            $conditions[0] .= $connection->quoteName($name).$bind;
         }
         return $conditions;
     }
 
     /**
-     * Like create_conditions_from_underscored_string but returns
+     * Like createConditionsFromUnderscoredString but returns
      * a hash of name => value array instead.
      *
      * @param string $name A string containing attribute names connected with _and_ or _or_
@@ -303,13 +303,13 @@ class SQLBuilder
      * @param $map A hash of "mapped_column_name" => "real_column_name"
      * @return array A hash of array(name => value, ...)
      */
-    public static function create_hash_from_underscored_string($name,
-            &$values = [], &$map = null)
+    public static function createHashFromUnderscoredString($name, &$values = [],
+            &$map = null)
     {
-        $parts = preg_split('/(_and_|_or_)/i', $name);
+        $parts = \preg_split('/(_and_|_or_)/i', $name);
         $hash = [];
 
-        for ($i = 0, $n = count($parts); $i < $n; ++$i)
+        for ($i = 0, $n = \count($parts); $i < $n; ++$i)
         {
             // map to correct name if $map was supplied
             $name = $map && isset($map[$parts[$i]]) ? $map[$parts[$i]] : $parts[$i];
@@ -326,45 +326,45 @@ class SQLBuilder
      * @param array $hash
      * @return array $new
      */
-    private function prepend_table_name_to_fields($hash = [])
+    private function prependTableNameToFields($hash = [])
     {
         $new = [];
-        $table = $this->connection->quote_name($this->table);
+        $table = $this->connection->quoteName($this->table);
 
         foreach ($hash as $key => $value)
         {
-            $k = $this->connection->quote_name($key);
+            $k = $this->connection->quoteName($key);
             $new[$table.'.'.$k] = $value;
         }
 
         return $new;
     }
 
-    private function apply_where_conditions($args)
+    private function applyWhereConditions($args)
     {
         require_once 'Expressions.php';
         $num_args = count($args);
 
-        if ($num_args == 1 && \ActiveRecord\Utils::is_hash($args[0]))
+        if ($num_args == 1 && Utils::isHash($args[0]))
         {
-            $hash = is_null($this->joins) ? $args[0] : $this->prepend_table_name_to_fields($args[0]);
+            $hash = is_null($this->joins) ? $args[0] : $this->prependTableNameToFields($args[0]);
             $e = new Expressions($this->connection, $hash);
             $this->where = $e->to_s();
-            $this->where_values = \ActiveRecord\Utils::array_flatten($e->values());
+            $this->where_values = Utils::arrayFlatten($e->values());
         }
         elseif ($num_args > 0)
         {
             // if the values has a nested array then we'll need to use Expressions to expand the bind marker for us
-            $values = array_slice($args, 1);
+            $values = \array_slice($args, 1);
 
             foreach ($values as $name => &$value)
             {
-                if (is_array($value))
+                if (\is_array($value))
                 {
                     $e = new Expressions($this->connection, $args[0]);
-                    $e->bind_values($values);
+                    $e->bindValues($values);
                     $this->where = $e->to_s();
-                    $this->where_values = Utils::array_flatten($e->values());
+                    $this->where_values = Utils::arrayFlatten($e->values());
                     return;
                 }
             }
@@ -375,7 +375,7 @@ class SQLBuilder
         }
     }
 
-    private function build_delete()
+    private function buildDelete()
     {
         $sql = "DELETE FROM $this->table";
 
@@ -384,7 +384,7 @@ class SQLBuilder
             $sql .= " WHERE $this->where";
         }
 
-        if ($this->connection->accepts_limit_and_order_for_update_and_delete())
+        if ($this->connection->acceptsLimitAndOrderForUpdateAndDelete())
         {
             if ($this->order)
             {
@@ -400,16 +400,16 @@ class SQLBuilder
         return $sql;
     }
 
-    private function build_insert()
+    private function buildInsert()
     {
         require_once 'Expressions.php';
-        $keys = join(',', $this->quoted_key_names());
+        $keys = join(',', $this->quotedKeyNames());
 
         if ($this->sequence)
         {
             $sql = "INSERT INTO $this->table($keys,"
-                    .$this->connection->quote_name($this->sequence[0])
-                    .") VALUES(?,".$this->connection->next_sequence_value($this->sequence[1])
+                    .$this->connection->quoteName($this->sequence[0])
+                    .") VALUES(?,".$this->connection->nextSequenceValue($this->sequence[1])
                     .")";
         }
         else
@@ -417,11 +417,11 @@ class SQLBuilder
             $sql = "INSERT INTO $this->table($keys) VALUES(?)";
         }
 
-        $e = new Expressions($this->connection, $sql, array_values($this->data));
+        $e = new Expressions($this->connection, $sql, \array_values($this->data));
         return $e->to_s();
     }
 
-    private function build_select()
+    private function buildSelect()
     {
         $sql = "SELECT $this->select FROM $this->table";
 
@@ -458,7 +458,7 @@ class SQLBuilder
         return $sql;
     }
 
-    private function build_update()
+    private function buildUpdate()
     {
         if (strlen($this->update) > 0)
         {
@@ -466,7 +466,7 @@ class SQLBuilder
         }
         else
         {
-            $set = join('=?, ', $this->quoted_key_names()).'=?';
+            $set = join('=?, ', $this->quotedKeyNames()).'=?';
         }
 
         $sql = "UPDATE $this->table SET $set";
@@ -476,7 +476,7 @@ class SQLBuilder
             $sql .= " WHERE $this->where";
         }
 
-        if ($this->connection->accepts_limit_and_order_for_update_and_delete())
+        if ($this->connection->acceptsLimitAndOrderForUpdateAndDelete())
         {
             if ($this->order)
             {
@@ -492,13 +492,13 @@ class SQLBuilder
         return $sql;
     }
 
-    private function quoted_key_names()
+    private function quotedKeyNames()
     {
         $keys = [];
 
         foreach ($this->data as $key => $value)
         {
-            $keys[] = $this->connection->quote_name($key);
+            $keys[] = $this->connection->quoteName($key);
         }
 
         return $keys;

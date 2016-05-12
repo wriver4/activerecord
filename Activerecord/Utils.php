@@ -36,8 +36,8 @@ namespace Activerecord;
 
 use Activerecord\Inflector;
 use Activerecord\Utils;
-use function ActiveRecord\array_flatten;
-use function ActiveRecord\has_namespace;
+use function ActiveRecord\arrayFlatten;
+use function ActiveRecord\hasNamespace;
 
 /**
  * Some internal utility functions.
@@ -47,24 +47,24 @@ use function ActiveRecord\has_namespace;
 class Utils
 {
 
-    public static function extract_options($options)
+    public static function extractOptions($options)
     {
-        return is_array(end($options)) ? end($options) : [];
+        return \is_array(\end($options)) ? \end($options) : [];
     }
 
-    public static function add_condition($condition, &$conditions = [],
+    public static function addCondition($condition, &$conditions = [],
             $conjuction = 'AND')
     {
-        if (is_array($condition))
+        if (\is_array($condition))
         {
             if (empty($conditions))
             {
-                $conditions = array_flatten($condition);
+                $conditions = arrayFlatten($condition);
             }
             else
             {
-                $conditions[0] .= " $conjuction ".array_shift($condition);
-                $conditions[] = array_flatten($condition);
+                $conditions[0] .= " $conjuction ".\array_shift($condition);
+                $conditions[] = arrayFlatten($condition);
             }
         }
         elseif (is_string($condition))
@@ -75,7 +75,7 @@ class Utils
         return $conditions;
     }
 
-    public static function human_attribute($attr)
+    public static function humanAttribute($attr)
     {
         $inflector = Inflector::instance();
         $inflected = $inflector->variablize($attr);
@@ -84,7 +84,7 @@ class Utils
         return ucfirst(str_replace('_', ' ', $normal));
     }
 
-    public static function is_odd($number)
+    public static function isOdd($number)
     {
         return $number & 1;
     }
@@ -94,7 +94,7 @@ class Utils
         switch ($type)
         {
             case 'range':
-                if (is_array($var) && (int) $var[0] < (int) $var[1])
+                if (\is_array($var) && (int) $var[0] < (int) $var[1])
                 {
                     return true;
                 }
@@ -103,9 +103,9 @@ class Utils
         return false;
     }
 
-    public static function is_blank($var)
+    public static function isBlank($var)
     {
-        return 0 === strlen($var);
+        return 0 === \strlen($var);
     }
 
     private static $plural = [
@@ -185,7 +185,7 @@ class Utils
     public static function pluralize($string)
     {
 // save some time in the case that singular and plural are the same
-        if (in_array(strtolower($string), self::$uncountable))
+        if (\in_array(\strtolower($string), self::$uncountable))
         {
             return $string;
         }
@@ -195,18 +195,18 @@ class Utils
         {
             $pattern = '/'.$pattern.'$/i';
 
-            if (preg_match($pattern, $string))
+            if (\preg_match($pattern, $string))
             {
-                return preg_replace($pattern, $result, $string);
+                return \preg_replace($pattern, $result, $string);
             }
         }
 
 // check for matches using regular expressions
         foreach (self::$plural as $pattern => $result)
         {
-            if (preg_match($pattern, $string))
+            if (\preg_match($pattern, $string))
             {
-                return preg_replace($pattern, $result, $string);
+                return \preg_replace($pattern, $result, $string);
             }
         }
 
@@ -216,7 +216,7 @@ class Utils
     public static function singularize($string)
     {
 // save some time in the case that singular and plural are the same
-        if (in_array(strtolower($string), self::$uncountable))
+        if (\in_array(\strtolower($string), self::$uncountable))
         {
             return $string;
         }
@@ -226,25 +226,25 @@ class Utils
         {
             $pattern = '/'.$pattern.'$/i';
 
-            if (preg_match($pattern, $string))
+            if (\preg_match($pattern, $string))
             {
-                return preg_replace($pattern, $result, $string);
+                return \preg_replace($pattern, $result, $string);
             }
         }
 
 // check for matches using regular expressions
         foreach (self::$singular as $pattern => $result)
         {
-            if (preg_match($pattern, $string))
+            if (\preg_match($pattern, $string))
             {
-                return preg_replace($pattern, $result, $string);
+                return \preg_replace($pattern, $result, $string);
             }
         }
 
         return $string;
     }
 
-    public static function pluralize_if($count, $string)
+    public static function pluralizeIf($count, $string)
     {
         if ($count == 1)
         {
@@ -258,10 +258,10 @@ class Utils
 
     public static function squeeze($char, $string)
     {
-        return preg_replace("/$char+/", $char, $string);
+        return \preg_replace("/$char+/", $char, $string);
     }
 
-    public static function add_irregular($singular, $plural)
+    public static function addIrregular($singular, $plural)
     {
         self::$irregular[$singular] = $plural;
     }
@@ -274,19 +274,19 @@ class Utils
         }
 
         $class_name = Inflector::instance()->camelize($class_name);
-        return ucfirst($class_name);
+        return \ucfirst($class_name);
     }
 
 // http://snippets.dzone.com/posts/show/4660
-    public function array_flatten(array $array)
+    public function arrayFlatten(array $array)
     {
         $i = 0;
 
         while ($i < count($array))
         {
-            if (is_array($array[$i]))
+            if (\is_array($array[$i]))
             {
-                array_splice($array, $i, 1, $array[$i]);
+                \array_splice($array, $i, 1, $array[$i]);
             }
             else
             {
@@ -299,14 +299,14 @@ class Utils
     /**
      * Somewhat naive way to determine if an array is a hash.
      */
-    public function is_hash(&$array)
+    public function isHash(&$array)
     {
-        if (!is_array($array))
+        if (!\is_array($array))
         {
             return false;
         }
 
-        $keys = array_keys($array);
+        $keys = \array_keys($array);
         return @is_string($keys[0]) ? true : false;
     }
 
@@ -319,40 +319,40 @@ class Utils
      */
     public function denamespace($class_name)
     {
-        if (is_object($class_name))
+        if (\is_object($class_name))
         {
-            $class_name = get_class($class_name);
+            $class_name = \get_class($class_name);
         }
 
-        if (has_namespace($class_name))
+        if (self::hasNamespace($class_name))
         {
             $parts = explode('\\', $class_name);
-            return end($parts);
+            return \end($parts);
         }
         return $class_name;
     }
 
-    public function get_namespaces($class_name)
+    public function getNamespaces($class_name)
     {
-        if (has_namespace($class_name))
+        if (self::hasNamespace($class_name))
         {
-            return explode('\\', $class_name);
+            return \explode('\\', $class_name);
         }
         return null;
     }
 
-    public function has_namespace($class_name)
+    public function hasNamespace($class_name)
     {
-        if (strpos($class_name, '\\') !== false)
+        if (\strpos($class_name, '\\') !== false)
         {
             return true;
         }
         return false;
     }
 
-    public function has_absolute_namespace($class_name)
+    public function hasAbsoluteNamespace($class_name)
     {
-        if (strpos($class_name, '\\') === 0)
+        if (\strpos($class_name, '\\') === 0)
         {
             return true;
         }
@@ -383,7 +383,7 @@ class Utils
 
         foreach ($enumerable as $value)
         {
-            if (is_string($name_or_closure)) $ret[] = is_array($value) ? $value[$name_or_closure]
+            if (\is_string($name_or_closure)) $ret[] = \is_array($value) ? $value[$name_or_closure]
                             : $value->$name_or_closure;
             elseif ($name_or_closure instanceof \Closure) $ret[] = $name_or_closure($value);
         }
@@ -393,9 +393,9 @@ class Utils
     /**
      * Wrap string definitions (if any) into arrays.
      */
-    public static function wrap_strings_in_arrays(&$strings)
+    public static function wrapStringsInArrays(&$strings)
     {
-        if (!is_array($strings))
+        if (!\is_array($strings))
         {
             $strings = [[
             $strings]];
@@ -404,7 +404,7 @@ class Utils
         {
             foreach ($strings as &$str)
             {
-                if (!is_array($str))
+                if (!\is_array($str))
                 {
                     $str = [$str];
                 }

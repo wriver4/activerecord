@@ -29,21 +29,29 @@ abstract class Inflector
      */
     public function camelize($s)
     {
-        $s = preg_replace('/[_-]+/', '_', trim($s));
-        $s = str_replace(' ', '_', $s);
+        $s = \preg_replace('/[_-]+/', '_', \trim($s));
+        $s = \str_replace(' ', '_', $s);
 
         $camelized = '';
 
         for ($i = 0, $n = strlen($s); $i < $n; ++$i)
         {
             if ($s[$i] == '_' && $i + 1 < $n)
-                    $camelized .= strtoupper($s[++$i]);
-            else $camelized .= $s[$i];
+            {
+                $camelized .= \strtoupper($s[++$i]);
+            }
+            else
+            {
+                $camelized .= $s[$i];
+            }
         }
 
-        $camelized = trim($camelized, ' _');
+        $camelized = \trim($camelized, ' _');
 
-        if (strlen($camelized) > 0) $camelized[0] = strtolower($camelized[0]);
+        if (\strlen($camelized) > 0)
+        {
+            $camelized[0] = \strtolower($camelized[0]);
+        }
 
         return $camelized;
     }
@@ -54,9 +62,9 @@ abstract class Inflector
      * @param string $s string to check
      * @return bool
      */
-    public static function is_upper($s)
+    public static function isUpper($s)
     {
-        return (strtoupper($s) === $s);
+        return (\strtoupper($s) === $s);
     }
 
     /**
@@ -65,9 +73,9 @@ abstract class Inflector
      * @param string $s string to check
      * @return bool
      */
-    public static function is_lower($s)
+    public static function isLower($s)
     {
-        return (strtolower($s) === $s);
+        return (\strtolower($s) === $s);
     }
 
     /**
@@ -82,11 +90,16 @@ abstract class Inflector
 
         for ($i = 0, $n = strlen($s); $i < $n; ++$i)
         {
-            if (ctype_alpha($s[$i]) && self::is_upper($s[$i]))
-                    $normalized .= '_'.strtolower($s[$i]);
-            else $normalized .= $s[$i];
+            if (\ctype_alpha($s[$i]) && self::isUpper($s[$i]))
+            {
+                $normalized .= '_'.\strtolower($s[$i]);
+            }
+            else
+            {
+                $normalized .= $s[$i];
+            }
         }
-        return trim($normalized, ' _');
+        return \trim($normalized, ' _');
     }
 
     /**
@@ -97,16 +110,16 @@ abstract class Inflector
      */
     public function underscorify($s)
     {
-        return preg_replace([
+        return \preg_replace([
             '/[_\- ]+/',
             '/([a-z])([A-Z])/'], [
             '_',
-            '\\1_\\2'], trim($s));
+            '\\1_\\2'], \trim($s));
     }
 
     public function keyify($class_name)
     {
-        return strtolower($this->underscorify(\ActiveRecord\denamespace($class_name))).'_id';
+        return \strtolower($this->underscorify(\ActiveRecord\denamespace($class_name))).'_id';
     }
 
     abstract function variablize($s);

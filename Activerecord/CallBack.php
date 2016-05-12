@@ -5,7 +5,6 @@
 
 namespace Activerecord;
 
-use Activerecord\CallBack;
 use Activerecord\Exceptions\exActiveRecord;
 use Activerecord\Reflections;
 
@@ -122,7 +121,7 @@ class CallBack
             if (($definition = $this->reflect->getStaticPropertyValue($name,
                     null)))
             {
-                if (!is_array($definition))
+                if (!\is_array($definition))
                 {
                     $definition = [$definition];
                 }
@@ -149,7 +148,7 @@ class CallBack
      * @param $name string Name of a callback (see {@link VALID_CALLBACKS $VALID_CALLBACKS})
      * @return array array of callbacks or null if invalid callback name.
      */
-    public function get_callbacks($name)
+    public function getCallbacks($name)
     {
         return isset($this->registry[$name]) ? $this->registry[$name] : null;
     }
@@ -172,7 +171,7 @@ class CallBack
     {
         if ($must_exist && !\array_key_exists($name, $this->registry))
         {
-            throw new exActiveRecord("No callbacks were defined for: $name on ".get_class($model));
+            throw new exActiveRecord("No callbacks were defined for: $name on ".\get_class($model));
         }
 
         // if it doesn't exist it might be a /(after|before)_(create|update)/ so we still need to run the save
@@ -186,14 +185,14 @@ class CallBack
             $registry = $this->registry[$name];
         }
 
-        $first = substr($name, 0, 6);
+        $first = \substr($name, 0, 6);
 
         // starts with /(after|before)_(create|update)/
-        if (($first == 'after_' || $first == 'before') && (($second = substr($name,
+        if (($first == 'after_' || $first == 'before') && (($second = \substr($name,
                 7, 5)) == 'creat' || $second == 'updat' || $second == 'reate' || $second
                 == 'pdate'))
         {
-            $temporal_save = str_replace(['create',
+            $temporal_save = \str_replace(['create',
                 'update'], 'save', $name);
 
             if (!isset($this->registry[$temporal_save]))
@@ -201,7 +200,7 @@ class CallBack
                 $this->registry[$temporal_save] = [];
             }
 
-            $registry = array_merge($this->registry[$temporal_save],
+            $registry = \array_merge($this->registry[$temporal_save],
                     $registry ? $registry : []);
         }
 
@@ -237,7 +236,7 @@ class CallBack
     public function register($name, $closure_or_method_name = null,
             $options = [])
     {
-        $options = array_merge(['prepend' => false], $options);
+        $options = \array_merge(['prepend' => false], $options);
 
         if (!$closure_or_method_name)
         {
@@ -253,7 +252,7 @@ class CallBack
         {
             if (!isset($this->publicMethods))
             {
-                $this->publicMethods = get_class_methods($this->reflect->getName());
+                $this->publicMethods = \get_class_methods($this->reflect->getName());
             }
 
             if (!in_array($closure_or_method_name, $this->publicMethods))
@@ -268,7 +267,7 @@ class CallBack
                 {
 
                     throw new exActiveRecord("Unknown method for callback: $name".
-                    (is_string($closure_or_method_name) ? ": #$closure_or_method_name"
+                    (\is_string($closure_or_method_name) ? ": #$closure_or_method_name"
                                 : ""));
                 }
             }
@@ -281,7 +280,7 @@ class CallBack
 
         if ($options['prepend'])
         {
-            array_unshift($this->registry[$name], $closure_or_method_name);
+            \array_unshift($this->registry[$name], $closure_or_method_name);
         }
         else
         {

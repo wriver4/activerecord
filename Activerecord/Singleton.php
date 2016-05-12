@@ -31,7 +31,7 @@ abstract class Singleton
      */
     final public static function instance()
     {
-        $class_name = get_called_class();
+        $class_name = getCalledClass();
 
         if (!isset(self::$instances[$class_name])) self::$instances[$class_name] =
                     new $class_name;
@@ -50,14 +50,14 @@ abstract class Singleton
     }
 
     /**
-     * Similar to a get_called_class() for a child class to invoke.
+     * Similar to a getCalledClass() for a child class to invoke.
      *
      * @return string
      */
-    final protected function get_called_class()
+    final protected function getCalledClass()
     {
         $backtrace = debug_backtrace();
-        return get_class($backtrace[2]['object']);
+        return \get_class($backtrace[2]['object']);
     }
 
 }

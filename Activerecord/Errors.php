@@ -51,7 +51,7 @@ class Errors
      * Nulls $model so we don't get pesky circular references. $model is only needed during the
      * validation process and so can be safely cleared once that is done.
      */
-    public function clear_model()
+    public function clearModel()
     {
         $this->model = null;
     }
@@ -85,7 +85,7 @@ class Errors
      * @param string $attribute Name of an attribute on the model
      * @param string $msg The error message
      */
-    public function add_on_empty($attribute, $msg)
+    public function addOnEmpty($attribute, $msg)
     {
         if (empty($msg))
         {
@@ -120,7 +120,7 @@ class Errors
      * @param string $attribute Name of an attribute on the model
      * @param string $msg The error message
      */
-    public function add_on_blank($attribute, $msg)
+    public function addOnBlank($attribute, $msg)
     {
         if (!$msg)
         {
@@ -139,7 +139,7 @@ class Errors
      * @param string $attribute Name of an attribute on the model
      * @return boolean
      */
-    public function is_invalid($attribute)
+    public function isInvalid($attribute)
     {
         return isset($this->errors[$attribute]);
     }
@@ -161,7 +161,7 @@ class Errors
      * Returns the internal errors object.
      *
      * <code>
-     * $model->errors->get_raw_errors();
+     * $model->errors->getRawErrors();
      *
      * # array(
      * #  "name" => array("can't be blank"),
@@ -169,7 +169,7 @@ class Errors
      * # )
      * </code>
      */
-    public function get_raw_errors()
+    public function getRawErrors()
     {
         return $this->errors;
     }
@@ -178,7 +178,7 @@ class Errors
      * Returns all the error messages as an array.
      *
      * <code>
-     * $model->errors->full_messages();
+     * $model->errors->fullMessages();
      *
      * # array(
      * #  "Name can't be blank",
@@ -188,16 +188,16 @@ class Errors
      *
      * @return array
      */
-    public function full_messages()
+    public function fullMessages()
     {
-        $full_messages = [];
+        $fullMessages = [];
 
-        $this->to_array(function($attribute, $message) use (&$full_messages)
+        $this->toArray(function($attribute, $message) use (&$fullMessages)
         {
-            $full_messages[] = $message;
+            $fullMessages[] = $message;
         });
 
-        return $full_messages;
+        return $fullMessages;
     }
 
     /**
@@ -217,7 +217,7 @@ class Errors
      *                       and is called for each available error message.
      * @return array
      */
-    public function to_array($closure = null)
+    public function toArray($closure = null)
     {
         $errors = [];
 
@@ -257,14 +257,14 @@ class Errors
      */
     public function __toString()
     {
-        return implode("\n", $this->full_messages());
+        return implode("\n", $this->fullMessages());
     }
 
     /**
      * Returns true if there are no error messages.
      * @return boolean
      */
-    public function is_empty()
+    public function isEmpty()
     {
         return empty($this->errors);
     }
@@ -283,7 +283,7 @@ class Errors
      */
     public function size()
     {
-        if ($this->is_empty())
+        if ($this->isEmpty())
         {
             return 0;
         }
@@ -312,7 +312,7 @@ class Errors
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->full_messages());
+        return new \ArrayIterator($this->fullMessages());
     }
 
 }

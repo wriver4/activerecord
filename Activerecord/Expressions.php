@@ -26,16 +26,15 @@ class Expressions
     private $values = [];
     private $connection;
 
-    public function __construct($connection,
-            $expressions = null /* [, $values ... ] */)
+    public function __construct($connection, $expressions = null) /* [, $values ... ] */
     {
         $values = null;
         $this->connection = $connection;
 
         if (is_array($expressions))
         {
-            $glue = func_num_args() > 2 ? func_get_arg(2) : ' AND ';
-            list($expressions, $values) = $this->build_sql_from_hash($expressions,
+            $glue = \func_num_args() > 2 ? \func_get_arg(2) : ' AND ';
+            list($expressions, $values) = $this->buildSqlFromHash($expressions,
                     $glue);
         }
 
@@ -43,7 +42,7 @@ class Expressions
         {
             if (!$values)
             {
-                $values = array_slice(func_get_args(), 2);
+                $values = \array_slice(\func_get_args(), 2);
             }
 
             $this->values = $values;
@@ -65,7 +64,7 @@ class Expressions
         $this->values[$parameter_number - 1] = $value;
     }
 
-    public function bind_values($values)
+    public function bindValues($values)
     {
         $this->values = $values;
     }
@@ -92,7 +91,7 @@ class Expressions
      *
      * @param string $connection a Connection instance
      */
-    public function set_connection($connection)
+    public function setConnection($connection)
     {
         $this->connection = $connection;
     }
@@ -138,7 +137,7 @@ class Expressions
         return $ret;
     }
 
-    private function build_sql_from_hash(&$hash, $glue)
+    private function buildSqlFromHash(&$hash, $glue)
     {
         $sql = $g = "";
 
@@ -194,7 +193,7 @@ class Expressions
 
                 for ($i = 0, $n = $value_count; $i < $n; ++$i)
                 {
-                    $ret .= ($i > 0 ? ',' : '').$this->stringify_value($value[$i]);
+                    $ret .= ($i > 0 ? ',' : '').$this->stringifyValue($value[$i]);
                 }
 
                 return $ret;
@@ -204,23 +203,23 @@ class Expressions
 
         if ($substitute)
         {
-            return $this->stringify_value($value);
+            return $this->stringifyValue($value);
         }
 
         return $this->expressions[$pos];
     }
 
-    private function stringify_value($value)
+    private function stringifyValue($value)
     {
         if (is_null($value))
         {
             return "NULL";
         }
 
-        return is_string($value) ? $this->quote_string($value) : $value;
+        return is_string($value) ? $this->quoteString($value) : $value;
     }
 
-    private function quote_string($value)
+    private function quoteString($value)
     {
         if ($this->connection)
         {

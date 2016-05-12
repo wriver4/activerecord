@@ -33,7 +33,7 @@ class Reflections
      */
     public function add($class = null)
     {
-        $class = $this->get_class($class);
+        $class = $this->getClass($class);
 
         if (!isset($this->reflections[$class]))
         {
@@ -68,7 +68,7 @@ class Reflections
      */
     public function get($class = null)
     {
-        $class = $this->get_class($class);
+        $class = $this->getClass($class);
 
         if (isset($this->reflections[$class]))
         {
@@ -84,11 +84,11 @@ class Reflections
      * @param mixed $mixed An object or name of a class
      * @return string
      */
-    private function get_class($mixed = null)
+    private function getClass($mixed = null)
     {
-        if (is_object($mixed))
+        if (\is_object($mixed))
         {
-            return get_class($mixed);
+            return getClass($mixed);
         }
 
         if (!is_null($mixed))
@@ -96,7 +96,7 @@ class Reflections
             return $mixed;
         }
 
-        return $this->get_called_class();
+        return \get_called_class();
     }
 
 }
