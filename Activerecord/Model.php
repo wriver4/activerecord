@@ -517,7 +517,7 @@ class Model
         // dirty stuff works when calling set methods on the DateTime object
         if ($value instanceof DateTime)
         {
-            $value->attribute_of($this, $name);
+            $value->attributeOf($this, $name);
         }
 
         $this->attributes[$name] = $value;

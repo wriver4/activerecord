@@ -310,7 +310,7 @@ abstract class Connection
 
         while (($row = $sth->fetch()))
         {
-            $c = $this->create_column($row);
+            $c = $this->createColumn($row);
             $columns[$c->name] = $c;
         }
         return $columns;

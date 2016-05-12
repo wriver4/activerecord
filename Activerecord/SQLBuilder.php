@@ -74,7 +74,7 @@ class SQLBuilder
      */
     public function toString()
     {
-        $func = 'build_'.strtolower($this->operation);
+        $func = 'build'.ucfirst(strtolower($this->operation));
         return $this->$func();
     }
 
