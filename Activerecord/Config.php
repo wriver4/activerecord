@@ -17,7 +17,7 @@ use Activerecord\Singleton;
  * <code>
  * ActiveRecord::initialize(function($cfg) {
  *   $cfg->set_model_home('models');
- *   $cfg->set_connections(array(
+ *   $cfg->setConnections(array(
  *     'development' => 'mysql://user:pass@development.com/awesome_development',
  *     'production' => 'mysql://user:pass@production.com/awesome_production'));
  * });
@@ -34,8 +34,8 @@ class Config
      *
      * <code>
      * ActiveRecord\Config::initialize(function($cfg) {
-     *   $cfg->set_model_directory('/your/app/models');
-     *   $cfg->set_connections(array(
+     *   $cfg->setModelDirectory('/your/app/models');
+     *   $cfg->setConnections(array(
      *     'development' => 'mysql://user:pass@development.com/awesome_development',
      *     'production' => 'mysql://user:pass@production.com/awesome_production'));
      * });
@@ -94,8 +94,8 @@ class Config
      *
      * <code>
      * ActiveRecord\Config::initialize(function($cfg) {
-     *   $cfg->set_model_directory('/path/to/your/model_directory');
-     *   $cfg->set_connections(array(
+     *   $cfg->setModelDirectory('/path/to/your/model_directory');
+     *   $cfg->setConnections(array(
      *     'development' => 'mysql://username:password@127.0.0.1/database_name'));
      * });
      * </code>
@@ -104,8 +104,8 @@ class Config
      *
      * <code>
      * $cfg = ActiveRecord\Config::instance();
-     * $cfg->set_model_directory('/path/to/your/model_directory');
-     * $cfg->set_connections(array('development' =>
+     * $cfg->setModelDirectory('/path/to/your/model_directory');
+     * $cfg->setConnections(array('development' =>
      *   'mysql://username:password@localhost/database_name'));
      * </code>
      *
@@ -121,7 +121,7 @@ class Config
      * Sets the list of database connection strings.
      *
      * <code>
-     * $config->set_connections(array(
+     * $config->setConnections(array(
      *     'development' => 'mysql://username:password@127.0.0.1/database_name'));
      * </code>
      *
@@ -130,7 +130,7 @@ class Config
      * @return void
      * @throws Config
      */
-    public function set_connections($connections, $default_connection = null)
+    public function setConnections($connections, $default_connection = null)
     {
         if (!is_array($connections))
         {
@@ -139,7 +139,7 @@ class Config
 
         if ($default_connection)
         {
-            $this->set_default_connection($default_connection);
+            $this->setDefaultConnection($default_connection);
         }
 
         $this->connections = $connections;
@@ -150,7 +150,7 @@ class Config
      *
      * @return array
      */
-    public function get_connections()
+    public function getConnections()
     {
         return $this->connections;
     }
@@ -161,7 +161,7 @@ class Config
      * @param string $name Name of connection to retrieve
      * @return string connection info for specified connection name
      */
-    public function get_connection($name)
+    public function getConnection($name)
     {
         if (\array_key_exists($name, $this->connections))
         {
@@ -176,7 +176,7 @@ class Config
      *
      * @return string
      */
-    public function get_default_connection_string()
+    public function getDefaultConnection_string()
     {
         return \array_key_exists($this->default_connection, $this->connections) ?
                 $this->connections[$this->default_connection] : null;
@@ -187,7 +187,7 @@ class Config
      *
      * @return string
      */
-    public function get_default_connection()
+    public function getDefaultConnection()
     {
         return $this->default_connection;
     }
@@ -198,7 +198,7 @@ class Config
      * @param string $name Name of a connection in the connections array
      * @return void
      */
-    public function set_default_connection($name)
+    public function setDefaultConnection($name)
     {
         $this->default_connection = $name;
     }
@@ -209,7 +209,7 @@ class Config
      * @param string $dir Directory path containing your models
      * @return void
      */
-    public function set_model_directory($dir)
+    public function setModelDirectory($dir)
     {
         $this->model_directory = $dir;
     }
@@ -220,7 +220,7 @@ class Config
      * @return string
      * @throws Config if specified directory was not found
      */
-    public function get_model_directory()
+    public function getModelDirectory()
     {
 
         foreach (glob("$this->model_directory/*.php") as $filename)
@@ -241,7 +241,7 @@ class Config
      * @param boolean $bool
      * @return void
      */
-    public function set_logging($bool)
+    public function setLogging($bool)
     {
         $this->logging = (bool) $bool;
     }
@@ -253,7 +253,7 @@ class Config
      * @return void
      * @throws ConfigException if Logger objecct does not implement public log()
      */
-    public function set_logger($logger)
+    public function setLogger($logger)
     {
         $reflect = Reflections::instance()->add($logger)->get($logger);
 
@@ -270,7 +270,7 @@ class Config
      *
      * @return boolean
      */
-    public function get_logging()
+    public function getLogging()
     {
         return $this->logging;
     }
@@ -280,7 +280,7 @@ class Config
      *
      * @return object
      */
-    public function get_logger()
+    public function getLogger()
     {
         return $this->logger;
     }
@@ -288,9 +288,9 @@ class Config
     /**
      * @deprecated
      */
-    public function get_date_format()
+    public function getDateFormat()
     {
-        trigger_error('Use ActiveRecord\Serialization::$DATETIME_FORMAT. Config::get_date_format() has been deprecated.',
+        trigger_error('Use ActiveRecord\Serialization::$DATETIME_FORMAT. Config::getDateFormat() has been deprecated.',
                 E_USER_DEPRECATED);
         return Serialization::$DATETIME_FORMAT;
     }
@@ -298,9 +298,9 @@ class Config
     /**
      * @deprecated
      */
-    public function set_date_format($format)
+    public function setDateFormat($format)
     {
-        trigger_error('Use ActiveRecord\Serialization::$DATETIME_FORMAT. Config::set_date_format() has been deprecated.',
+        trigger_error('Use ActiveRecord\Serialization::$DATETIME_FORMAT. Config::setDateFormat() has been deprecated.',
                 E_USER_DEPRECATED);
         Serialization::$DATETIME_FORMAT = $format;
     }
@@ -314,14 +314,14 @@ class Config
      * Example:
      *
      * <code>
-     * $config->set_cache("memcached://localhost");
-     * $config->set_cache("memcached://localhost",array("expire" => 60));
+     * $config->setCache("memcached://localhost");
+     * $config->setCache("memcached://localhost",array("expire" => 60));
      * </code>
      *
      * @param string $url Url to your cache server.
      * @param array $options Array of options
      */
-    public function set_cache($url, $options = [])
+    public function setCache($url, $options = [])
     {
         Cache::initialize($url, $options);
     }

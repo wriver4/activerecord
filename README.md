@@ -1,5 +1,7 @@
 # activerecord
 
+Warning working on conforming to PSR-1 starting 5/11/2016 use Ver. 1.1
+
 ## Instructions
 
 Uses Composer to manage autoload.
@@ -11,7 +13,7 @@ $loader->addPsr4('Models\\', __dir__.'\Models');
 
 //Simple Config
 $cfg = Activerecord\Config::instance();
-$cfg->set_connections(array(
+$cfg->setConnections(array(
     'development' =>
     'mysql://root:root@localhost/treebark?charset=utf8'));
 ```
