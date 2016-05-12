@@ -1108,7 +1108,7 @@ class Model
 
         if (isset($options['conditions']) && ($conditions = $options['conditions']))
         {
-            if (\is_array($conditions) && !\is_hash($conditions))
+            if (\is_array($conditions) && !isHash($conditions))
             {
                 \call_user_func_array([$sql,
                     'where'], $conditions);
@@ -1994,7 +1994,7 @@ class Model
             }
             catch (Activerecord $e)
             {
-                if (!\is_hash($last))
+                if (!isHash($last))
                 {
                     throw $e;
                 }
