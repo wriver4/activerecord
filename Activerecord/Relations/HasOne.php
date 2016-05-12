@@ -1,8 +1,8 @@
 <?php
 
-use \Activerecord\Relations\aRelations;
-
 namespace Activerecord\Relations;
+
+use Activerecord\Relations\aRelations;
 
 /**
  * Summary of file HasOne.

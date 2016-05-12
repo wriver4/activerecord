@@ -63,7 +63,7 @@ class SQLBuilder
      */
     public function __toString()
     {
-        return $this->to_s();
+        return $this->toString();
     }
 
     /**
@@ -72,7 +72,7 @@ class SQLBuilder
      * @see __toString
      * @return string
      */
-    public function to_s()
+    public function toString()
     {
         $func = 'build_'.strtolower($this->operation);
         return $this->$func();
@@ -97,7 +97,7 @@ class SQLBuilder
             $ret = \array_merge($ret, $this->getWhereValues());
         }
 
-        return Utils::array_flatten($ret);
+        return Utils::arrayFlatten($ret);
     }
 
     public function getWhereValues()
@@ -131,13 +131,13 @@ class SQLBuilder
 
     public function limit($limit)
     {
-        $this->limit = intval($limit);
+        $this->limit = \intval($limit);
         return $this;
     }
 
     public function offset($offset)
     {
-        $this->offset = intval($offset);
+        $this->offset = \intval($offset);
         return $this;
     }
 
@@ -156,7 +156,7 @@ class SQLBuilder
 
     public function insert($hash, $pk = null, $sequence_name = null)
     {
-        if (!\ActiveRecord\Utils::is_hash($hash))
+        if (!Utils::isHash($hash))
         {
             throw new exActiverecord('Inserting requires a hash.');
         }
@@ -178,11 +178,11 @@ class SQLBuilder
     {
         $this->operation = 'UPDATE';
 
-        if (\ActiveRecord\Utils::is_hash($mixed))
+        if (Utils::isHash($mixed))
         {
             $this->data = $mixed;
         }
-        elseif (is_string($mixed))
+        elseif (\is_string($mixed))
         {
             $this->update = $mixed;
         }
@@ -197,7 +197,7 @@ class SQLBuilder
     public function delete()
     {
         $this->operation = 'DELETE';
-        $this->applyWhereConditions(func_get_args());
+        $this->applyWhereConditions(\func_get_args());
         return $this;
     }
 
@@ -211,26 +211,26 @@ class SQLBuilder
             return $order;
         }
 
-        $parts = explode(',', $order);
+        $parts = \explode(',', $order);
 
-        for ($i = 0, $n = count($parts); $i < $n; ++$i)
+        for ($i = 0, $n = \count($parts); $i < $n; ++$i)
         {
-            $v = strtolower($parts[$i]);
+            $v = \strtolower($parts[$i]);
 
-            if (strpos($v, ' asc') !== false)
+            if (\strpos($v, ' asc') !== false)
             {
-                $parts[$i] = preg_replace('/asc/i', 'DESC', $parts[$i]);
+                $parts[$i] = \preg_replace('/asc/i', 'DESC', $parts[$i]);
             }
-            elseif (strpos($v, ' desc') !== false)
+            elseif (\strpos($v, ' desc') !== false)
             {
-                $parts[$i] = preg_replace('/desc/i', 'ASC', $parts[$i]);
+                $parts[$i] = \preg_replace('/desc/i', 'ASC', $parts[$i]);
             }
             else
             {
                 $parts[$i] .= ' DESC';
             }
         }
-        return join(',', $parts);
+        return \join(',', $parts);
     }
 
     /**
@@ -252,12 +252,12 @@ class SQLBuilder
             return null;
         }
 
-        $parts = preg_split('/(_and_|_or_)/i', $name, -1,
+        $parts = \preg_split('/(_and_|_or_)/i', $name, -1,
                 PREG_SPLIT_DELIM_CAPTURE);
-        $num_values = count($values);
+        $num_values = \count($values);
         $conditions = [''];
 
-        for ($i = 0, $j = 0, $n = count($parts); $i < $n; $i+=2, ++$j)
+        for ($i = 0, $j = 0, $n = \count($parts); $i < $n; $i+=2, ++$j)
         {
             if ($i >= 2)
             {
@@ -343,13 +343,13 @@ class SQLBuilder
     private function applyWhereConditions($args)
     {
         require_once 'Expressions.php';
-        $num_args = count($args);
+        $num_args = \count($args);
 
         if ($num_args == 1 && Utils::isHash($args[0]))
         {
-            $hash = is_null($this->joins) ? $args[0] : $this->prependTableNameToFields($args[0]);
+            $hash = \is_null($this->joins) ? $args[0] : $this->prependTableNameToFields($args[0]);
             $e = new Expressions($this->connection, $hash);
-            $this->where = $e->to_s();
+            $this->where = $e->toString();
             $this->where_values = Utils::arrayFlatten($e->values());
         }
         elseif ($num_args > 0)
@@ -363,7 +363,7 @@ class SQLBuilder
                 {
                     $e = new Expressions($this->connection, $args[0]);
                     $e->bindValues($values);
-                    $this->where = $e->to_s();
+                    $this->where = $e->toString();
                     $this->where_values = Utils::arrayFlatten($e->values());
                     return;
                 }
@@ -403,7 +403,7 @@ class SQLBuilder
     private function buildInsert()
     {
         require_once 'Expressions.php';
-        $keys = join(',', $this->quotedKeyNames());
+        $keys = \join(',', $this->quotedKeyNames());
 
         if ($this->sequence)
         {
@@ -418,7 +418,7 @@ class SQLBuilder
         }
 
         $e = new Expressions($this->connection, $sql, \array_values($this->data));
-        return $e->to_s();
+        return $e->toString();
     }
 
     private function buildSelect()
@@ -466,7 +466,7 @@ class SQLBuilder
         }
         else
         {
-            $set = join('=?, ', $this->quotedKeyNames()).'=?';
+            $set = \join('=?, ', $this->quotedKeyNames()).'=?';
         }
 
         $sql = "UPDATE $this->table SET $set";

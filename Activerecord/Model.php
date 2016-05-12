@@ -312,8 +312,10 @@ class Model
     }
 
     /**
-     * Magic method which delegates to readAttribute(). This handles firing off getter methods,
-     * as they are not checked/invoked inside of readAttribute(). This circumvents the problem with
+     * Magic method which delegates to readAttribute().
+     * This handles firing off getter methods,
+     * as they are not checked/invoked inside of readAttribute().
+     * This circumvents the problem with
      * a getter being accessed with the same name as an actual attribute.
      *
      * You can also define customer getter methods for the model.
@@ -384,7 +386,7 @@ class Model
      */
     public function __isset($attribute_name)
     {
-        return array_key_exists($attribute_name, $this->attributes) || \array_key_exists($attribute_name,
+        return \array_key_exists($attribute_name, $this->attributes) || \array_key_exists($attribute_name,
                         static::$alias_attribute);
     }
 
@@ -440,17 +442,17 @@ class Model
      */
     public function __set($name, $value)
     {
-        if (array_key_exists($name, static::$alias_attribute))
+        if (\array_key_exists($name, static::$alias_attribute))
         {
             $name = static::$alias_attribute[$name];
         }
-        elseif (method_exists($this, "set_$name"))
+        elseif (\method_exists($this, "set_$name"))
         {
             $name = "set_$name";
             return $this->$name($value);
         }
 
-        if (array_key_exists($name, $this->attributes))
+        if (\array_key_exists($name, $this->attributes))
         {
             return $this->assignAttribute($name, $value);
         }
@@ -524,13 +526,15 @@ class Model
     }
 
     /**
-     * Retrieves an attribute's value or a relationship object based on the name passed. If the attribute
-     * accessed is 'id' then it will return the model's primary key no matter what the actual attribute name is
-     * for the primary key.
+     * Retrieves an attribute's value or a relationship object based on the
+     * name passed. If the attribute accessed is 'id' then it will return the
+     * model's primary key no matter what the actual attribute name is for the
+     * primary key.
      *
      * @param string $name Name of an attribute
      * @return mixed The value of the attribute
-     * @throws {@link UndefinedProperty} if name could not be resolved to an attribute, relationship, ...
+     * @throws {@link UndefinedProperty}
+     * if name could not be resolved to an attribute, relationship, ...
      */
     public function &readAttribute($name)
     {
@@ -609,9 +613,11 @@ class Model
     }
 
     /**
-     * Returns hash of attributes that have been modified since loading the model.
+     * Returns hash of attributes that have been modified since loading the
+     * model.
      *
-     * @return mixed null if no dirty attributes otherwise returns array of dirty attributes.
+     * @return mixed null if no dirty attributes otherwise returns array of
+     * dirty attributes.
      */
     public function dirtyAttributes()
     {
@@ -625,13 +631,14 @@ class Model
     }
 
     /**
-     * Check if a particular attribute has been modified since loading the model.
+     * Check if a particular attribute has been modified since loading the
+     * model.
      * @param string $attribute	Name of the attribute
      * @return boolean TRUE if it has been modified.
      */
     public function attributeIsDirty($attribute)
     {
-        return $this->__dirty && isset($this->__dirty[$attribute]) && array_key_exists($attribute,
+        return $this->__dirty && isset($this->__dirty[$attribute]) && \array_key_exists($attribute,
                         $this->attributes);
     }
 
@@ -746,10 +753,10 @@ class Model
     {
         if ($delegate['prefix'] != '')
         {
-            $name = substr($name, strlen($delegate['prefix']) + 1);
+            $name = \substr($name, \strlen($delegate['prefix']) + 1);
         }
 
-        if (is_array($delegate) && in_array($name, $delegate['delegate']))
+        if (\is_array($delegate) && \in_array($name, $delegate['delegate']))
         {
             return $name;
         }
@@ -925,7 +932,7 @@ class Model
         // don't need this check until the day comes that we decide to support composite pks
         // if (count($pk) == 1)
 
-        $column = $table->get_column_by_inflected_name($pk);
+        $column = $table->getColumnByInflectedName($pk);
 
         if ($column->auto_increment || $use_sequence)
         {
@@ -1038,7 +1045,7 @@ class Model
 
         if (\is_array($conditions) && !\is_hash($conditions))
         {
-            call_user_func_array([
+            \call_user_func_array([
                 $sql,
                 'delete'], $conditions);
         }
@@ -1058,7 +1065,7 @@ class Model
         }
 
         $values = $sql->bindValues();
-        $ret = $conn->query(($table->last_sql = $sql->to_s()), $values);
+        $ret = $conn->query(($table->last_sql = $sql->toString()), $values);
         return $ret->rowCount();
     }
 
@@ -1101,9 +1108,9 @@ class Model
 
         if (isset($options['conditions']) && ($conditions = $options['conditions']))
         {
-            if (is_array($conditions) && !is_hash($conditions))
+            if (\is_array($conditions) && !\is_hash($conditions))
             {
-                call_user_func_array([$sql,
+                \call_user_func_array([$sql,
                     'where'], $conditions);
             }
             else
@@ -1123,7 +1130,7 @@ class Model
         }
 
         $values = $sql->bindValues();
-        $ret = $conn->query(($table->last_sql = $sql->to_s()), $values);
+        $ret = $conn->query(($table->last_sql = $sql->toString()), $values);
         return $ret->rowCount();
     }
 
@@ -1351,13 +1358,13 @@ class Model
 
             if ($guard_attributes)
             {
-                if ($use_attr_accessible && !in_array($name,
+                if ($use_attr_accessible && !\in_array($name,
                                 static::$attr_accessible))
                 {
                     continue;
                 }
 
-                if ($use_attr_protected && in_array($name,
+                if ($use_attr_protected && \in_array($name,
                                 static::$attr_protected))
                 {
                     continue;
@@ -1388,7 +1395,7 @@ class Model
 
         if (!empty($exceptions))
         {
-            throw new exUndefinedProperty(get_called_class(), $exceptions);
+            throw new exUndefinedProperty(\get_called_class(), $exceptions);
         }
     }
 
@@ -1409,7 +1416,7 @@ class Model
             if ($rel->isPoly())
             {
                 // if the related model is null and it is a poly then we should have an empty array
-                if (is_null($model))
+                if (\is_null($model))
                 {
                     return $this->__relationships[$name] = [];
                 }
@@ -1428,7 +1435,8 @@ class Model
     }
 
     /**
-     * Reloads the attributes and relationships of this object from the database.
+     * Reloads the attributes and relationships of this object from the
+     * database.
      *
      * @return \Activerecord\Model
      */
@@ -1437,7 +1445,7 @@ class Model
         $this->removeFromCache();
 
         $this->__relationships = [];
-        $pk = array_values($this->getValuesFor($this->getPrimaryKey()));
+        $pk = \array_values($this->getValuesFor($this->getPrimaryKey()));
 
         $this->setAttributesViaMassAssignment($this->find($pk)->attributes,
                 false);
@@ -1525,23 +1533,23 @@ class Model
         $options = static::extractAndValidateOptions($args);
         $create = false;
 
-        if (substr($method, 0, 17) == 'find_or_create_by')
+        if (\substr($method, 0, 17) == 'find_or_create_by')
         {
-            $attributes = substr($method, 17);
+            $attributes = \substr($method, 17);
 
             // can't take any finders with OR in it when doing a find_or_create_by
-            if (strpos($attributes, '_or_') !== false)
+            if (\strpos($attributes, '_or_') !== false)
             {
                 throw new exActiverecord("Cannot use OR'd attributes in find_or_create_by");
             }
 
             $create = true;
-            $method = 'find_by'.substr($method, 17);
+            $method = 'find_by'.\substr($method, 17);
         }
 
-        if (substr($method, 0, 7) === 'find_by')
+        if (\substr($method, 0, 7) === 'find_by')
         {
-            $attributes = substr($method, 8);
+            $attributes = \substr($method, 8);
             $options['conditions'] = SQLBuilder::createConditionsFromUnderscoredString(static::connection(),
                             $attributes, $args, static::$alias_attribute);
 
@@ -1553,14 +1561,14 @@ class Model
 
             return $ret;
         }
-        elseif (substr($method, 0, 11) === 'find_all_by')
+        elseif (\substr($method, 0, 11) === 'find_all_by')
         {
             $options['conditions'] = SQLBuilder::createConditionsFromUnderscoredString(static::connection(),
                             \substr($method, 12), $args,
                             static::$alias_attribute);
             return static::find('all', $options);
         }
-        elseif (substr($method, 0, 8) === 'count_by')
+        elseif (\substr($method, 0, 8) === 'count_by')
         {
             $options['conditions'] = SQLBuilder::createConditionsFromUnderscoredString(static::connection(),
                             \substr($method, 9), $args, static::$alias_attribute);
@@ -1587,10 +1595,10 @@ class Model
                 $args = $args[0];
             }
 
-            $association_name = str_replace([
+            $association_name = \str_replace([
                 'build_',
                 'create_'], '', $method);
-            $method = str_replace($association_name, 'association', $method);
+            $method = \str_replace($association_name, 'association', $method);
             $table = static::table();
 
             if (($association = $table->getRelationship($association_name)) ||
@@ -1635,7 +1643,7 @@ class Model
         $options = static::extractAndValidateOptions($args);
         $options['select'] = 'COUNT(*)';
 
-        if (!empty($args) && !is_null($args[0]) && !empty($args[0]))
+        if (!empty($args) && !\is_null($args[0]) && !empty($args[0]))
         {
             if (isHash($args[0]))
             {
@@ -1777,7 +1785,7 @@ class Model
                 case 'last':
                     if (!\array_key_exists('order', $options))
                     {
-                        $options['order'] = join(' DESC, ', static::table()->pk).' DESC';
+                        $options['order'] = \join(' DESC, ', static::table()->pk).' DESC';
                     }
                     else
                     {
@@ -1796,7 +1804,7 @@ class Model
             $num_args--;
         }
         //find by pk
-        elseif (1 === count($args) && 1 == $num_args)
+        elseif (1 === \count($args) && 1 == $num_args)
         {
             $args = $args[0];
         }
@@ -1834,7 +1842,7 @@ class Model
                         return $res ? $res[0] : null;
                     }, $table->cache_model_expire);
         }
-        return array_filter($models);
+        return \array_filter($models);
     }
 
     /**
@@ -1858,7 +1866,7 @@ class Model
 
         if ($table->cache_individual_model)
         {
-            $pks = is_array($values) ? $values : [$values];
+            $pks = \is_array($values) ? $values : [$values];
             $list = static::getModelsFromCache($pks);
         }
         else
@@ -1866,14 +1874,14 @@ class Model
             $options['conditions'] = static::pkConditions($values);
             $list = $table->find($options);
         }
-        $results = count($list);
+        $results = \count($list);
 
-        if ($results != ($expected = count($values)))
+        if ($results != ($expected = \count($values)))
         {
             $class = \get_called_class();
-            if (is_array($values))
+            if (\is_array($values))
             {
-                $values = join(',', $values);
+                $values = \join(',', $values);
             }
 
             if ($expected == 1)
@@ -1905,7 +1913,8 @@ class Model
     }
 
     /**
-     * Helper method to run arbitrary queries against the model's database connection.
+     * Helper method to run arbitrary queries against the model's database
+     * connection.
      *
      * @param string $sql SQL to execute
      * @param array $values Bind values, if any, for the query
@@ -1933,7 +1942,7 @@ class Model
 
             if (!empty($diff) && $throw)
             {
-                throw new exActiverecord("Unknown key(s): ".join(', ', $diff));
+                throw new exActiverecord("Unknown key(s): ".\join(', ', $diff));
             }
 
             $intersect = \array_intersect($keys, self::$VALID_OPTIONS);
@@ -1973,7 +1982,7 @@ class Model
 
         if ($array)
         {
-            $last = &$array[count($array) - 1];
+            $last = &$array[\count($array) - 1];
 
             try
             {
@@ -2079,7 +2088,7 @@ class Model
         require_once 'Serializers/aSerialize.php';
         $class = "Activerecord\\Serializers\\Serialize{$type}";
         $serializer = new $class($this, $options);
-        return $serializer->to_s();
+        return $serializer->toString();
     }
 
     /**

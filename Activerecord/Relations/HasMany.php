@@ -1,14 +1,14 @@
 <?php
 
-use \Activerecord\Exceptions\exHasManyThroughAssociation;
-use \Activerecord\Inflector;
-use \Activerecord\Model;
-use \Activerecord\Relations\aRelations;
-use \Activerecord\Relations\BelongsTo;
-use \Activerecord\Relations\HasMany;
-use \Activerecord\Table;
-
 namespace Activerecord\Relations;
+
+use Activerecord\Exceptions\exHasManyThroughAssociation;
+use Activerecord\Inflector;
+use Activerecord\Model;
+use Activerecord\Relations\aRelations;
+use Activerecord\Relations\BelongsTo;
+use Activerecord\Relations\HasMany;
+use Activerecord\Table;
 
 /**
  * Summary of file HasMany.
@@ -113,23 +113,23 @@ class HasMany
 
             if (isset($this->options['source']))
             {
-                $this->set_class_name($this->options['source']);
+                $this->setClassName($this->options['source']);
             }
         }
 
         if (!$this->primary_key && isset($this->options['primary_key']))
         {
-            $this->primary_key = is_array($this->options['primary_key']) ? $this->options['primary_key']
+            $this->primary_key = \is_array($this->options['primary_key']) ? $this->options['primary_key']
                         : [$this->options['primary_key']];
         }
 
         if (!$this->class_name)
         {
-            $this->set_inferred_class_name();
+            $this->setInferredClassName();
         }
     }
 
-    protected function set_keys($model_class_name, $override = false)
+    protected function setKeys($model_class_name, $override = false)
     {
         //infer from class_name
         if (!$this->foreign_key || $override)
@@ -146,7 +146,7 @@ class HasMany
     public function load(Model $model)
     {
         $class_name = $this->class_name;
-        $this->set_keys(get_class($model));
+        $this->setKeys(\get_class($model));
 
         // since through relationships depend on other relationships we can't do
         // this initiailization in the constructor since the other relationship
@@ -156,9 +156,9 @@ class HasMany
             if ($this->through)
             {
                 // verify through is a belongs_to or has_many for access of keys
-                if (!($through_relationship = $this->get_table()->get_relationship($this->through)))
+                if (!($through_relationship = $this->getTable()->getRelationship($this->through)))
                 {
-                    throw new exHasManyThroughAssociation("Could not find the association $this->through in model ".get_class($model));
+                    throw new exHasManyThroughAssociation("Could not find the association $this->through in model ".\get_class($model));
                 }
 
                 if (!($through_relationship instanceof HasMany) && !($through_relationship instanceof BelongsTo))
@@ -170,12 +170,12 @@ class HasMany
                 $pk = $this->primary_key;
                 $fk = $this->foreign_key;
 
-                $this->set_keys($this->get_table()->class->getName(), true);
+                $this->setKeys($this->getTable()->class->getName(), true);
 
                 $class = $this->class_name;
-                $relation = $class::table()->get_relationship($this->through);
-                $through_table = $relation->get_table();
-                $this->options['joins'] = $this->construct_inner_join_sql($through_table,
+                $relation = $class::table()->getRelationship($this->through);
+                $through_table = $relation->getTable();
+                $this->options['joins'] = $this->constructInnerJoinSql($through_table,
                         true);
 
                 // reset keys
@@ -186,13 +186,13 @@ class HasMany
             $this->initialized = true;
         }
 
-        if (!($conditions = $this->create_conditions_from_keys($model,
+        if (!($conditions = $this->createConditionsFromKeys($model,
                 $this->foreign_key, $this->primary_key)))
         {
             return null;
         }
 
-        $options = $this->unset_non_finder_options($this->options);
+        $options = $this->unsetNonFinderOptions($this->options);
         $options['conditions'] = $conditions;
         return $class_name::find($this->poly_relationship ? 'all' : 'first',
                         $options);
@@ -205,18 +205,18 @@ class HasMany
      * @access private
      * @return array
      */
-    private function get_foreign_key_for_new_association(Model $model)
+    private function getForeignKeyForNewAssociation(Model $model)
     {
-        $this->set_keys($model);
+        $this->setKeys($model);
         $primary_key = Inflector::instance()->variablize($this->foreign_key[0]);
 
         return [$primary_key => $model->id,];
     }
 
-    private function inject_foreign_key_for_new_association(Model $model,
+    private function injectForeignKeyForNewAssociation(Model $model,
             &$attributes)
     {
-        $primary_key = $this->get_foreign_key_for_new_association($model);
+        $primary_key = $this->getForeignKeyForNewAssociation($model);
 
         if (!isset($attributes[key($primary_key)]))
         {
@@ -226,46 +226,46 @@ class HasMany
         return $attributes;
     }
 
-    public function build_association(Model $model, $attributes = [],
+    public function buildAssociation(Model $model, $attributes = [],
             $guard_attributes = true)
     {
-        $relationship_attributes = $this->get_foreign_key_for_new_association($model);
+        $relationship_attributes = $this->getForeignKeyForNewAssociation($model);
 
         if ($guard_attributes)
         {
             // First build the record with just our relationship attributes (unguarded)
-            $record = parent::build_association($model,
-                            $relationship_attributes, false);
+            $record = parent::buildAssociation($model, $relationship_attributes,
+                            false);
 
             // Then, set our normal attributes (using guarding)
-            $record->set_attributes($attributes);
+            $record->setAttributes($attributes);
         }
         else
         {
             // Merge our attributes
-            $attributes = array_merge($relationship_attributes, $attributes);
+            $attributes = \array_merge($relationship_attributes, $attributes);
 
             // First build the record with just our relationship attributes (unguarded)
-            $record = parent::build_association($model, $attributes,
+            $record = parent::buildAssociation($model, $attributes,
                             $guard_attributes);
         }
 
         return $record;
     }
 
-    public function create_association(Model $model, $attributes = [],
+    public function createAssociation(Model $model, $attributes = [],
             $guard_attributes = true)
     {
-        $relationship_attributes = $this->get_foreign_key_for_new_association($model);
+        $relationship_attributes = $this->getForeignKeyForNewAssociation($model);
 
         if ($guard_attributes)
         {
             // First build the record with just our relationship attributes (unguarded)
-            $record = parent::build_association($model,
-                            $relationship_attributes, false);
+            $record = parent::buildAssociation($model, $relationship_attributes,
+                            false);
 
             // Then, set our normal attributes (using guarding)
-            $record->set_attributes($attributes);
+            $record->setAttributes($attributes);
 
             // Save our model, as a "create" instantly saves after building
             $record->save();
@@ -273,22 +273,22 @@ class HasMany
         else
         {
             // Merge our attributes
-            $attributes = array_merge($relationship_attributes, $attributes);
+            $attributes = \array_merge($relationship_attributes, $attributes);
 
             // First build the record with just our relationship attributes (unguarded)
-            $record = parent::create_association($model, $attributes,
+            $record = parent::createAssociation($model, $attributes,
                             $guard_attributes);
         }
 
         return $record;
     }
 
-    public function load_eagerly($includes, Table $table, $models = [],
+    public function loadEagerly($includes, Table $table, $models = [],
             $attributes = [])
     {
-        $this->set_keys($table->class->name);
-        $this->query_and_attach_related_models_eagerly($table, $models,
-                $attributes, $includes, $this->foreign_key, $table->pk);
+        $this->setKeys($table->class->name);
+        $this->queryAndAttachRelatedModelsEagerly($table, $models, $attributes,
+                $includes, $this->foreign_key, $table->pk);
     }
 
 }

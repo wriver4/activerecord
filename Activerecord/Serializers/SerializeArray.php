@@ -16,10 +16,10 @@ class SerializeArray
 
     public static $include_root = false;
 
-    public function to_s()
+    public function toString()
     {
         return self::$include_root ? [
-            strtolower(get_class($this->model)) => $this->to_a()] : $this->to_a();
+            \strtolower(\get_class($this->model)) => $this->toArray()] : $this->toArray();
     }
 
 }

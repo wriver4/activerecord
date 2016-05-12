@@ -5,6 +5,9 @@
 
 namespace Activerecord;
 
+use Activerecord\StandardInflector;
+use Activerecord\Utils;
+
 /**
  * @package ActiveRecord
  */
@@ -18,7 +21,7 @@ abstract class Inflector
      */
     public static function instance()
     {
-        return new \Activerecord\StandardInflector();
+        return new StandardInflector();
     }
 
     /**
@@ -34,7 +37,7 @@ abstract class Inflector
 
         $camelized = '';
 
-        for ($i = 0, $n = strlen($s); $i < $n; ++$i)
+        for ($i = 0, $n = \strlen($s); $i < $n; ++$i)
         {
             if ($s[$i] == '_' && $i + 1 < $n)
             {
@@ -88,7 +91,7 @@ abstract class Inflector
     {
         $normalized = '';
 
-        for ($i = 0, $n = strlen($s); $i < $n; ++$i)
+        for ($i = 0, $n = \strlen($s); $i < $n; ++$i)
         {
             if (\ctype_alpha($s[$i]) && self::isUpper($s[$i]))
             {
@@ -119,7 +122,7 @@ abstract class Inflector
 
     public function keyify($class_name)
     {
-        return \strtolower($this->underscorify(\ActiveRecord\denamespace($class_name))).'_id';
+        return \strtolower($this->underscorify(Utils::denamespace($class_name))).'_id';
     }
 
     abstract function variablize($s);

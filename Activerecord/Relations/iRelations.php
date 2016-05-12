@@ -1,8 +1,8 @@
 <?php
 
-use \Activerecord\Model;
-
 namespace Activerecord\Relations;
+
+use Activerecord\Model;
 
 /**
  * Interface for a table relationship.
@@ -14,9 +14,9 @@ interface iRelations
 
     public function __construct($options = []);
 
-    public function build_association(Model $model, $attributes = [],
+    public function buildAssociation(Model $model, $attributes = [],
             $guard_attributes = true);
 
-    public function create_association(Model $model, $attributes = [],
+    public function createAssociation(Model $model, $attributes = [],
             $guard_attributes = true);
 }

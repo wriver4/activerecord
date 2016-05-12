@@ -2,7 +2,7 @@
 
 Namespace Activerecord\Exceptions;
 
-use \Activerecord\Exceptions\exActiverecord;
+use Activerecord\Exceptions\exActiverecord;
 
 /**
  * Summary of file RecordNotFound.

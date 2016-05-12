@@ -2,7 +2,7 @@
 
 namespace Activerecord\Exceptions;
 
-use \Activerecord\Exceptions\exRelationship;
+use Activerecord\Exceptions\exRelationship;
 
 /**
  * Summary of file HasManyThroughAssociation.

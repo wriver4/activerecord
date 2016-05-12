@@ -67,7 +67,7 @@ class Utils
                 $conditions[] = arrayFlatten($condition);
             }
         }
-        elseif (is_string($condition))
+        elseif (\is_string($condition))
         {
             $conditions[0] .= " $conjuction $condition";
         }
@@ -81,7 +81,7 @@ class Utils
         $inflected = $inflector->variablize($attr);
         $normal = $inflector->uncamelize($inflected);
 
-        return ucfirst(str_replace('_', ' ', $normal));
+        return \ucfirst(\str_replace('_', ' ', $normal));
     }
 
     public static function isOdd($number)
@@ -89,7 +89,7 @@ class Utils
         return $number & 1;
     }
 
-    public static function is_a($type, $var)
+    public static function isArray($type, $var)
     {
         switch ($type)
         {
@@ -307,7 +307,7 @@ class Utils
         }
 
         $keys = \array_keys($array);
-        return @is_string($keys[0]) ? true : false;
+        return @\is_string($keys[0]) ? true : false;
     }
 
     /**
@@ -326,7 +326,7 @@ class Utils
 
         if (self::hasNamespace($class_name))
         {
-            $parts = explode('\\', $class_name);
+            $parts = \explode('\\', $class_name);
             return \end($parts);
         }
         return $class_name;

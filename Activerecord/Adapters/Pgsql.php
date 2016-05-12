@@ -21,27 +21,27 @@ class Pgsql
     static $QUOTE_CHARACTER = '"';
     static $DEFAULT_PORT = 5432;
 
-    public function supports_sequences()
+    public function supportsSequences()
     {
         return true;
     }
 
-    public function get_sequence_name($table, $column_name)
+    public function getSequenceName($table, $column_name)
     {
         return "{$table}_{$column_name}_seq";
     }
 
-    public function next_sequence_value($sequence_name)
+    public function nextSequenceValue($sequence_name)
     {
-        return "nextval('".str_replace("'", "\\'", $sequence_name)."')";
+        return "nextval('".\str_replace("'", "\\'", $sequence_name)."')";
     }
 
     public function limit($sql, $offset, $limit)
     {
-        return $sql.' LIMIT '.intval($limit).' OFFSET '.intval($offset);
+        return $sql.' LIMIT '.\intval($limit).' OFFSET '.\intval($offset);
     }
 
-    public function query_column_info($table)
+    public function queryColumnInfo($table)
     {
         $sql = <<<SQL
 SELECT
@@ -71,12 +71,12 @@ SQL;
         return $this->query($sql, $values);
     }
 
-    public function query_for_tables()
+    public function queryForTables()
     {
         return $this->query("SELECT tablename FROM pg_tables WHERE schemaname NOT IN('information_schema','pg_catalog')");
     }
 
-    public function create_column(&$column)
+    public function createColumn(&$column)
     {
         $c = new Column();
         $c->inflected_name = Inflector::instance()->variablize($column['field']);
@@ -85,7 +85,7 @@ SQL;
         $c->pk = ($column['pk'] ? true : false);
         $c->auto_increment = false;
 
-        if (substr($column['type'], 0, 9) == 'timestamp')
+        if (\substr($column['type'], 0, 9) == 'timestamp')
         {
             $c->raw_type = 'datetime';
             $c->length = 19;
@@ -97,11 +97,11 @@ SQL;
         }
         else
         {
-            preg_match('/^([A-Za-z0-9_]+)(\(([0-9]+(,[0-9]+)?)\))?/',
+            \preg_match('/^([A-Za-z0-9_]+)(\(([0-9]+(,[0-9]+)?)\))?/',
                     $column['type'], $matches);
 
-            $c->raw_type = (count($matches) > 0 ? $matches[1] : $column['type']);
-            $c->length = count($matches) >= 4 ? intval($matches[3]) : intval($column['attlen']);
+            $c->raw_type = (\count($matches) > 0 ? $matches[1] : $column['type']);
+            $c->length = \count($matches) >= 4 ? \intval($matches[3]) : \intval($column['attlen']);
 
             if ($c->length < 0)
             {
@@ -109,13 +109,13 @@ SQL;
             }
         }
 
-        $c->map_raw_type();
+        $c->mapRawType();
 
         if ($column['default'])
         {
-            preg_match("/^nextval\('(.*)'\)$/", $column['default'], $matches);
+            \preg_match("/^nextval\('(.*)'\)$/", $column['default'], $matches);
 
-            if (count($matches) == 2)
+            if (\count($matches) == 2)
             {
                 $c->sequence = $matches[1];
             }
@@ -127,12 +127,12 @@ SQL;
         return $c;
     }
 
-    public function set_encoding($charset)
+    public function setEncoding($charset)
     {
         $this->query("SET NAMES '$charset'");
     }
 
-    public function native_database_types()
+    public function nativeDatabaseTypes()
     {
         return [
             'primary_key' => 'serial primary key',

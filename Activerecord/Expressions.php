@@ -52,7 +52,7 @@ class Expressions
 
     /**
      * Bind a value to the specific one based index. There must be a bind marker
-     * for each value bound or to_s() will throw an Exceptions.
+     * for each value bound or toString() will throw an Exceptions.
      */
     public function bind($parameter_number, $value)
     {
@@ -80,7 +80,7 @@ class Expressions
     /**
      * Returns the connection object.
      */
-    public function get_connection()
+    public function getConnection()
     {
         return $this->connection;
     }
@@ -96,7 +96,7 @@ class Expressions
         $this->connection = $connection;
     }
 
-    public function to_s($substitute = false, &$options = null)
+    public function toString($substitute = false, &$options = null)
     {
         if (!$options)
         {
@@ -111,7 +111,7 @@ class Expressions
         $len = strlen($this->expressions);
         $quotes = 0;
 
-        for ($i = 0, $n = strlen($this->expressions), $j = 0; $i < $n; ++$i)
+        for ($i = 0, $n = \strlen($this->expressions), $j = 0; $i < $n; ++$i)
         {
             $ch = $this->expressions[$i];
 
@@ -148,11 +148,11 @@ class Expressions
                 $name = $this->connection->quote_name($name);
             }
 
-            if (is_array($value))
+            if (\is_array($value))
             {
                 $sql .= "$g$name IN(?)";
             }
-            elseif (is_null($value))
+            elseif (\is_null($value))
             {
                 $sql .= "$g$name IS ?";
             }
@@ -164,16 +164,16 @@ class Expressions
             $g = $glue;
         }
         return [$sql,
-            array_values($hash)];
+            \array_values($hash)];
     }
 
     private function substitute(&$values, $substitute, $pos, $parameter_index)
     {
         $value = $values[$parameter_index];
 
-        if (is_array($value))
+        if (\is_array($value))
         {
-            $value_count = count($value);
+            $value_count = \count($value);
 
             if ($value_count === 0)
             {
@@ -198,7 +198,7 @@ class Expressions
 
                 return $ret;
             }
-            return join(',', array_fill(0, $value_count, self::ParameterMarker));
+            return \join(',', array_fill(0, $value_count, self::ParameterMarker));
         }
 
         if ($substitute)
@@ -211,12 +211,12 @@ class Expressions
 
     private function stringifyValue($value)
     {
-        if (is_null($value))
+        if (\is_null($value))
         {
             return "NULL";
         }
 
-        return is_string($value) ? $this->quoteString($value) : $value;
+        return \is_string($value) ? $this->quoteString($value) : $value;
     }
 
     private function quoteString($value)
@@ -226,7 +226,7 @@ class Expressions
             return $this->connection->escape($value);
         }
 
-        return "'".str_replace("'", "''", $value)."'";
+        return "'".\str_replace("'", "''", $value)."'";
     }
 
 }

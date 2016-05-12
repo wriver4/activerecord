@@ -80,7 +80,7 @@ class Cache
             return $closure();
         }
 
-        if (is_null($expire))
+        if (\is_null($expire))
         {
             $expire = static::$options['expire'];
         }
@@ -102,7 +102,7 @@ class Cache
             return;
         }
 
-        if (is_null($expire))
+        if (\is_null($expire))
         {
             $expire = static::$options['expire'];
         }

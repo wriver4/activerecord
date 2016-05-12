@@ -38,47 +38,47 @@ class Oci
         }
     }
 
-    public function supports_sequences()
+    public function supportsSequences()
     {
         return true;
     }
 
-    public function get_next_sequence_value($sequence_name)
+    public function getNextSequenceValue($sequence_name)
     {
-        return $this->query_and_fetch_one('SELECT '.$this->next_sequence_value($sequence_name).' FROM dual');
+        return $this->queryAndFetchOne('SELECT '.$this->nextSequenceValue($sequence_name).' FROM dual');
     }
 
-    public function next_sequence_value($sequence_name)
+    public function nextSequenceValue($sequence_name)
     {
         return "$sequence_name.nextval";
     }
 
-    public function date_to_string($datetime)
+    public function dateToString($datetime)
     {
         return $datetime->format('d-M-Y');
     }
 
-    public function datetime_to_string($datetime)
+    public function datetimeToString($datetime)
     {
         return $datetime->format('d-M-Y h:i:s A');
     }
 
     // $string = DD-MON-YYYY HH12:MI:SS(\.[0-9]+) AM
-    public function string_to_datetime($string)
+    public function stringToDatetime($string)
     {
-        return parent::string_to_datetime(str_replace('.000000', '', $string));
+        return parent::stringToDatetime(\str_replace('.000000', '', $string));
     }
 
     public function limit($sql, $offset, $limit)
     {
-        $offset = intval($offset);
-        $stop = $offset + intval($limit);
+        $offset = \intval($offset);
+        $stop = $offset + \intval($limit);
         return
                 "SELECT * FROM (SELECT a.*, rownum ar_rnum__ FROM ($sql) a ".
                 "WHERE rownum <= $stop) WHERE ar_rnum__ > $offset";
     }
 
-    public function query_column_info($table)
+    public function queryColumnInfo($table)
     {
         $sql = "SELECT c.column_name, c.data_type, c.data_length, c.data_scale, c.data_default, c.nullable, ".
                 "(SELECT a.constraint_type ".
@@ -90,22 +90,22 @@ class Oci
                 "INNER JOIN user_tab_columns c on(t.table_name=c.table_name) ".
                 "WHERE t.table_name=?";
 
-        $values = [strtoupper($table)];
+        $values = [\strtoupper($table)];
         return $this->query($sql, $values);
     }
 
-    public function query_for_tables()
+    public function queryForTables()
     {
         return $this->query("SELECT table_name FROM user_tables");
     }
 
-    public function create_column(&$column)
+    public function createColumn(&$column)
     {
-        $column['column_name'] = strtolower($column['column_name']);
-        $column['data_type'] = strtolower(preg_replace('/\(.*?\)/', '',
+        $column['column_name'] = \strtolower($column['column_name']);
+        $column['data_type'] = \strtolower(\preg_replace('/\(.*?\)/', '',
                         $column['data_type']));
 
-        if ($column['data_default'] !== null) $column['data_default'] = trim($column['data_default'],
+        if ($column['data_default'] !== null) $column['data_default'] = \trim($column['data_default'],
                     "' ");
 
         if ($column['data_type'] == 'number')
@@ -136,18 +136,18 @@ class Oci
             $c->raw_type = $column['data_type'];
         }
 
-        $c->map_raw_type();
+        $c->mapRawType();
         $c->default = $c->cast($column['data_default'], $this);
 
         return $c;
     }
 
-    public function set_encoding($charset)
+    public function setEncoding($charset)
     {
         // is handled in the constructor
     }
 
-    public function native_database_types()
+    public function nativeDatabaseTypes()
     {
         return [
             'primary_key' => "NUMBER(38) NOT NULL PRIMARY KEY",

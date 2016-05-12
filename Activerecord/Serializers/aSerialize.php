@@ -101,50 +101,50 @@ abstract class aSerialize
         $this->model = $model;
         $this->options = $options;
         $this->attributes = $model->attributes();
-        $this->parse_options();
+        $this->parseOptions();
     }
 
-    private function parse_options()
+    private function parseOptions()
     {
-        $this->check_only();
-        $this->check_except();
-        $this->check_methods();
-        $this->check_include();
-        $this->check_only_method();
+        $this->checkOnly();
+        $this->checkExcept();
+        $this->checkMethods();
+        $this->checkInclude();
+        $this->checkOnlyMethod();
     }
 
-    private function check_only()
+    private function checkOnly()
     {
         if (isset($this->options['only']))
         {
-            $this->options_to_a('only');
+            $this->optionsToArray('only');
 
-            $exclude = array_diff(array_keys($this->attributes),
+            $exclude = \array_diff(\array_keys($this->attributes),
                     $this->options['only']);
             $this->attributes = \array_diff_key($this->attributes,
-                    array_flip($exclude));
+                    \array_flip($exclude));
         }
     }
 
-    private function check_except()
+    private function checkExcept()
     {
         if (isset($this->options['except']) && !isset($this->options['only']))
         {
-            $this->options_to_a('except');
+            $this->optionsToArray('except');
             $this->attributes = \array_diff_key($this->attributes,
-                    array_flip($this->options['except']));
+                    \array_flip($this->options['except']));
         }
     }
 
-    private function check_methods()
+    private function checkMethods()
     {
         if (isset($this->options['methods']))
         {
-            $this->options_to_a('methods');
+            $this->optionsToArray('methods');
 
             foreach ($this->options['methods'] as $method)
             {
-                if (method_exists($this->model, $method))
+                if (\method_exists($this->model, $method))
                 {
                     $this->attributes[$method] = $this->model->$method();
                 }
@@ -152,29 +152,29 @@ abstract class aSerialize
         }
     }
 
-    private function check_only_method()
+    private function checkOnlyMethod()
     {
         if (isset($this->options['only_method']))
         {
             $method = $this->options['only_method'];
-            if (method_exists($this->model, $method))
+            if (\method_exists($this->model, $method))
             {
                 $this->attributes = $this->model->$method();
             }
         }
     }
 
-    private function check_include()
+    private function checkInclude()
     {
         if (isset($this->options['include']))
         {
-            $this->options_to_a('include');
+            $this->optionsToArray('include');
 
-            $serializer_class = get_class($this);
+            $serializer_class = \get_class($this);
 
             foreach ($this->options['include'] as $association => $options)
             {
-                if (!is_array($options))
+                if (!\is_array($options))
                 {
                     $association = $options;
                     $options = [];
@@ -188,10 +188,10 @@ abstract class aSerialize
                     {
                         $this->attributes[$association] = null;
                     }
-                    elseif (!is_array($assoc))
+                    elseif (!\is_array($assoc))
                     {
                         $serialized = new $serializer_class($assoc, $options);
-                        $this->attributes[$association] = $serialized->to_a();
+                        $this->attributes[$association] = $serialized->toArray();
                     }
                     else
                     {
@@ -203,11 +203,11 @@ abstract class aSerialize
 
                             if ($this->includes_with_class_name_element)
                             {
-                                $includes[strtolower(get_class($a))][] = $serialized->to_a();
+                                $includes[\strtolower(\get_class($a))][] = $serialized->toArray();
                             }
                             else
                             {
-                                $includes[] = $serialized->to_a();
+                                $includes[] = $serialized->toArray();
                             }
                         }
 
@@ -222,9 +222,9 @@ abstract class aSerialize
         }
     }
 
-    final protected function options_to_a($key)
+    final protected function optionsToArray($key)
     {
-        if (!is_array($this->options[$key]))
+        if (!\is_array($this->options[$key]))
         {
             $this->options[$key] = [$this->options[$key]];
         }
@@ -234,7 +234,7 @@ abstract class aSerialize
      * Returns the attributes array.
      * @return array
      */
-    final public function to_a()
+    final public function toArray()
     {
         foreach ($this->attributes as &$value)
         {
@@ -248,17 +248,17 @@ abstract class aSerialize
 
     /**
      * Returns the serialized object as a string.
-     * @see to_s
+     * @see toString
      * @return string
      */
     final public function __toString()
     {
-        return $this->to_s();
+        return $this->toString();
     }
 
     /**
      * Performs the serialization.
      * @return string
      */
-    abstract public function to_s();
+    abstract public function toString();
 }

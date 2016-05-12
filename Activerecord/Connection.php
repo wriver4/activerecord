@@ -145,11 +145,11 @@ abstract class Connection
      */
     private static function loadAdapter($adapter)
     {
-        $class = ucwords($adapter);
+        $class = \ucwords($adapter);
         $fqclass = 'ActiveRecord\\Adapters\\'.$class;
         $source = __DIR__."/Adapters/$class.php";
 
-        if (!file_exists($source))
+        if (!\file_exists($source))
         {
             throw new exDatabase("$fqclass not found!");
         }
@@ -182,7 +182,7 @@ abstract class Connection
      */
     public static function parseConnectionUrl($connection_url)
     {
-        $url = @parse_url($connection_url);
+        $url = @\parse_url($connection_url);
 
         if (!isset($url['host']))
         {
@@ -192,7 +192,7 @@ abstract class Connection
         $info = new \stdClass();
         $info->protocol = $url['scheme'];
         $info->host = $url['host'];
-        $info->db = isset($url['path']) ? substr($url['path'], 1) : null;
+        $info->db = isset($url['path']) ? \substr($url['path'], 1) : null;
         $info->user = isset($url['user']) ? $url['user'] : null;
         $info->pass = isset($url['pass']) ? $url['pass'] : null;
 
@@ -211,15 +211,15 @@ abstract class Connection
                 $unix_regex = '/^unix\((.+)\)\/(.+)$/';
             }
 
-            if (preg_match_all($unix_regex, $socket_database, $matches) > 0)
+            if (\preg_match_all($unix_regex, $socket_database, $matches) > 0)
             {
                 $info->host = $matches[1][0];
                 $info->db = $matches[2][0];
             }
         }
-        elseif (substr($info->host, 0, 8) == 'windows(')
+        elseif (\substr($info->host, 0, 8) == 'windows(')
         {
-            $info->host = urldecode(substr($info->host, 8).'/'.substr($info->db,
+            $info->host = \urldecode(\substr($info->host, 8).'/'.\substr($info->db,
                             0, -1));
             $info->db = null;
         }
@@ -234,24 +234,24 @@ abstract class Connection
             $info->port = $url['port'];
         }
 
-        if (strpos($connection_url, 'decode=true') !== false)
+        if (\strpos($connection_url, 'decode=true') !== false)
         {
             if ($info->user)
             {
-                $info->user = urldecode($info->user);
+                $info->user = \urldecode($info->user);
             }
 
             if ($info->pass)
             {
-                $info->pass = urldecode($info->pass);
+                $info->pass = \urldecode($info->pass);
             }
         }
 
         if (isset($url['query']))
         {
-            foreach (explode('/&/', $url['query']) as $pair)
+            foreach (\explode('/&/', $url['query']) as $pair)
             {
-                list($name, $value) = explode('=', $pair);
+                list($name, $value) = \explode('=', $pair);
 
                 if ($name == 'charset')
                 {
@@ -427,7 +427,7 @@ abstract class Connection
     public function tables($table, $db)
     {
         $model = rtrim($table, "s");
-        foreach ($model::find_by_sql('SHOW TABLES') as $value)
+        foreach ($model::findBySql('SHOW TABLES') as $value)
         {
             $tables[] = $value->{"tables_in_".$db};
         }
@@ -508,7 +508,7 @@ abstract class Connection
      */
     public function quoteName($string)
     {
-        return $string[0] === static::$QUOTE_CHARACTER || $string[strlen($string)
+        return $string[0] === static::$QUOTE_CHARACTER || $string[\strlen($string)
                 - 1] === static::$QUOTE_CHARACTER ?
                 $string : static::$QUOTE_CHARACTER.$string.static::$QUOTE_CHARACTER;
     }

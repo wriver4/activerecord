@@ -17,7 +17,7 @@ class SerializeCsv
     public static $delimiter = ',';
     public static $enclosure = '"';
 
-    public function to_s()
+    public function toString()
     {
         if (@$this->options['only_header'] == true)
         {
@@ -28,21 +28,21 @@ class SerializeCsv
 
     private function header()
     {
-        return $this->to_csv(array_keys($this->to_a()));
+        return $this->toCsv(array_keys($this->toArray()));
     }
 
     private function row()
     {
-        return $this->to_csv($this->to_a());
+        return $this->toCsv($this->toArray());
     }
 
-    private function to_csv($arr)
+    private function toCsv($arr)
     {
-        $outstream = fopen('php://temp', 'w');
+        $outstream = \fopen('php://temp', 'w');
         \fputcsv($outstream, $arr, self::$delimiter, self::$enclosure);
-        rewind($outstream);
-        $buffer = trim(stream_get_contents($outstream));
-        fclose($outstream);
+        \rewind($outstream);
+        $buffer = \trim(\stream_get_contents($outstream));
+        \fclose($outstream);
         return $buffer;
     }
 

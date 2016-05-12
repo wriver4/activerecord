@@ -122,7 +122,7 @@ class Table
         $this->callback->register('before_save',
                 function(Model $model)
         {
-            $model->set_timestamps();
+            $model->setTimestamps();
         }, ['prepend' => true]);
         $this->callback->register('after_save',
                 function(Model $model)
@@ -146,7 +146,7 @@ class Table
 
     public function createJoins($joins)
     {
-        if (!is_array($joins))
+        if (!\is_array($joins))
         {
             return $joins;
         }
@@ -275,15 +275,15 @@ class Table
         $eager_load = \array_key_exists('include', $options) ? $options['include']
                     : null;
 
-        return $this->findBySql($sql->to_s(), $sql->getWhereValues(), $readonly,
-                        $eager_load);
+        return $this->findBySql($sql->toString(), $sql->getWhereValues(),
+                        $readonly, $eager_load);
     }
 
     public function cacheKeyForModel($pk)
     {
         if (\is_array($pk))
         {
-            $pk = implode('-', $pk);
+            $pk = \implode('-', $pk);
         }
         return $this->class->name.'-'.$pk;
     }
@@ -436,7 +436,7 @@ class Table
         $sql->insert($data, $pk, $sequence_name);
 
         $values = \array_values($data);
-        return $this->conn->query(($this->last_sql = $sql->to_s()), $values);
+        return $this->conn->query(($this->last_sql = $sql->toString()), $values);
     }
 
     public function update(&$data, $where)
@@ -447,7 +447,7 @@ class Table
         $sql->update($data)->where($where);
 
         $values = $sql->bindValues();
-        return $this->conn->query(($this->last_sql = $sql->to_s()), $values);
+        return $this->conn->query(($this->last_sql = $sql->toString()), $values);
     }
 
     public function delete($data)
@@ -458,7 +458,7 @@ class Table
         $sql->delete($data);
 
         $values = $sql->bindValues();
-        return $this->conn->query(($this->last_sql = $sql->to_s()), $values);
+        return $this->conn->query(($this->last_sql = $sql->toString()), $values);
     }
 
     /**
@@ -571,8 +571,8 @@ class Table
             $this->table = Inflector::instance()->tableize($this->class->getName());
 
             // strip namespaces from the table name if any
-            $parts = explode('\\', $this->table);
-            $this->table = $parts[count($parts) - 1];
+            $parts = \explode('\\', $this->table);
+            $this->table = $parts[\count($parts) - 1];
         }
 
         if (($db = $this->class->getStaticPropertyValue('db', null)) || ($db = $this->class->getStaticPropertyValue('db_name',
@@ -683,7 +683,7 @@ class Table
         {
             foreach ($delegates as &$delegate)
             {
-                if (!is_array($delegate) || !isset($delegate['to']))
+                if (!\is_array($delegate) || !isset($delegate['to']))
                 {
                     continue;
                 }

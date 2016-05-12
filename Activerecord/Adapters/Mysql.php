@@ -6,6 +6,8 @@
 namespace Activerecord\Adapters;
 
 use Activerecord\Connection;
+use Activerecord\Column;
+use Activerecord\Inflector;
 
 /**
  * Adapter for MySQL.
@@ -25,20 +27,20 @@ class Mysql
         return "$sql LIMIT {$offset}$limit";
     }
 
-    public function query_column_info($table)
+    public function queryColumnInfo($table)
     {
         return $this->query("SHOW COLUMNS FROM $table");
     }
 
-    public function query_for_tables()
+    public function queryForTables()
     {
         return $this->query('SHOW TABLES');
     }
 
-    public function create_column(&$column)
+    public function createColumn(&$column)
     {
-        $c = new \Activerecord\Column();
-        $c->inflected_name = \Activerecord\Inflector::instance()->variablize($column['field']);
+        $c = new Column();
+        $c->inflected_name = Inflector::instance()->variablize($column['field']);
         $c->name = $column['field'];
         $c->nullable = ($column['null'] === 'YES' ? true : false);
         $c->pk = ($column['key'] === 'PRI' ? true : false);
@@ -61,32 +63,32 @@ class Mysql
         }
         else
         {
-            preg_match('/^([A-Za-z0-9_]+)(\(([0-9]+(,[0-9]+)?)\))?/',
+            \preg_match('/^([A-Za-z0-9_]+)(\(([0-9]+(,[0-9]+)?)\))?/',
                     $column['type'], $matches);
 
-            $c->raw_type = (count($matches) > 0 ? $matches[1] : $column['type']);
+            $c->raw_type = (\count($matches) > 0 ? $matches[1] : $column['type']);
 
-            if (count($matches) >= 4) $c->length = intval($matches[3]);
+            if (\count($matches) >= 4) $c->length = \intval($matches[3]);
         }
 
-        $c->map_raw_type();
+        $c->mapRawType();
         $c->default = $c->cast($column['default'], $this);
 
         return $c;
     }
 
-    public function set_encoding($charset)
+    public function setEncoding($charset)
     {
         $params = [$charset];
         $this->query('SET NAMES ?', $params);
     }
 
-    public function accepts_limit_and_order_for_update_and_delete()
+    public function acceptsLimitAndOrderForUpdateAndDelete()
     {
         return true;
     }
 
-    public function native_database_types()
+    public function nativeDatabaseTypes()
     {
         return [
             'primary_key' => 'int(11) UNSIGNED DEFAULT NULL auto_increment PRIMARY KEY',

@@ -91,7 +91,7 @@ class Validations
         $this->model = $model;
         $this->record = new Errors($this->model);
         $this->reflect = Reflections::instance()->get(\get_class($this->model));
-        $this->validators = array_intersect(\array_keys($this->reflect->getStaticProperties()),
+        $this->validators = \array_intersect(\array_keys($this->reflect->getStaticProperties()),
                 self::$VALIDATION_FUNCTIONS);
     }
 
@@ -545,7 +545,7 @@ class Validations
             {
                 $range = $options[$range_options[0]];
 
-                if (!(Utils::is_a('range', $range)))
+                if (!(Utils::isArray('range', $range)))
                 {
                     throw new exValidation("Argument Error $range_options[0] must be an array composing a range of numbers with key [0] being less than key [1]");
                 }

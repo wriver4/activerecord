@@ -64,7 +64,7 @@ class Errors
      */
     public function add($attribute, $msg)
     {
-        if (is_null($msg))
+        if (\is_null($msg))
         {
             $msg = self :: $DEFAULT_ERROR_MESSAGES['invalid'];
         }
@@ -227,12 +227,12 @@ class Errors
             {
                 foreach ($messages as $msg)
                 {
-                    if (is_null($msg))
+                    if (\is_null($msg))
                     {
                         continue;
                     }
 
-                    $errors[$attribute][] = ($message = Utils::human_attribute($attribute).' '.$msg);
+                    $errors[$attribute][] = ($message = Utils::humanAttribute($attribute).' '.$msg);
 
                     if ($closure)
                     {
@@ -257,7 +257,7 @@ class Errors
      */
     public function __toString()
     {
-        return implode("\n", $this->fullMessages());
+        return \implode("\n", $this->fullMessages());
     }
 
     /**

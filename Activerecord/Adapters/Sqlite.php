@@ -25,7 +25,7 @@ class Sqlite
 
     protected function __construct($info)
     {
-        if (!file_exists($info->host))
+        if (!\file_exists($info->host))
         {
             throw new exDatabase("Could not find sqlite db: $info->host");
         }
@@ -36,49 +36,49 @@ class Sqlite
 
     public function limit($sql, $offset, $limit)
     {
-        $offset = is_null($offset) ? '' : intval($offset).',';
-        $limit = intval($limit);
+        $offset = \is_null($offset) ? '' : \intval($offset).',';
+        $limit = \intval($limit);
         return "$sql LIMIT {$offset}$limit";
     }
 
-    public function query_column_info($table)
+    public function queryColumnInfo($table)
     {
         return $this->query("pragma table_info($table)");
     }
 
-    public function query_for_tables()
+    public function queryForTables()
     {
         return $this->query("SELECT name FROM sqlite_master");
     }
 
-    public function create_column($column)
+    public function createColumn($column)
     {
         $c = new Column();
         $c->inflected_name = Inflector::instance()->variablize($column['name']);
         $c->name = $column['name'];
         $c->nullable = $column['notnull'] ? false : true;
         $c->pk = $column['pk'] ? true : false;
-        $c->auto_increment = in_array(strtoupper($column['type']),
+        $c->auto_increment = \in_array(\strtoupper($column['type']),
                         ['INT',
                     'INTEGER']) && $c->pk;
 
-        $column['type'] = preg_replace('/ +/', ' ', $column['type']);
-        $column['type'] = str_replace(['(',
+        $column['type'] = \preg_replace('/ +/', ' ', $column['type']);
+        $column['type'] = \str_replace(['(',
             ')'], ' ', $column['type']);
         $column['type'] = Utils::squeeze(' ', $column['type']);
-        $matches = explode(' ', $column['type']);
+        $matches = \explode(' ', $column['type']);
 
         if (!empty($matches))
         {
-            $c->raw_type = strtolower($matches[0]);
+            $c->raw_type = \strtolower($matches[0]);
 
-            if (count($matches) > 1)
+            if (\count($matches) > 1)
             {
-                $c->length = intval($matches[1]);
+                $c->length = \intval($matches[1]);
             }
         }
 
-        $c->map_raw_type();
+        $c->mapRawType();
 
         if ($c->type == Column::DATETIME)
         {
@@ -102,17 +102,17 @@ class Sqlite
         return $c;
     }
 
-    public function set_encoding($charset)
+    public function setEncoding($charset)
     {
         throw new exActiverecord("SqliteAdapter::set_charset not supported.");
     }
 
-    public function accepts_limit_and_order_for_update_and_delete()
+    public function acceptsLimitAndOrderForUpdateAndDelete()
     {
         return true;
     }
 
-    public function native_database_types()
+    public function nativeDatabaseTypes()
     {
         return [
             'primary_key' => 'integer not null primary key',

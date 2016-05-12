@@ -1,9 +1,9 @@
 <?php
 
-use \Activerecord\Model;
-use \Activerecord\Relations\aRelations;
-
 Namespace Activerecord\Relations;
+
+use Activerecord\Model;
+use Activerecord\Relations\aRelations;
 
 /**
  * Summary of file HasAndBelongsToMany.

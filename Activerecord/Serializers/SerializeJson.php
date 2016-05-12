@@ -16,10 +16,10 @@ class SerializeJson
 
     public static $include_root = false;
 
-    public function to_s()
+    public function toString()
     {
         parent::$include_root = self::$include_root;
-        return json_encode(parent::to_s());
+        return \json_encode(parent::toString());
     }
 
 }

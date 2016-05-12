@@ -1,11 +1,11 @@
 <?php
 
-use \Activerecord\Inflector;
-use \Activerecord\Model;
-use \Activerecord\Relations\aRelations;
-use \Activerecord\Table;
-
 namespace Activerecord\Relations;
+
+use Activerecord\Inflector;
+use Activerecord\Model;
+use Activerecord\Relations\aRelations;
+use Activerecord\Table;
 
 /**
  * Summary of file BelongsTo.
@@ -61,7 +61,7 @@ class BelongsTo
 
         if (!$this->class_name)
         {
-            $this->set_inferred_class_name();
+            $this->setInferredClassName();
         }
 
         //infer from class_name
@@ -91,23 +91,23 @@ class BelongsTo
             $keys[] = $inflector->variablize($key);
         }
 
-        if (!($conditions = $this->create_conditions_from_keys($model,
+        if (!($conditions = $this->createConditionsFromKeys($model,
                 $this->primary_key, $keys)))
         {
             return null;
         }
 
-        $options = $this->unset_non_finder_options($this->options);
+        $options = $this->unsetNonFinderOptions($this->options);
         $options['conditions'] = $conditions;
         $class = $this->class_name;
         return $class::first($options);
     }
 
-    public function load_eagerly(Table $table, $attributes, $includes,
+    public function loadEagerly(Table $table, $attributes, $includes,
             $models = [])
     {
-        $this->query_and_attach_related_models_eagerly($table, $models,
-                $attributes, $includes, $this->primary_key, $this->foreign_key);
+        $this->queryAndAttachRelatedModelsEagerly($table, $models, $attributes,
+                $includes, $this->primary_key, $this->foreign_key);
     }
 
 }

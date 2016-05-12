@@ -2,7 +2,7 @@
 
 namespace Activerecord\Exceptions;
 
-use \Activerecord\Exceptions\exModel;
+use Activerecord\Exceptions\exModel;
 
 /**
  * Summary of file ReadOnly.

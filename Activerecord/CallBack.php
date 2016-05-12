@@ -243,7 +243,7 @@ class CallBack
             $closure_or_method_name = $name;
         }
 
-        if (!in_array($name, self::$VALID_CALLBACKS))
+        if (!\in_array($name, self::$VALID_CALLBACKS))
         {
             throw new exActiveRecord("Invalid callback: $name");
         }

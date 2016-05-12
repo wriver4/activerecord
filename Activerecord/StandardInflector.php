@@ -14,7 +14,7 @@ class StandardInflector
 
     public function tableize($s)
     {
-        return Utils::pluralize(strtolower($this->underscorify($s)));
+        return Utils::pluralize(\strtolower($this->underscorify($s)));
     }
 
     public function variablize($s)
@@ -23,7 +23,7 @@ class StandardInflector
             '-',
             ' '], [
             '_',
-            '_'], strtolower(trim($s)));
+            '_'], \strtolower(trim($s)));
     }
 
 }
