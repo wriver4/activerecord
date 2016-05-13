@@ -293,7 +293,8 @@ class Model
         // initialize attributes applying defaults
         if (!$instantiating_via_find)
         {
-            foreach (static::table()->columns as $name => $meta)
+            //foreach (static::table()->columns as $name => $meta) original
+            foreach (static::table()->columns as $meta)
             {
                 $this->attributes[$meta->inflected_name] = $meta->default;
             }
@@ -1395,7 +1396,8 @@ class Model
 
         if (!empty($exceptions))
         {
-            throw new ExceptionUndefinedProperty(\get_called_class(), $exceptions);
+            throw new ExceptionUndefinedProperty(\get_called_class(),
+            $exceptions);
         }
     }
 
@@ -1942,7 +1944,8 @@ class Model
 
             if (!empty($diff) && $throw)
             {
-                throw new ExceptionActiverecord("Unknown key(s): ".\join(', ', $diff));
+                throw new ExceptionActiverecord("Unknown key(s): ".\join(', ',
+                        $diff));
             }
 
             $intersect = \array_intersect($keys, self::$VALID_OPTIONS);

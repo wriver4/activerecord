@@ -371,7 +371,8 @@ class Table
 
     public function getColumnByInflectedName($inflected_name)
     {
-        foreach ($this->columns as $raw_name => $column)
+        // foreach ($this->columns as $raw_name => $column) original
+        foreach ($this->columns as $column)
         {
             if ($column->inflected_name == $inflected_name)
             {

@@ -94,7 +94,8 @@ class HasMany
         'through',
         'source'];
     protected $primary_key;
-    private $has_one = false;
+    // private $has_one = false; original
+    protected $has_one = false;
     private $through;
 
     /**

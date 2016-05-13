@@ -484,7 +484,8 @@ abstract class Connection
      * @param string $column_name Name of column sequence is for
      * @return string sequence name or null if not supported.
      */
-    public function getSequenceName($table, $column_name)
+    /* public function getSequenceName($table, $column_name) original */
+    public function getSequenceName($table)
     {
         return "{$table}_seq";
     }
@@ -497,7 +498,8 @@ abstract class Connection
      */
     public function nextSequenceValue($sequence_name)
     {
-        return null;
+        //return null; original
+        return $sequence_name;
     }
 
     /**

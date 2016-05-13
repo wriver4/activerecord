@@ -44,7 +44,8 @@ class Validations
 {
 
     private $model;
-    private $options = [];
+    //private $options = []; original
+    protected $options = [];
     private $validators = [];
     private $record;
     private static $validation_functions = [

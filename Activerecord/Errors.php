@@ -192,7 +192,9 @@ class Errors
     {
         $fullMessages = [];
 
-        $this->toArray(function($attribute, $message) use (&$fullMessages)
+        // $this->toArray(function($attribute, $message) use (&$fullMessages)
+        //  orginal
+        $this->toArray(function($message) use (&$fullMessages)
         {
             $fullMessages[] = $message;
         });
@@ -290,7 +292,8 @@ class Errors
 
         $count = 0;
 
-        foreach ($this->errors as $attribute => $error)
+        // foreach ($this->errors as $attribute => $error) original
+        foreach ($this->errors as $error)
         {
             $count += count($error);
         }

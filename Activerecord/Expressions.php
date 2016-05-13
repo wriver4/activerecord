@@ -106,9 +106,9 @@ class Expressions
         $values = \array_key_exists('values', $options) ? $options['values'] : $this->values;
 
         $ret = "";
-        $replace = [];
+        //$replace = []; orginal
         $num_values = count($values);
-        $len = strlen($this->expressions);
+        //$len = strlen($this->expressions); orginal
         $quotes = 0;
 
         for ($i = 0, $n = \strlen($this->expressions), $j = 0; $i < $n; ++$i)
@@ -198,7 +198,8 @@ class Expressions
 
                 return $ret;
             }
-            return \join(',', array_fill(0, $value_count, self::PARAMETER_MARKER));
+            return \join(',',
+                    array_fill(0, $value_count, self::PARAMETER_MARKER));
         }
 
         if ($substitute)

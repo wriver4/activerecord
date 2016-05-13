@@ -357,7 +357,8 @@ class SQLBuilder
             // if the values has a nested array then we'll need to use Expressions to expand the bind marker for us
             $values = \array_slice($args, 1);
 
-            foreach ($values as $name => &$value)
+            // foreach ($values as $name => &$value) oiginal
+            foreach ($values as &$value)
             {
                 if (\is_array($value))
                 {

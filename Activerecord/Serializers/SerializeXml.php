@@ -27,7 +27,8 @@ class SerializeXml
         return $this->xml_encode();
     }
 
-    private function xmlEncode()
+//private function xmlEncode() original
+    protected function xmlEncode()
     {
         $this->writer = new XmlWriter();
         $this->writer->openMemory();
@@ -57,7 +58,7 @@ class SerializeXml
 
             if (\is_array($value) || \is_object($value))
             {
-                if (!\is_int(key($value)))
+                if (!\is_int(\key($value)))
                 {
                     $this->writer->startElement($attr);
                     $this->write($value);

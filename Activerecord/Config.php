@@ -85,7 +85,8 @@ class Config
      *
      * @var string
      */
-    private $date_format = \DateTime::ISO8601;
+    // original
+    //private $date_format = \DateTime::ISO8601;
 
     /**
      * Allows config initialization using a closure.
