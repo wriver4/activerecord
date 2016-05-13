@@ -6,7 +6,7 @@
 namespace Activerecord;
 
 use Activerecord\DateTime;
-use Activerecord\Exceptions\exDatabase;
+use Activerecord\Exceptions\ExceptionDatabase;
 use Activerecord\Config;
 
 /**
@@ -112,7 +112,7 @@ abstract class Connection
 
         if (!$connection_string)
         {
-            throw new exDatabase("Empty connection string");
+            throw new ExceptionDatabase("Empty connection string");
         }
 
         $info = static::parseConnectionUrl($connection_string);
@@ -132,7 +132,7 @@ abstract class Connection
         }
         catch (\PDOException $e)
         {
-            throw new exDatabase($e);
+            throw new ExceptionDatabase($e);
         }
         return $connection;
     }
@@ -151,7 +151,7 @@ abstract class Connection
 
         if (!\file_exists($source))
         {
-            throw new exDatabase("$fqclass not found!");
+            throw new ExceptionDatabase("$fqclass not found!");
         }
 
         require_once($source);
@@ -186,7 +186,7 @@ abstract class Connection
 
         if (!isset($url['host']))
         {
-            throw new exDatabase('Database host must be specified in the connection string. If you want to specify an absolute filename, use e.g. sqlite://unix(/path/to/file)');
+            throw new ExceptionDatabase('Database host must be specified in the connection string. If you want to specify an absolute filename, use e.g. sqlite://unix(/path/to/file)');
         }
 
         $info = new \stdClass();
@@ -293,7 +293,7 @@ abstract class Connection
         }
         catch (\PDOException $e)
         {
-            throw new exDatabase($e);
+            throw new ExceptionDatabase($e);
         }
     }
 
@@ -362,12 +362,12 @@ abstract class Connection
         {
             if (!($sth = $this->connection->prepare($sql)))
             {
-                throw new exDatabase($this);
+                throw new ExceptionDatabase($this);
             }
         }
         catch (\PDOException $e)
         {
-            throw new exDatabase($this);
+            throw new ExceptionDatabase($this);
         }
 
         $sth->setFetchMode(\PDO::FETCH_ASSOC);
@@ -376,12 +376,12 @@ abstract class Connection
         {
             if (!$sth->execute($values))
             {
-                throw new exDatabase($this);
+                throw new ExceptionDatabase($this);
             }
         }
         catch (\PDOException $e)
         {
-            throw new exDatabase($e);
+            throw new ExceptionDatabase($e);
         }
         return $sth;
     }
@@ -441,7 +441,7 @@ abstract class Connection
     {
         if (!$this->connection->beginTransaction())
         {
-            throw new exDatabase($this);
+            throw new ExceptionDatabase($this);
         }
     }
 
@@ -452,7 +452,7 @@ abstract class Connection
     {
         if (!$this->connection->commit())
         {
-            throw new exDatabase($this);
+            throw new ExceptionDatabase($this);
         }
     }
 
@@ -463,7 +463,7 @@ abstract class Connection
     {
         if (!$this->connection->rollback())
         {
-            throw new exDatabase($this);
+            throw new ExceptionDatabase($this);
         }
     }
 

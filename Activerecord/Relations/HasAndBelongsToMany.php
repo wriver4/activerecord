@@ -3,7 +3,7 @@
 Namespace Activerecord\Relations;
 
 use Activerecord\Model;
-use Activerecord\Relations\aRelations;
+use Activerecord\Relations\AbstractRelations;
 
 /**
  * Summary of file HasAndBelongsToMany.
@@ -26,7 +26,7 @@ use Activerecord\Relations\aRelations;
  * @see http://www.phpActiverecord.org/guides/associations
  */
 class HasAndBelongsToMany
-        extends aRelations
+        extends AbstractRelations
 {
 
     public function __construct($options = [])

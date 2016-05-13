@@ -378,7 +378,7 @@ class Validations
 
                     if (!\is_numeric($option_value))
                     {
-                        throw new exValidation("Argument Error $option must be a number");
+                        throw new ExceptionValidation("Argument Error $option must be a number");
                     }
 
                     $message = \str_replace('%d', $option_value, $message);
@@ -463,7 +463,7 @@ class Validations
 
             if (\is_null($options['with']) || !\is_string($options['with']) || !\is_string($options['with']))
             {
-                throw new exValidation('Argument Error A regular expression must be supplied as the [with] option of the configuration array.');
+                throw new ExceptionValidation('Argument Error A regular expression must be supplied as the [with] option of the configuration array.');
             }
             else
             {
@@ -525,13 +525,13 @@ class Validations
             switch (\sizeof($range_options))
             {
                 case 0:
-                    throw new exValidation('Argument Error Range unspecified.  Specify the [within], [maximum], or [is] option.');
+                    throw new ExceptionValidation('Argument Error Range unspecified.  Specify the [within], [maximum], or [is] option.');
 
                 case 1:
                     break;
 
                 default:
-                    throw new exValidation('Argument Error Too many range options specified.  Choose only one.');
+                    throw new ExceptionValidation('Argument Error Too many range options specified.  Choose only one.');
             }
 
             $attribute = $options[0];
@@ -547,7 +547,7 @@ class Validations
 
                 if (!(Utils::isArray('range', $range)))
                 {
-                    throw new exValidation("Argument Error $range_options[0] must be an array composing a range of numbers with key [0] being less than key [1]");
+                    throw new ExceptionValidation("Argument Error $range_options[0] must be an array composing a range of numbers with key [0] being less than key [1]");
                 }
                 $range_options = ['minimum',
                     'maximum'];
@@ -560,12 +560,12 @@ class Validations
 
                 if ((int) $option <= 0)
                 {
-                    throw new exValidation("Argument Error $range_option value cannot use a signed integer.");
+                    throw new ExceptionValidation("Argument Error $range_option value cannot use a signed integer.");
                 }
 
                 if (\is_float($option))
                 {
-                    throw new exValidation("Argument Error $range_option value cannot use a float for length.");
+                    throw new ExceptionValidation("Argument Error $range_option value cannot use a float for length.");
                 }
 
                 if (!($range_option == 'maximum' && \is_null($this->model->$attribute)))

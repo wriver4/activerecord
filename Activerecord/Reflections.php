@@ -5,7 +5,7 @@
 
 namespace Activerecord;
 
-use Activerecord\Exceptions\exActiverecord;
+use Activerecord\Exceptions\ExceptionActiverecord;
 use Activerecord\Reflections;
 use Activerecord\Singleton;
 
@@ -75,7 +75,7 @@ class Reflections
             return $this->reflections[$class];
         }
 
-        throw new exActiverecord("Class not found: $class");
+        throw new ExceptionActiverecord("Class not found: $class");
     }
 
     /**

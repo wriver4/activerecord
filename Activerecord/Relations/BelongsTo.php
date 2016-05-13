@@ -4,7 +4,7 @@ namespace Activerecord\Relations;
 
 use Activerecord\Inflector;
 use Activerecord\Model;
-use Activerecord\Relations\aRelations;
+use Activerecord\Relations\AbstractRelations;
 use Activerecord\Table;
 
 /**
@@ -52,7 +52,7 @@ use Activerecord\Table;
  * @see http://www.phpActiverecord.org/guides/associations
  */
 class BelongsTo
-        extends aRelations
+        extends AbstractRelations
 {
 
     public function __construct($options = [])

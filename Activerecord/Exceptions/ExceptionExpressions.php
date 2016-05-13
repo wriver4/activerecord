@@ -2,7 +2,7 @@
 
 namespace Activerecord\Exceptions;
 
-use Activerecord\Exceptions\exActiverecord;
+use Activerecord\Exceptions\ExceptionActiverecord;
 
 /**
  * Summary of file Expressions.
@@ -24,8 +24,8 @@ use Activerecord\Exceptions\exActiverecord;
  *
  * @package Activerecord
  */
-class exExpressions
-        extends exActiverecord
+class ExceptionExpressions
+        extends ExceptionActiverecord
 {
 
 }

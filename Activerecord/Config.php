@@ -6,7 +6,7 @@
 namespace Activerecord;
 
 use Activerecord\Cache;
-use Activerecord\Exceptions\exConfig;
+use Activerecord\Exceptions\ExceptionConfig;
 use Activerecord\Reflections;
 use Activerecord\Serialization;
 use Activerecord\Singleton;
@@ -134,7 +134,7 @@ class Config
     {
         if (!\is_array($connections))
         {
-            throw new exConfig("Connections must be an array");
+            throw new ExceptionConfig("Connections must be an array");
         }
 
         if ($default_connection)
@@ -229,7 +229,7 @@ class Config
         }
         if ($this->model_directory && !\file_exists($this->model_directory))
         {
-            throw new exConfig('Invalid or non-existent directory: '.$this->model_directory);
+            throw new ExceptionConfig('Invalid or non-existent directory: '.$this->model_directory);
         }
 
         return $this->model_directory;
@@ -259,7 +259,7 @@ class Config
 
         if (!$reflect->getMethod('log') || !$reflect->getMethod('log')->isPublic())
         {
-            throw new exConfig("Logger object must implement a public log method");
+            throw new ExceptionConfig("Logger object must implement a public log method");
         }
 
         $this->logger = $logger;

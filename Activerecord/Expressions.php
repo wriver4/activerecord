@@ -5,7 +5,7 @@
 
 namespace Activerecord;
 
-use Activerecord\Exceptions\exExpressions;
+use Activerecord\Exceptions\ExceptionExpressions;
 
 /**
  * Templating like class for building SQL statements.
@@ -58,7 +58,7 @@ class Expressions
     {
         if ($parameter_number <= 0)
         {
-            throw new exExpressions("Invalid parameter index: $parameter_number");
+            throw new ExceptionExpressions("Invalid parameter index: $parameter_number");
         }
 
         $this->values[$parameter_number - 1] = $value;
@@ -121,7 +121,7 @@ class Expressions
                 {
                     if ($j > $num_values - 1)
                     {
-                        throw new exExpressions("No bound parameter for index $j");
+                        throw new ExceptionExpressions("No bound parameter for index $j");
                     }
 
                     $ch = $this->substitute($values, $substitute, $i, $j++);

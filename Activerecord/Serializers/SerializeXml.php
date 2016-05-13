@@ -11,7 +11,7 @@ namespace Activerecord\Serializers;
  * @package Activerecord
  */
 class SerializeXml
-        extends aSerialize
+        extends AbstractSerialize
 {
 
     private $writer;

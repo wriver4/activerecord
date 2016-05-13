@@ -2,7 +2,7 @@
 
 namespace Activerecord\Relations;
 
-use Activerecord\Relations\aRelations;
+use Activerecord\Relations\AbstractRelations;
 
 /**
  * Summary of file HasOne.
@@ -38,7 +38,7 @@ use Activerecord\Relations\aRelations;
  * @see http://www.phpActiverecord.org/guides/associations
  */
 class HasOne
-        extends aRelations
+        extends AbstractRelations
 {
 
     public function __construct($options = [])

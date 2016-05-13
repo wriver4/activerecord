@@ -2,7 +2,7 @@
 
 namespace Activerecord\Exceptions;
 
-use Activerecord\Exceptions\exActiverecord;
+use Activerecord\Exceptions\ExceptionActiverecord;
 
 /**
  * Summary of file Validation.
@@ -24,8 +24,8 @@ use Activerecord\Exceptions\exActiverecord;
  *
  * @package Activerecord
  */
-class exValidation
-        extends exActiverecord
+class ExceptionValidation
+        extends ExceptionActiverecord
 {
 
 }

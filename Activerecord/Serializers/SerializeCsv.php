@@ -11,7 +11,7 @@ namespace Activerecord\Serializers;
  * @package Activerecord
  */
 class SerializeCsv
-        extends aSerialize
+        extends AbstractSerialize
 {
 
     public static $delimiter = ',';

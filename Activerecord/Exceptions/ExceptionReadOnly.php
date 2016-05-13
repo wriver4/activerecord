@@ -2,7 +2,7 @@
 
 namespace Activerecord\Exceptions;
 
-use Activerecord\Exceptions\exModel;
+use Activerecord\Exceptions\ExceptionModel;
 
 /**
  * Summary of file ReadOnly.
@@ -24,8 +24,8 @@ use Activerecord\Exceptions\exModel;
  *
  * @package Activerecord
  */
-class exReadOnly
-        extends exModel
+class ExceptionReadOnly
+        extends ExceptionModel
 {
 
     /**

@@ -7,8 +7,8 @@ namespace Activerecord\Adapters;
 
 use Activerecord\Column;
 use Activerecord\Connection;
-use Activerecord\Exceptions\exActiverecord;
-use Activerecord\Exceptions\exDatabase;
+use Activerecord\Exceptions\ExceptionActiverecord;
+use Activerecord\Exceptions\ExceptionDatabase;
 use ActiveRecord\Utils;
 use Activerecord\Inflector;
 
@@ -27,7 +27,7 @@ class Sqlite
     {
         if (!\file_exists($info->host))
         {
-            throw new exDatabase("Could not find sqlite db: $info->host");
+            throw new ExceptionDatabase("Could not find sqlite db: $info->host");
         }
 
         $this->connection = new \PDO("sqlite:$info->host", null, null,
@@ -104,7 +104,7 @@ class Sqlite
 
     public function setEncoding($charset)
     {
-        throw new exActiverecord("SqliteAdapter::set_charset not supported.");
+        throw new ExceptionActiverecord("SqliteAdapter::set_charset not supported.");
     }
 
     public function acceptsLimitAndOrderForUpdateAndDelete()

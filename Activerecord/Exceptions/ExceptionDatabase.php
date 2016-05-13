@@ -3,7 +3,7 @@
 namespace Activerecord\Exceptions;
 
 use Activerecord\Connection;
-use Activerecord\Exceptions\exActiverecord;
+use Activerecord\Exceptions\ExceptionActiverecord;
 
 /**
  * Summary of file Database.
@@ -27,8 +27,8 @@ use Activerecord\Exceptions\exActiverecord;
  *
  * @package Activerecord
  */
-class exDatabase
-        extends exActiverecord
+class ExceptionDatabase
+        extends ExceptionActiverecord
 {
 
     public function __construct($adapter_or_string_or_mystery)

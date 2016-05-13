@@ -11,7 +11,7 @@ namespace Activerecord\Serializers;
  * @package Activerecord
  */
 class SerializeArray
-        extends aSerialize
+        extends AbstractSerialize
 {
 
     public static $include_root = false;

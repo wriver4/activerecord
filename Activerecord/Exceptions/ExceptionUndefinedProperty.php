@@ -2,7 +2,7 @@
 
 namespace Activerecord\Exceptions;
 
-use Activerecord\Exceptions\exModel;
+use Activerecord\Exceptions\ExceptionModel;
 
 /**
  * Summary of file UndefinedProperty.
@@ -24,8 +24,8 @@ use Activerecord\Exceptions\exModel;
  *
  * @package Activerecord
  */
-class exUndefinedProperty
-        extends exModel
+class ExceptionUndefinedProperty
+        extends ExceptionModel
 {
 
     /**

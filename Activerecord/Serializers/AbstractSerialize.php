@@ -42,7 +42,7 @@ use Activerecord\Model;
  * @package Activerecord
  * @link http://www.phpActiverecord.org/guides/utilities#topic-serialization
  */
-abstract class aSerialize
+abstract class AbstractSerialize
 {
 
     protected $model;

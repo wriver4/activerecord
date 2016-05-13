@@ -2,12 +2,12 @@
 
 namespace Activerecord\Exceptions;
 
-use Activerecord\Exceptions\exActiverecord;
+use Activerecord\Exceptions\ExceptionActiverecord;
 
 /**
- * Summary of file Model.
+ * Summary of file Config.
  *
- * Description of file Model.
+ * Description of file Config.
  *
  *
  * @license
@@ -20,12 +20,12 @@ use Activerecord\Exceptions\exActiverecord;
  */
 
 /**
- * Thrown by {@link Model}.
+ * Thrown for configuration problems.
  *
  * @package Activerecord
  */
-class exModel
-        extends exActiverecord
+class ExceptionConfig
+        extends ExceptionActiverecord
 {
 
 }

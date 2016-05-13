@@ -2,13 +2,13 @@
 
 Namespace Activerecord\Relations;
 
-use Activerecord\Exceptions\exRelationship;
+use Activerecord\Exceptions\ExceptionRelationship;
 use Activerecord\Inflector;
 use Activerecord\Model;
 use Activerecord\Reflections;
 use Activerecord\Relations\HasMany;
 use Activerecord\Relations\HasOne;
-use Activerecord\Relations\iRelations;
+use Activerecord\Relations\InterfaceRelations;
 use Activerecord\SQLBuilder;
 use Activerecord\Table;
 use ActiveRecord\Utils;
@@ -23,8 +23,8 @@ use ActiveRecord\Utils;
  * @package Activerecord
  * @see http://www.phpActiverecord.org/guides/associations
  */
-abstract class aRelations
-        implements iRelations
+abstract class AbstractRelations
+        implements InterfaceRelations
 {
 
     /**
@@ -354,7 +354,7 @@ abstract class aRelations
 
         if (!$reflection->isSubClassOf('Activerecord\\Model'))
         {
-            throw new exRelationship("'$class_name' must extend from Activerecord\\Model");
+            throw new ExceptionRelationship("'$class_name' must extend from Activerecord\\Model");
         }
 
         $this->class_name = $class_name;

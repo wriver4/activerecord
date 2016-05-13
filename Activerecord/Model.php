@@ -9,11 +9,11 @@ use Activerecord\Adapters\Oci;
 use Activerecord\Cache;
 use Activerecord\CallBack;
 use Activerecord\Connection;
-use Activerecord\Exceptions\exActiverecord;
-use Activerecord\Exceptions\exReadOnly;
-use Activerecord\Exceptions\exRecordNotFound;
-use Activerecord\Exceptions\exRelationship;
-use Activerecord\Exceptions\exUndefinedProperty;
+use Activerecord\Exceptions\ExceptionActiverecord;
+use Activerecord\Exceptions\ExceptionReadOnly;
+use Activerecord\Exceptions\ExceptionRecordNotFound;
+use Activerecord\Exceptions\ExceptionRelationship;
+use Activerecord\Exceptions\ExceptionUndefinedProperty;
 use Activerecord\Relations\BelongsTo;
 use Activerecord\Relations\HasAndBelongsToMany;
 use Activerecord\Relations\HasMany;
@@ -470,7 +470,7 @@ class Model
             }
         }
 
-        throw new exUndefinedProperty(\get_called_class(), $name);
+        throw new ExceptionUndefinedProperty(\get_called_class(), $name);
     }
 
     public function __wakeup()
@@ -594,7 +594,7 @@ class Model
             }
         }
 
-        throw new exUndefinedProperty(\get_called_class(), $name);
+        throw new ExceptionUndefinedProperty(\get_called_class(), $name);
     }
 
     /**
@@ -794,7 +794,7 @@ class Model
     {
         if ($this->isReadonly())
         {
-            throw new exReadOnly(\get_class($this), $method_name);
+            throw new ExceptionReadOnly(\get_class($this), $method_name);
         }
     }
 
@@ -969,7 +969,7 @@ class Model
 
             if (empty($pk))
             {
-                throw new exActiverecord("Cannot update, no primary key defined for: ".\get_called_class());
+                throw new ExceptionActiverecord("Cannot update, no primary key defined for: ".\get_called_class());
             }
 
             if (!$this->invokeCallback('before_update', false))
@@ -1147,7 +1147,7 @@ class Model
 
         if (empty($pk))
         {
-            throw new exActiverecord("Cannot delete, no primary key defined for: ".\get_called_class());
+            throw new ExceptionActiverecord("Cannot delete, no primary key defined for: ".\get_called_class());
         }
 
         if (!$this->invokeCallback('before_destroy', false))
@@ -1395,7 +1395,7 @@ class Model
 
         if (!empty($exceptions))
         {
-            throw new exUndefinedProperty(\get_called_class(), $exceptions);
+            throw new ExceptionUndefinedProperty(\get_called_class(), $exceptions);
         }
     }
 
@@ -1431,7 +1431,7 @@ class Model
             }
         }
 
-        throw new exRelationship("Relationship named $name has not been declared for class: {$table->class->getName()}");
+        throw new ExceptionRelationship("Relationship named $name has not been declared for class: {$table->class->getName()}");
     }
 
     /**
@@ -1540,7 +1540,7 @@ class Model
             // can't take any finders with OR in it when doing a find_or_create_by
             if (\strpos($attributes, '_or_') !== false)
             {
-                throw new exActiverecord("Cannot use OR'd attributes in find_or_create_by");
+                throw new ExceptionActiverecord("Cannot use OR'd attributes in find_or_create_by");
             }
 
             $create = true;
@@ -1575,7 +1575,7 @@ class Model
             return static::count($options);
         }
 
-        throw new exActiverecord("Call to undefined method: $method");
+        throw new ExceptionActiverecord("Call to undefined method: $method");
     }
 
     /**
@@ -1612,7 +1612,7 @@ class Model
             }
         }
 
-        throw new exActiverecord("Call to undefined method: $method");
+        throw new ExceptionActiverecord("Call to undefined method: $method");
     }
 
     /**
@@ -1765,7 +1765,7 @@ class Model
 
         if (\func_num_args() <= 0)
         {
-            throw new exRecordNotFound("Couldn't find $class without an ID");
+            throw new ExceptionRecordNotFound("Couldn't find $class without an ID");
         }
 
         $args = \func_get_args();
@@ -1859,7 +1859,7 @@ class Model
     {
         if ($values === null)
         {
-            throw new exRecordNotFound("Couldn't find ".\get_called_class()." without an ID");
+            throw new ExceptionRecordNotFound("Couldn't find ".\get_called_class()." without an ID");
         }
 
         $table = static::table();
@@ -1887,10 +1887,10 @@ class Model
             if ($expected == 1)
             {
                 return False;
-                throw new exRecordNotFound("Couldn't find $class with ID=$values");
+                throw new ExceptionRecordNotFound("Couldn't find $class with ID=$values");
             }
 
-            throw new exRecordNotFound("Couldn't find all $class with IDs ($values) (found $results, but was looking for $expected)");
+            throw new ExceptionRecordNotFound("Couldn't find all $class with IDs ($values) (found $results, but was looking for $expected)");
         }
         return $expected == 1 ? $list[0] : $list;
     }
@@ -1942,7 +1942,7 @@ class Model
 
             if (!empty($diff) && $throw)
             {
-                throw new exActiverecord("Unknown key(s): ".\join(', ', $diff));
+                throw new ExceptionActiverecord("Unknown key(s): ".\join(', ', $diff));
             }
 
             $intersect = \array_intersect($keys, self::$VALID_OPTIONS);
@@ -2085,7 +2085,7 @@ class Model
      */
     private function serialize($type, $options)
     {
-        require_once 'Serializers/aSerialize.php';
+        require_once 'Serializers/AbstractSerialize.php';
         $class = "Activerecord\\Serializers\\Serialize{$type}";
         $serializer = new $class($this, $options);
         return $serializer->toString();

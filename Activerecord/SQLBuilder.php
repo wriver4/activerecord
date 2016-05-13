@@ -5,7 +5,7 @@
 
 namespace Activerecord;
 
-use Activerecord\Exceptions\exActiverecord;
+use Activerecord\Exceptions\ExceptionActiverecord;
 use Activerecord\Connection;
 use Activerecord\Expressions;
 use Activerecord\SQLBuilder;
@@ -49,7 +49,7 @@ class SQLBuilder
     {
         if (!$connection)
         {
-            throw new exActiverecord('A valid database connection is required.');
+            throw new ExceptionActiverecord('A valid database connection is required.');
         }
 
         $this->connection = $connection;
@@ -158,7 +158,7 @@ class SQLBuilder
     {
         if (!Utils::isHash($hash))
         {
-            throw new exActiverecord('Inserting requires a hash.');
+            throw new ExceptionActiverecord('Inserting requires a hash.');
         }
 
         $this->operation = 'INSERT';
@@ -188,7 +188,7 @@ class SQLBuilder
         }
         else
         {
-            throw new exActiverecord('Updating requires a hash or string.');
+            throw new ExceptionActiverecord('Updating requires a hash or string.');
         }
 
         return $this;

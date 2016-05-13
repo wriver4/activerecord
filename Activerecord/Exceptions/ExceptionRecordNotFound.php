@@ -2,7 +2,7 @@
 
 Namespace Activerecord\Exceptions;
 
-use Activerecord\Exceptions\exActiverecord;
+use Activerecord\Exceptions\ExceptionActiverecord;
 
 /**
  * Summary of file RecordNotFound.
@@ -24,8 +24,8 @@ use Activerecord\Exceptions\exActiverecord;
  *
  * @package Activerecord
  */
-class exRecordNotFound
-        extends exActiverecord
+class ExceptionRecordNotFound
+        extends ExceptionActiverecord
 {
 
 }

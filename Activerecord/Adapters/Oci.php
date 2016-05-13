@@ -7,7 +7,7 @@ namespace Activerecord\Adapters;
 
 use Activerecord\Column;
 use Activerecord\Connection;
-use Activerecord\Exceptions\exDatabase;
+use Activerecord\Exceptions\ExceptionDatabase;
 use Activerecord\Inflector;
 
 /**
@@ -34,7 +34,7 @@ class Oci
         }
         catch (\PDOException $e)
         {
-            throw new exDatabase($e);
+            throw new ExceptionDatabase($e);
         }
     }
 

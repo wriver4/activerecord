@@ -9,7 +9,7 @@ use Activerecord\Cache;
 use Activerecord\CallBack;
 use Activerecord\Column;
 use Activerecord\ConnectionManager;
-use Activerecord\Exceptions\exRelationship;
+use Activerecord\Exceptions\ExceptionRelationship;
 use Activerecord\Inflector;
 use Activerecord\Model;
 use Activerecord\Adapters\Pgsql;
@@ -180,7 +180,7 @@ class Table
                 }
                 else
                 {
-                    throw new exRelationship("Relationship named $value has not been declared for class: {$this->class->getName()}");
+                    throw new ExceptionRelationship("Relationship named $value has not been declared for class: {$this->class->getName()}");
                 }
             }
             else
@@ -411,7 +411,7 @@ class Table
 
         if ($strict)
         {
-            throw new exRelationship("Relationship named $name has not been declared for class: {$this->class->getName()}");
+            throw new ExceptionRelationship("Relationship named $name has not been declared for class: {$this->class->getName()}");
         }
 
         return null;
@@ -617,8 +617,8 @@ class Table
 
     private function setAssociations()
     {
-        require_once __DIR__.'/Relations/iRelations.php';
-        require_once __DIR__.'/Relations/aRelations.php';
+        require_once __DIR__.'/Relations/InterfaceRelations.php';
+        require_once __DIR__.'/Relations/AbstractRelations.php';
         $namespace = $this->class->getNamespaceName();
 
         foreach ($this->class->getStaticProperties() as $name => $definitions)

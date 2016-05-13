@@ -9,7 +9,7 @@ use Activerecord\Model;
  *
  * @package Activerecord
  */
-interface iRelations
+interface InterfaceRelations
 {
 
     public function __construct($options = []);

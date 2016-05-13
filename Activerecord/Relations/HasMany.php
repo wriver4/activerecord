@@ -2,10 +2,10 @@
 
 namespace Activerecord\Relations;
 
-use Activerecord\Exceptions\exHasManyThroughAssociation;
+use Activerecord\Exceptions\ExceptionHasManyThroughAssociation;
 use Activerecord\Inflector;
 use Activerecord\Model;
-use Activerecord\Relations\aRelations;
+use Activerecord\Relations\AbstractRelations;
 use Activerecord\Relations\BelongsTo;
 use Activerecord\Relations\HasMany;
 use Activerecord\Table;
@@ -68,7 +68,7 @@ use Activerecord\Table;
  * @see valid_association_options
  */
 class HasMany
-        extends aRelations
+        extends AbstractRelations
 {
 
     /**
@@ -158,12 +158,12 @@ class HasMany
                 // verify through is a belongs_to or has_many for access of keys
                 if (!($through_relationship = $this->getTable()->getRelationship($this->through)))
                 {
-                    throw new exHasManyThroughAssociation("Could not find the association $this->through in model ".\get_class($model));
+                    throw new ExceptionHasManyThroughAssociation("Could not find the association $this->through in model ".\get_class($model));
                 }
 
                 if (!($through_relationship instanceof HasMany) && !($through_relationship instanceof BelongsTo))
                 {
-                    throw new exHasManyThroughAssociation('has_many through can only use a belongs_to or has_many association');
+                    throw new ExceptionHasManyThroughAssociation('has_many through can only use a belongs_to or has_many association');
                 }
 
                 // save old keys as we will be reseting them below for inner join convenience

@@ -5,7 +5,7 @@
 
 namespace Activerecord;
 
-use Activerecord\Exceptions\exActiveRecord;
+use Activerecord\Exceptions\ExceptionActiverecord;
 use Activerecord\Reflections;
 
 /**
@@ -171,7 +171,7 @@ class CallBack
     {
         if ($must_exist && !\array_key_exists($name, $this->registry))
         {
-            throw new exActiveRecord("No callbacks were defined for: $name on ".\get_class($model));
+            throw new ExceptionActiverecord("No callbacks were defined for: $name on ".\get_class($model));
         }
 
         // if it doesn't exist it might be a /(after|before)_(create|update)/ so we still need to run the save
@@ -245,7 +245,7 @@ class CallBack
 
         if (!\in_array($name, self::$VALID_CALLBACKS))
         {
-            throw new exActiveRecord("Invalid callback: $name");
+            throw new ExceptionActiverecord("Invalid callback: $name");
         }
 
         if (!($closure_or_method_name instanceof \Closure))
@@ -260,13 +260,13 @@ class CallBack
                 if ($this->reflect->hasMethod($closure_or_method_name))
                 {
                     // Method is private or protected
-                    throw new exActiveRecord("Callback methods need to be public (or anonymous closures). ".
+                    throw new ExceptionActiverecord("Callback methods need to be public (or anonymous closures). ".
                     "Please change the visibility of ".$this->reflect->getName()."->".$closure_or_method_name."()");
                 }
                 else
                 {
 
-                    throw new exActiveRecord("Unknown method for callback: $name".
+                    throw new ExceptionActiverecord("Unknown method for callback: $name".
                     (\is_string($closure_or_method_name) ? ": #$closure_or_method_name"
                                 : ""));
                 }
