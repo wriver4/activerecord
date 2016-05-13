@@ -112,7 +112,7 @@ class Model
      *
      * @var array
      */
-    private $__dirty = null;
+    private $dirty = null;
 
     /**
      * Flag that determines of this model can have a writer method invoked
@@ -120,14 +120,14 @@ class Model
      *
      * @var boolean
      */
-    private $__readonly = false;
+    private $readonly = false;
 
     /**
      * Array of relationship objects as model_attribute_name => relationship
      *
      * @var array
      */
-    private $__relationships = [];
+    private $relationships = [];
 
     /**
      * Flag that determines if a call to save() should issue an insert
@@ -135,7 +135,7 @@ class Model
      *
      * @var boolean
      */
-    private $__new_record = true;
+    private $new_record = true;
 
     /**
      * Set to the name of the connection this {@link Model} should use.
@@ -288,7 +288,7 @@ class Model
             $guard_attributes = true, $instantiating_via_find = false,
             $new_record = true)
     {
-        $this->__new_record = $new_record;
+        $this->new_record = $new_record;
 
         // initialize attributes applying defaults
         if (!$instantiating_via_find)
@@ -305,7 +305,7 @@ class Model
         // dirty if instantiating via find since nothing is really dirty when doing that
         if ($instantiating_via_find)
         {
-            $this->__dirty = [];
+            $this->dirty = [];
         }
 
         $this->invokeCallback('after_construct', false);
@@ -551,9 +551,9 @@ class Model
         }
 
         // check relationships if no attribute
-        if (\array_key_exists($name, $this->__relationships))
+        if (\array_key_exists($name, $this->relationships))
         {
-            return $this->__relationships[$name];
+            return $this->relationships[$name];
         }
 
         $table = static::table();
@@ -561,8 +561,8 @@ class Model
         // this may be first access to the relationship so check Table
         if (($relationship = $table->getRelationship($name)))
         {
-            $this->__relationships[$name] = $relationship->load($this);
-            return $this->__relationships[$name];
+            $this->relationships[$name] = $relationship->load($this);
+            return $this->relationships[$name];
         }
 
         if ($name == 'id')
@@ -604,12 +604,12 @@ class Model
      */
     public function flagDirty($name)
     {
-        if (!$this->__dirty)
+        if (!$this->dirty)
         {
-            $this->__dirty = [];
+            $this->dirty = [];
         }
 
-        $this->__dirty[$name] = true;
+        $this->dirty[$name] = true;
     }
 
     /**
@@ -621,12 +621,12 @@ class Model
      */
     public function dirtyAttributes()
     {
-        if (!$this->__dirty)
+        if (!$this->dirty)
         {
             return null;
         }
 
-        $dirty = \array_intersect_key($this->attributes, $this->__dirty);
+        $dirty = \array_intersect_key($this->attributes, $this->dirty);
         return !empty($dirty) ? $dirty : null;
     }
 
@@ -638,7 +638,7 @@ class Model
      */
     public function attributeIsDirty($attribute)
     {
-        return $this->__dirty && isset($this->__dirty[$attribute]) && \array_key_exists($attribute,
+        return $this->dirty && isset($this->dirty[$attribute]) && \array_key_exists($attribute,
                         $this->attributes);
     }
 
@@ -771,7 +771,7 @@ class Model
      */
     public function isReadonly()
     {
-        return $this->__readonly;
+        return $this->readonly;
     }
 
     /**
@@ -781,7 +781,7 @@ class Model
      */
     public function isNewRecord()
     {
-        return $this->__new_record;
+        return $this->new_record;
     }
 
     /**
@@ -805,7 +805,7 @@ class Model
      */
     public function readonly($readonly = true)
     {
-        $this->__readonly = $readonly;
+        $this->readonly = $readonly;
     }
 
     /**
@@ -940,7 +940,7 @@ class Model
         }
 
 
-        $this->__new_record = false;
+        $this->new_record = false;
         $this->invokeCallback('after_create', false);
 
         $this->updateCache();
@@ -1245,7 +1245,7 @@ class Model
      */
     public function isDirty()
     {
-        return empty($this->__dirty) ? false : true;
+        return empty($this->dirty) ? false : true;
     }
 
     /**
@@ -1418,16 +1418,16 @@ class Model
                 // if the related model is null and it is a poly then we should have an empty array
                 if (\is_null($model))
                 {
-                    return $this->__relationships[$name] = [];
+                    return $this->relationships[$name] = [];
                 }
                 else
                 {
-                    return $this->__relationships[$name][] = $model;
+                    return $this->relationships[$name][] = $model;
                 }
             }
             else
             {
-                return $this->__relationships[$name] = $model;
+                return $this->relationships[$name] = $model;
             }
         }
 
@@ -1444,7 +1444,7 @@ class Model
     {
         $this->removeFromCache();
 
-        $this->__relationships = [];
+        $this->relationships = [];
         $pk = \array_values($this->getValuesFor($this->getPrimaryKey()));
 
         $this->setAttributesViaMassAssignment($this->find($pk)->attributes,
@@ -1456,7 +1456,7 @@ class Model
 
     public function __clone()
     {
-        $this->__relationships = [];
+        $this->relationships = [];
         $this->resetDirty();
         return $this;
     }
@@ -1468,7 +1468,7 @@ class Model
      */
     public function resetDirty()
     {
-        $this->__dirty = null;
+        $this->dirty = null;
     }
 
     /**

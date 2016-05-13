@@ -18,8 +18,8 @@ class Pgsql
         extends Connection
 {
 
-    static $QUOTE_CHARACTER = '"';
-    static $DEFAULT_PORT = 5432;
+    static $quote_character = '"';
+    static $default_port = 5432;
 
     public function supportsSequences()
     {

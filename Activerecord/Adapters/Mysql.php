@@ -18,12 +18,12 @@ class Mysql
         extends Connection
 {
 
-    static $DEFAULT_PORT = 3306;
+    static $default_port = 3306;
 
     public function limit($sql, $offset, $limit)
     {
-        $offset = is_null($offset) ? '' : intval($offset).',';
-        $limit = intval($limit);
+        $offset = \is_null($offset) ? '' : \intval($offset).',';
+        $limit = \intval($limit);
         return "$sql LIMIT {$offset}$limit";
     }
 

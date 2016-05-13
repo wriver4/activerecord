@@ -20,7 +20,7 @@ use Activerecord\Exceptions\ExceptionExpressions;
 class Expressions
 {
 
-    const ParameterMarker = '?';
+    const PARAMETER_MARKER = '?';
 
     private $expressions;
     private $values = [];
@@ -115,7 +115,7 @@ class Expressions
         {
             $ch = $this->expressions[$i];
 
-            if ($ch == self::ParameterMarker)
+            if ($ch == self::PARAMETER_MARKER)
             {
                 if ($quotes % 2 == 0)
                 {
@@ -183,7 +183,7 @@ class Expressions
                 }
                 else
                 {
-                    return self::ParameterMarker;
+                    return self::PARAMETER_MARKER;
                 }
             }
 
@@ -198,7 +198,7 @@ class Expressions
 
                 return $ret;
             }
-            return \join(',', array_fill(0, $value_count, self::ParameterMarker));
+            return \join(',', array_fill(0, $value_count, self::PARAMETER_MARKER));
         }
 
         if ($substitute)

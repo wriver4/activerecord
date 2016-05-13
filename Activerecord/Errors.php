@@ -13,7 +13,7 @@ class Errors
 
     private $model;
     private $errors;
-    public static $DEFAULT_ERROR_MESSAGES = [
+    public static $default_error_messages = [
         'inclusion' => "is not included in the list",
         'exclusion' => "is reserved",
         'invalid' => "is invalid",
@@ -66,7 +66,7 @@ class Errors
     {
         if (\is_null($msg))
         {
-            $msg = self :: $DEFAULT_ERROR_MESSAGES['invalid'];
+            $msg = self :: $default_error_messages['invalid'];
         }
 
         if (!isset($this->errors[$attribute]))
@@ -89,7 +89,7 @@ class Errors
     {
         if (empty($msg))
         {
-            $msg = self::$DEFAULT_ERROR_MESSAGES['empty'];
+            $msg = self::$default_error_messages['empty'];
         }
 
         if (empty($this->model->$attribute))
@@ -124,7 +124,7 @@ class Errors
     {
         if (!$msg)
         {
-            $msg = self::$DEFAULT_ERROR_MESSAGES['blank'];
+            $msg = self::$default_error_messages['blank'];
         }
 
         if (($value = $this->model->$attribute) === '' || $value === null)

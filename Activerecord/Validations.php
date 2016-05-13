@@ -47,7 +47,7 @@ class Validations
     private $options = [];
     private $validators = [];
     private $record;
-    private static $VALIDATION_FUNCTIONS = [
+    private static $validation_functions = [
         'validatesPresenceOf',
         'validatesSizeOf',
         'validatesLengthOf',
@@ -57,20 +57,20 @@ class Validations
         'validatesNumericalityOf',
         'validatesUniquenessOf'
     ];
-    private static $DEFAULT_VALIDATION_OPTIONS = [
+    private static $default_validation_options = [
         'on' => 'save',
         'allow_null' => false,
         'allow_blank' => false,
         'message' => null,
     ];
-    private static $ALL_RANGE_OPTIONS = [
+    private static $all_range_options = [
         'is' => null,
         'within' => null,
         'in' => null,
         'minimum' => null,
         'maximum' => null,
     ];
-    private static $ALL_NUMERICALITY_CHECKS = [
+    private static $all_numericality_checks = [
         'greater_than' => null,
         'greater_than_or_equal_to' => null,
         'equal_to' => null,
@@ -92,7 +92,7 @@ class Validations
         $this->record = new Errors($this->model);
         $this->reflect = Reflections::instance()->get(\get_class($this->model));
         $this->validators = \array_intersect(\array_keys($this->reflect->getStaticProperties()),
-                self::$VALIDATION_FUNCTIONS);
+                self::$validation_functions);
     }
 
     public function getRecord()
@@ -177,8 +177,8 @@ class Validations
      */
     public function validatesPresenceOf($attrs)
     {
-        $configuration = \array_merge(self::$DEFAULT_VALIDATION_OPTIONS,
-                ['message' => Errors::$DEFAULT_ERROR_MESSAGES['blank'],
+        $configuration = \array_merge(self::$default_validation_options,
+                ['message' => Errors::$default_error_messages['blank'],
             'on' => 'save']);
 
         foreach ($attrs as $attr)
@@ -254,9 +254,9 @@ class Validations
      */
     public function validatesInclusionOrExclusionOf($type, $attrs)
     {
-        $configuration = \array_merge(self::$DEFAULT_VALIDATION_OPTIONS,
+        $configuration = \array_merge(self::$default_validation_options,
                 [
-            'message' => Errors::$DEFAULT_ERROR_MESSAGES[$type],
+            'message' => Errors::$default_error_messages[$type],
             'on' => 'save']);
 
         foreach ($attrs as $attr)
@@ -325,7 +325,7 @@ class Validations
      */
     public function validatesNumericalityOf($attrs)
     {
-        $configuration = \array_merge(self::$DEFAULT_VALIDATION_OPTIONS,
+        $configuration = \array_merge(self::$default_validation_options,
                 ['only_integer' => false]);
 
         // Notice that for fixnum and float columns empty strings are converted to nil.
@@ -337,7 +337,7 @@ class Validations
             $attribute = $options[0];
             $var = $this->model->$attribute;
 
-            $numericalityOptions = \array_intersect_key(self::$ALL_NUMERICALITY_CHECKS,
+            $numericalityOptions = \array_intersect_key(self::$all_numericality_checks,
                     $options);
 
             if ($this->isNullWithOption($var, $options))
@@ -346,7 +346,7 @@ class Validations
             }
 
             $not_a_number_message = (isset($options['message']) ? $options['message']
-                                : Errors::$DEFAULT_ERROR_MESSAGES['not_a_number']);
+                                : Errors::$default_error_messages['not_a_number']);
 
             if (true === $options['only_integer'] && !\is_integer($var))
             {
@@ -370,7 +370,7 @@ class Validations
             foreach ($numericalityOptions as $option => $check)
             {
                 $option_value = $options[$option];
-                $message = (isset($options['message']) ? $options['message'] : Errors::$DEFAULT_ERROR_MESSAGES[$option]);
+                $message = (isset($options['message']) ? $options['message'] : Errors::$default_error_messages[$option]);
 
                 if ('odd' != $option && 'even' != $option)
                 {
@@ -450,8 +450,8 @@ class Validations
      */
     public function validatesFormatOf($attrs)
     {
-        $configuration = \array_merge(self::$DEFAULT_VALIDATION_OPTIONS,
-                ['message' => Errors::$DEFAULT_ERROR_MESSAGES['invalid'],
+        $configuration = \array_merge(self::$default_validation_options,
+                ['message' => Errors::$default_error_messages['invalid'],
             'on' => 'save',
             'with' => null]);
 
@@ -509,16 +509,16 @@ class Validations
      */
     public function validatesLengthOf($attrs)
     {
-        $configuration = \array_merge(self::$DEFAULT_VALIDATION_OPTIONS,
-                ['too_long' => Errors::$DEFAULT_ERROR_MESSAGES['too_long'],
-            'too_short' => Errors::$DEFAULT_ERROR_MESSAGES['too_short'],
-            'wrong_length' => Errors::$DEFAULT_ERROR_MESSAGES['wrong_length']
+        $configuration = \array_merge(self::$default_validation_options,
+                ['too_long' => Errors::$default_error_messages['too_long'],
+            'too_short' => Errors::$default_error_messages['too_short'],
+            'wrong_length' => Errors::$default_error_messages['wrong_length']
         ]);
 
         foreach ($attrs as $attr)
         {
             $options = \array_merge($configuration, $attr);
-            $range_options = \array_intersect(\array_keys(self::$ALL_RANGE_OPTIONS),
+            $range_options = \array_intersect(\array_keys(self::$all_range_options),
                     \array_keys($attr));
             \sort($range_options);
 
@@ -633,8 +633,8 @@ class Validations
      */
     public function validatesUniquenessOf($attrs)
     {
-        $configuration = \array_merge(self::$DEFAULT_VALIDATION_OPTIONS,
-                ['message' => Errors::$DEFAULT_ERROR_MESSAGES['unique']]);
+        $configuration = \array_merge(self::$default_validation_options,
+                ['message' => Errors::$default_error_messages['unique']]);
         // Retrieve connection from model for quote_name method
         $connection = $this->reflect->getMethod('connection')->invoke(null);
 

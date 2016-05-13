@@ -218,7 +218,7 @@ class Table
         {
             if (!Utils::isHash($options['conditions']))
             {
-                if (is_string($options['conditions']))
+                if (\is_string($options['conditions']))
                 {
                     $options['conditions'] = [
                         $options['conditions']];

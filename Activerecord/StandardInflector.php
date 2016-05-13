@@ -19,7 +19,7 @@ class StandardInflector
 
     public function variablize($s)
     {
-        return str_replace([
+        return \str_replace([
             '-',
             ' '], [
             '_',

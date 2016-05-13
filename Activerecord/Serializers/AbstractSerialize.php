@@ -54,7 +54,7 @@ abstract class AbstractSerialize
      *
      * @see DateTime
      */
-    public static $DATETIME_FORMAT = 'iso8601';
+    public static $datetime_format = 'iso8601';
 
     /**
      * Set this to true if the serializer needs to create a nested array keyed
@@ -240,7 +240,7 @@ abstract class AbstractSerialize
         {
             if ($value instanceof \DateTime)
             {
-                $value = $value->format(self::$DATETIME_FORMAT);
+                $value = $value->format(self::$datetime_format);
             }
         }
         return $this->attributes;

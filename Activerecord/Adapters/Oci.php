@@ -19,8 +19,8 @@ class Oci
         extends Connection
 {
 
-    static $QUOTE_CHARACTER = '';
-    static $DEFAULT_PORT = 1521;
+    static $quote_character = '';
+    static $default_port = 1521;
     public $dsn_params;
 
     protected function __construct($info)
@@ -30,7 +30,7 @@ class Oci
             $this->dsn_params = isset($info->charset) ? ";charset=$info->charset"
                         : "";
             $this->connection = new \PDO("oci:dbname=//$info->host/$info->db$this->dsn_params",
-                    $info->user, $info->pass, static::$PDO_OPTIONS);
+                    $info->user, $info->pass, static::$pdo_options);
         }
         catch (\PDOException $e)
         {
@@ -105,8 +105,10 @@ class Oci
         $column['data_type'] = \strtolower(\preg_replace('/\(.*?\)/', '',
                         $column['data_type']));
 
-        if ($column['data_default'] !== null) $column['data_default'] = \trim($column['data_default'],
-                    "' ");
+        if ($column['data_default'] !== null)
+        {
+            $column['data_default'] = \trim($column['data_default'], "' ");
+        }
 
         if ($column['data_type'] == 'number')
         {

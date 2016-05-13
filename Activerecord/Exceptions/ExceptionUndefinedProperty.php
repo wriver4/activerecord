@@ -36,9 +36,9 @@ class ExceptionUndefinedProperty
      */
     public function __construct($class_name, $property_name)
     {
-        if (is_array($property_name))
+        if (\is_array($property_name))
         {
-            $this->message = implode("\r\n", $property_name);
+            $this->message = \implode("\r\n", $property_name);
             return;
         }
 

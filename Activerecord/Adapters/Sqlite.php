@@ -31,7 +31,7 @@ class Sqlite
         }
 
         $this->connection = new \PDO("sqlite:$info->host", null, null,
-                static::$PDO_OPTIONS);
+                static::$pdo_options);
     }
 
     public function limit($sql, $offset, $limit)

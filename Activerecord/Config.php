@@ -290,9 +290,9 @@ class Config
      */
     public function getDateFormat()
     {
-        trigger_error('Use ActiveRecord\Serialization::$DATETIME_FORMAT. Config::getDateFormat() has been deprecated.',
+        trigger_error('Use Activerecord\Serializers\AbstractSerialize::$datetime_format. Config::getDateFormat() has been deprecated.',
                 E_USER_DEPRECATED);
-        return Serialization::$DATETIME_FORMAT;
+        return Activerecord\Serializers\AbstractSerialize::$datetime_format;
     }
 
     /**
@@ -300,9 +300,9 @@ class Config
      */
     public function setDateFormat($format)
     {
-        trigger_error('Use ActiveRecord\Serialization::$DATETIME_FORMAT. Config::setDateFormat() has been deprecated.',
+        trigger_error('Use Activerecord\Serializers\AbstractSerialize::$datetime_format. Config::setDateFormat() has been deprecated.',
                 E_USER_DEPRECATED);
-        Serialization::$DATETIME_FORMAT = $format;
+        Activerecord\Serializers\AbstractSerialize::$datetime_format = $format;
     }
 
     /**

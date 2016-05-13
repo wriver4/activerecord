@@ -28,7 +28,7 @@ class Column
      * @static
      * @var array
      */
-    static $TYPE_MAPPING = [
+    static $type_mapping = [
         'datetime' => self::DATETIME,
         'timestamp' => self::DATETIME,
         'date' => self::DATE,
@@ -205,9 +205,9 @@ class Column
             $this->raw_type = 'int';
         }
 
-        if (\array_key_exists($this->raw_type, self::$TYPE_MAPPING))
+        if (\array_key_exists($this->raw_type, self::$type_mapping))
         {
-            $this->type = self::$TYPE_MAPPING[$this->raw_type];
+            $this->type = self::$type_mapping[$this->raw_type];
         }
         else
         {

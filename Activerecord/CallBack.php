@@ -67,7 +67,7 @@ class CallBack
      *
      * @var array
      */
-    static protected $VALID_CALLBACKS = [
+    static protected $valid_callbacks = [
         'after_construct',
         'before_save',
         'after_save',
@@ -96,7 +96,7 @@ class CallBack
      * List of public methods of the given model
      * @var array
      */
-    private $publicMethods;
+    private $public_methods;
 
     /**
      * Holds data for registered callbacks.
@@ -115,7 +115,7 @@ class CallBack
     {
         $this->reflect = Reflections::instance()->get($model_class_name);
 
-        foreach (static::$VALID_CALLBACKS as $name)
+        foreach (static::$valid_callbacks as $name)
         {
             // look for explicitly defined static callback
             if (($definition = $this->reflect->getStaticPropertyValue($name,
@@ -133,7 +133,7 @@ class CallBack
             }
 
             // implicit callbacks that don't need to have a static definition
-            // simply define a method named the same as something in $VALID_CALLBACKS
+            // simply define a method named the same as something in $valid_callbacks
             // and the callback is auto-registered
             elseif ($this->reflect->hasMethod($name))
             {
@@ -145,7 +145,7 @@ class CallBack
     /**
      * Returns all the callbacks registered for a callback type.
      *
-     * @param $name string Name of a callback (see {@link VALID_CALLBACKS $VALID_CALLBACKS})
+     * @param $name string Name of a callback (see {@link valid_callbacks $valid_callbacks})
      * @return array array of callbacks or null if invalid callback name.
      */
     public function getCallbacks($name)
@@ -227,7 +227,7 @@ class CallBack
      * <li><b>prepend:</b> Add this callback at the beginning of the existing callbacks (true) or at the end (false, default)</li>
      * </ul>
      *
-     * @param string $name Name of callback type (see {@link VALID_CALLBACKS $VALID_CALLBACKS})
+     * @param string $name Name of callback type (see {@link valid_callbacks $valid_callbacks})
      * @param mixed $closure_or_method_name Either a closure or the name of a method on the {@link Model}
      * @param array $options Options array
      * @return void
@@ -243,19 +243,19 @@ class CallBack
             $closure_or_method_name = $name;
         }
 
-        if (!\in_array($name, self::$VALID_CALLBACKS))
+        if (!\in_array($name, self::$valid_callbacks))
         {
             throw new ExceptionActiverecord("Invalid callback: $name");
         }
 
         if (!($closure_or_method_name instanceof \Closure))
         {
-            if (!isset($this->publicMethods))
+            if (!isset($this->public_methods))
             {
-                $this->publicMethods = \get_class_methods($this->reflect->getName());
+                $this->public_methods = \get_class_methods($this->reflect->getName());
             }
 
-            if (!in_array($closure_or_method_name, $this->publicMethods))
+            if (!in_array($closure_or_method_name, $this->public_methods))
             {
                 if ($this->reflect->hasMethod($closure_or_method_name))
                 {

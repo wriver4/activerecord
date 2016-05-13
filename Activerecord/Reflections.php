@@ -91,7 +91,7 @@ class Reflections
             return getClass($mixed);
         }
 
-        if (!is_null($mixed))
+        if (!\is_null($mixed))
         {
             return $mixed;
         }

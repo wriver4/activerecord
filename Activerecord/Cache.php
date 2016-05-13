@@ -50,7 +50,10 @@ class Cache
             require_once __DIR__."/cache/$file.php";
             static::$adapter = new $class($url);
         }
-        else static::$adapter = null;
+        else
+        {
+            static::$adapter = null;
+        }
 
         static::$options = \array_merge([
             'expire' => 30,

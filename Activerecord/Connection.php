@@ -65,7 +65,7 @@ abstract class Connection
      * Default PDO options to set for each connection.
      * @var array
      */
-    static $PDO_OPTIONS = [
+    static $pdo_options = [
         \PDO::ATTR_CASE => \PDO::CASE_LOWER,
         \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
         \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -75,13 +75,13 @@ abstract class Connection
      * The quote character for stuff like column and field names.
      * @var string
      */
-    static $QUOTE_CHARACTER = '`';
+    static $quote_character = '`';
 
     /**
      * Default port.
      * @var int
      */
-    static $DEFAULT_PORT = 0;
+    static $default_port = 0;
 
     /**
      * Retrieve a database connection.
@@ -289,7 +289,7 @@ abstract class Connection
             }
 
             $this->connection = new \PDO("$info->protocol:$host;dbname=$info->db",
-                    $info->user, $info->pass, static::$PDO_OPTIONS);
+                    $info->user, $info->pass, static::$pdo_options);
         }
         catch (\PDOException $e)
         {
@@ -508,9 +508,9 @@ abstract class Connection
      */
     public function quoteName($string)
     {
-        return $string[0] === static::$QUOTE_CHARACTER || $string[\strlen($string)
-                - 1] === static::$QUOTE_CHARACTER ?
-                $string : static::$QUOTE_CHARACTER.$string.static::$QUOTE_CHARACTER;
+        return $string[0] === static::$quote_character || $string[\strlen($string)
+                - 1] === static::$quote_character ?
+                $string : static::$quote_character.$string.static::$quote_character;
     }
 
     /**

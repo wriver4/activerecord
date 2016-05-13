@@ -14,7 +14,7 @@ namespace Activerecord;
  *
  * <code>
  * $now = new ActiveRecord\DateTime('2010-01-02 03:04:05');
- * ActiveRecord\DateTime::$DEFAULT_FORMAT = 'short';
+ * ActiveRecord\DateTime::$default_format = 'short';
  *
  * echo $now->format();         # 02 Jan 03:04
  * echo $now->format('atom');   # 2010-01-02T03:04:05-05:00
@@ -27,7 +27,7 @@ namespace Activerecord;
  * You can also add your own pre-defined friendly formatters:
  *
  * <code>
- * ActiveRecord\DateTime::$FORMATS['awesome_format'] = 'H:i:s m/d/Y';
+ * ActiveRecord\DateTime::$formats['awesome_format'] = 'H:i:s m/d/Y';
  * echo $now->format('awesome_format')  # 03:04:05 01/02/2010
  * </code>
  *
@@ -41,12 +41,12 @@ class DateTime
     /**
      * Default format used for format() and __toString()
      */
-    public static $DEFAULT_FORMAT = 'rfc2822';
+    public static $default_format = 'rfc2822';
 
     /**
      * Pre-defined format strings.
      */
-    public static $FORMATS = [
+    public static $formats = [
         'db' => 'Y-m-d H:i:s',
         'number' => 'YmdHis',
         'time' => 'H:i',
@@ -73,15 +73,15 @@ class DateTime
     }
 
     /**
-     * Formats the DateTime to the specified format.
+     * formats the DateTime to the specified format.
      *
      * <code>
-     * $datetime->format();         # uses the format defined in DateTime::$DEFAULT_FORMAT
+     * $datetime->format();         # uses the format defined in DateTime::$default_format
      * $datetime->format('short');  # d M H:i
      * $datetime->format('Y-m-d');  # Y-m-d
      * </code>
      *
-     * @see FORMATS
+     * @see formats
      * @see getFormat
      * @param string $format A format string accepted by getFormat()
      * @return string formatted date and time string
@@ -94,10 +94,10 @@ class DateTime
     /**
      * Returns the format string.
      *
-     * If $format is a pre-defined format in $FORMATS it will return that otherwise
+     * If $format is a pre-defined format in $formats it will return that otherwise
      * it will assume $format is a format string itself.
      *
-     * @see FORMATS
+     * @see formats
      * @param string $format A pre-defined string format or a raw format string
      * @return string a format string
      */
@@ -106,13 +106,13 @@ class DateTime
         // use default format if no format specified
         if (!$format)
         {
-            $format = self::$DEFAULT_FORMAT;
+            $format = self::$default_format;
         }
 
         // format is a friendly
-        if (\array_key_exists($format, self::$FORMATS))
+        if (\array_key_exists($format, self::$formats))
         {
-            return self::$FORMATS[$format];
+            return self::$formats[$format];
         }
 
         // raw format
