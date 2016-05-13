@@ -157,7 +157,8 @@ abstract class AbstractRelations
         $query_key = $query_keys[0];
         $model_values_key = $model_values_keys[0];
 
-        foreach ($attributes as $column => $value)
+        // foreach ($attributes as $column => $value) original
+        foreach ($attributes as $value)
         {
             $values[] = $value[$inflector->variablize($model_values_key)];
         }
