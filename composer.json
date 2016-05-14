@@ -5,8 +5,23 @@
     "keywords": ["activerecord", "orm"],
     "homepage": "http://www.whizbangdevelopers.com/",
     "license": "MIT",
+    "support": {
+        "email": "",
+        "issues": "",
+        "forum": "",
+        "wiki": "",
+        "irc": "",
+        "source": "",
+        "docs": ""
+    },
     "require": {
         "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.3.*"
+    },
+    "config": {
+        "optimize-autoloader": true
     },
     "autoload": {
         "psr-4": {
