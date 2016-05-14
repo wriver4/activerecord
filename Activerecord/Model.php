@@ -887,7 +887,7 @@ class Model
     {
         $this->verifyNotReadonly('insert');
 
-        if (($validate && !$this->_validate() || !$this->invokeCallback('before_create',
+        if (($validate && !$this->validateModel() || !$this->invokeCallback('before_create',
                         false)))
         {
             return false;
@@ -959,7 +959,7 @@ class Model
     {
         $this->verifyNotReadonly('update');
 
-        if ($validate && !$this->_validate())
+        if ($validate && !$this->validateModel())
         {
             return false;
         }
@@ -1205,10 +1205,11 @@ class Model
      *
      * @return boolean True if passed validators otherwise false
      */
-    private function _validate()
+    private function validateModel()
     {
-        require_once 'Validations.php';
-
+        /** test norequire
+          require_once 'Validations.php';
+         */
         $validator = new Validations($this);
         $validation_on = 'validation_on_'.($this->isNewRecord() ? 'create' : 'update');
 
@@ -1257,7 +1258,7 @@ class Model
      */
     public function isValid()
     {
-        return $this->_validate();
+        return $this->validateModel();
     }
 
     /**
@@ -1268,7 +1269,7 @@ class Model
      */
     public function isInvalid()
     {
-        return !$this->_validate();
+        return !$this->validateModel();
     }
 
     /**
@@ -1478,7 +1479,7 @@ class Model
      *
      * @var array
      */
-    static $VALID_OPTIONS = [
+    static $valid_options = [
         'conditions',
         'limit',
         'offset',
@@ -1940,7 +1941,7 @@ class Model
         if (Utils::isHash($array))
         {
             $keys = \array_keys($array);
-            $diff = \array_diff($keys, self::$VALID_OPTIONS);
+            $diff = \array_diff($keys, self::$valid_options);
 
             if (!empty($diff) && $throw)
             {
@@ -1948,7 +1949,7 @@ class Model
                         $diff));
             }
 
-            $intersect = \array_intersect($keys, self::$VALID_OPTIONS);
+            $intersect = \array_intersect($keys, self::$valid_options);
 
             if (!empty($intersect))
             {
