@@ -1,6 +1,8 @@
 <?php
 
-use ActiveRecord\Column;
+namespace Test\Helpers;
+
+use Activerecord\Column;
 
 class AdapterTest
         extends DatabaseTest
@@ -290,7 +292,8 @@ class AdapterTest
             'mixedCaseField');
 
         if ($this->conn instanceof ActiveRecord\OciAdapter) $names = array_filter(array_map('strtolower',
-                            $names), function($s)
+                            $names),
+                    function($s)
             {
                 return $s !== 'some_time';
             });
