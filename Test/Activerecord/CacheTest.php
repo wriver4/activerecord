@@ -17,7 +17,7 @@ class CacheTest
     /**
      * @var \RemoteWebDriver
      */
-    protected $webDriver;
+    protected $webDriver2;
 
     public function setUp()
     {
