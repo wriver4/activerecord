@@ -1,4 +1,7 @@
 <?php
+
+namespace Test\Helpers;
+
 require_once __DIR__.'/DatabaseLoader.php';
 
 class DatabaseTest
