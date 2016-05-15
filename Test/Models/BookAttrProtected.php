@@ -3,7 +3,7 @@
 namespace Test\Models;
 
 class BookAttrProtected
-        extends Activerecord\Model
+        extends \Activerecord\Model
 {
 
     static $pk = 'book_id';

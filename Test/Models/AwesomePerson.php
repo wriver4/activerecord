@@ -3,7 +3,7 @@
 namespace Test\Models;
 
 class AwesomePerson
-        extends Activerecord\Model
+        extends \Activerecord\Model
 {
 
     static $belongs_to = array(

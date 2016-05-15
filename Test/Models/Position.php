@@ -1,6 +1,11 @@
 <?php
-class Position extends Activerecord\Model
+
+namespace Test\Models;
+
+class Position
+        extends \Activerecord\Model
 {
-	static $belongs_to;
-};
-?>
+
+    static $belongs_to;
+
+}

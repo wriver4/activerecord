@@ -3,7 +3,7 @@
 namespace Test\Models;
 
 class Amenity
-        extends Activerecord\Model
+        extends \Activerecord\Model
 {
 
     static $table_name = 'amenities';

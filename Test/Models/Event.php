@@ -3,7 +3,7 @@
 namespace Test\Models;
 
 class Event
-        extends Activerecord\Model
+        extends \Activerecord\Model
 {
 
     static $belongs_to = array(

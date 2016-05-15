@@ -3,7 +3,7 @@
 namespace Test\Models;
 
 class Book
-        extends Activerecord\Model
+        extends \Activerecord\Model
 {
 
     static $belongs_to = array(

@@ -3,7 +3,7 @@
 namespace Test\Models;
 
 class Author
-        extends Activerecord\Model
+        extends \Activerecord\Model
 {
 
     static $pk = 'author_id';
