@@ -1,5 +1,5 @@
 <?php
-class BookAttrProtected extends ActiveRecord\Model
+class BookAttrProtected extends Activerecord\Model
 {
 	static $pk = 'book_id';
 	static $table_name = 'books';

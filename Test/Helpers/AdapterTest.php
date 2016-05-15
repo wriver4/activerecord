@@ -14,7 +14,7 @@ class AdapterTest
     {
         if (($connection_name && !in_array($connection_name,
                         PDO::getAvailableDrivers())) ||
-                ActiveRecord\Config::instance()->get_connection($connection_name)
+                Activerecord\Config::instance()->get_connection($connection_name)
                 == 'skip')
         {
             $this->mark_test_skipped($connection_name.' drivers are not present');
@@ -25,7 +25,7 @@ class AdapterTest
 
     public function test_i_has_a_default_port_unless_im_sqlite()
     {
-        if ($this->conn instanceof ActiveRecord\SqliteAdapter) return;
+        if ($this->conn instanceof Activerecord\SqliteAdapter) return;
 
         $c = $this->conn;
         $this->assert_true($c::$DEFAULT_PORT > 0);
@@ -38,58 +38,58 @@ class AdapterTest
 
     public function test_null_connection_string_uses_default_connection()
     {
-        $this->assert_not_null(ActiveRecord\Connection::instance(null));
-        $this->assert_not_null(ActiveRecord\Connection::instance(''));
-        $this->assert_not_null(ActiveRecord\Connection::instance());
+        $this->assert_not_null(Activerecord\Connection::instance(null));
+        $this->assert_not_null(Activerecord\Connection::instance(''));
+        $this->assert_not_null(Activerecord\Connection::instance());
     }
 
     /**
-     * @expectedException ActiveRecord\DatabaseException
+     * @expectedException Activerecord\DatabaseException
      */
     public function test_invalid_connection_protocol()
     {
-        ActiveRecord\Connection::instance('terribledb://user:pass@host/db');
+        Activerecord\Connection::instance('terribledb://user:pass@host/db');
     }
 
     /**
-     * @expectedException ActiveRecord\DatabaseException
+     * @expectedException Activerecord\DatabaseException
      */
     public function test_no_host_connection()
     {
-        if (!$GLOBALS['slow_tests']) throw new ActiveRecord\DatabaseException("");
+        if (!$GLOBALS['slow_tests']) throw new Activerecord\DatabaseException("");
 
-        ActiveRecord\Connection::instance("{$this->conn->protocol}://user:pass");
+        Activerecord\Connection::instance("{$this->conn->protocol}://user:pass");
     }
 
     /**
-     * @expectedException ActiveRecord\DatabaseException
+     * @expectedException Activerecord\DatabaseException
      */
     public function test_connection_failed_invalid_host()
     {
-        if (!$GLOBALS['slow_tests']) throw new ActiveRecord\DatabaseException("");
+        if (!$GLOBALS['slow_tests']) throw new Activerecord\DatabaseException("");
 
-        ActiveRecord\Connection::instance("{$this->conn->protocol}://user:pass/1.1.1.1/db");
+        Activerecord\Connection::instance("{$this->conn->protocol}://user:pass/1.1.1.1/db");
     }
 
     /**
-     * @expectedException ActiveRecord\DatabaseException
+     * @expectedException Activerecord\DatabaseException
      */
     public function test_connection_failed()
     {
-        ActiveRecord\Connection::instance("{$this->conn->protocol}://baduser:badpass@127.0.0.1/db");
+        Activerecord\Connection::instance("{$this->conn->protocol}://baduser:badpass@127.0.0.1/db");
     }
 
     /**
-     * @expectedException ActiveRecord\DatabaseException
+     * @expectedException Activerecord\DatabaseException
      */
     public function test_connect_failed()
     {
-        ActiveRecord\Connection::instance("{$this->conn->protocol}://zzz:zzz@127.0.0.1/test");
+        Activerecord\Connection::instance("{$this->conn->protocol}://zzz:zzz@127.0.0.1/test");
     }
 
     public function test_connect_with_port()
     {
-        $config = ActiveRecord\Config::instance();
+        $config = Activerecord\Config::instance();
         $name = $config->get_default_connection();
         $url = parse_url($config->get_connection($name));
         $conn = $this->conn;
@@ -102,15 +102,15 @@ class AdapterTest
         }
         $connection_string = "{$connection_string}@{$url['host']}:$port{$url['path']}";
 
-        if ($this->conn->protocol != 'sqlite') ActiveRecord\Connection::instance($connection_string);
+        if ($this->conn->protocol != 'sqlite') Activerecord\Connection::instance($connection_string);
     }
 
     /**
-     * @expectedException ActiveRecord\DatabaseException
+     * @expectedException Activerecord\DatabaseException
      */
     public function test_connect_to_invalid_database()
     {
-        ActiveRecord\Connection::instance("{$this->conn->protocol}://test:test@127.0.0.1/".self::InvalidDb);
+        Activerecord\Connection::instance("{$this->conn->protocol}://test:test@127.0.0.1/".self::InvalidDb);
     }
 
     public function test_date_time_type()
@@ -200,7 +200,7 @@ class AdapterTest
     }
 
     /**
-     * @expectedException ActiveRecord\DatabaseException
+     * @expectedException Activerecord\DatabaseException
      */
     public function test_invalid_query()
     {
@@ -291,7 +291,7 @@ class AdapterTest
             'encrypted_password',
             'mixedCaseField');
 
-        if ($this->conn instanceof ActiveRecord\OciAdapter) $names = array_filter(array_map('strtolower',
+        if ($this->conn instanceof Activerecord\OciAdapter) $names = array_filter(array_map('strtolower',
                             $names),
                     function($s)
             {
@@ -331,7 +331,7 @@ class AdapterTest
         {
             $ret[] = $row;
         });
-        return ActiveRecord\collect($ret, 'author_id');
+        return Activerecord\collect($ret, 'author_id');
     }
 
     public function test_limit()

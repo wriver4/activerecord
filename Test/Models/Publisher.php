@@ -1,5 +1,5 @@
 <?php
-class Publisher extends ActiveRecord\Model
+class Publisher extends Activerecord\Model
 {
 	static $pk = 'publisher_id';
 	static $cache = true;

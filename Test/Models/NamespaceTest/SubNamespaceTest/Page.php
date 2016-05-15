@@ -3,7 +3,7 @@
 namespace NamespaceTest\SubNamespaceTest;
 
 class Page
-        extends \ActiveRecord\Model
+        extends \Activerecord\Model
 {
 
     static $belong_to = array(

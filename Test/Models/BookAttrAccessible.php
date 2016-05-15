@@ -1,5 +1,5 @@
 <?php
-class BookAttrAccessible extends ActiveRecord\Model
+class BookAttrAccessible extends Activerecord\Model
 {
 	static $pk = 'book_id';
 	static $table_name = 'books';

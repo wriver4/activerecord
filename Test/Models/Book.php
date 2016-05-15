@@ -1,5 +1,5 @@
 <?php
-class Book extends ActiveRecord\Model
+class Book extends Activerecord\Model
 {
 	static $belongs_to = array('author');
 	static $has_one = array();

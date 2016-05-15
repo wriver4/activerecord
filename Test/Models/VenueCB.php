@@ -1,5 +1,5 @@
 <?php
-class VenueCB extends ActiveRecord\Model
+class VenueCB extends Activerecord\Model
 {
 	static $table_name = 'venues';
 	static $before_save;

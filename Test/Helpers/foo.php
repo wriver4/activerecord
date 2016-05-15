@@ -3,7 +3,7 @@
 namespace foo\bar\biz;
 
 class User
-        extends \ActiveRecord\Model
+        extends \Activerecord\Model
 {
 
     static $has_many = array(
@@ -17,7 +17,7 @@ class User
 }
 
 class Newsletter
-        extends \ActiveRecord\Model
+        extends \Activerecord\Model
 {
 
     static $has_many = array(
@@ -31,7 +31,7 @@ class Newsletter
 }
 
 class UserNewsletter
-        extends \ActiveRecord\Model
+        extends \Activerecord\Model
 {
 
     static $belong_to = array(

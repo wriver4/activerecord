@@ -1,5 +1,5 @@
 <?php
-class RmBldg extends ActiveRecord\Model
+class RmBldg extends Activerecord\Model
 {
 	static $table = 'rm-bldg';
 

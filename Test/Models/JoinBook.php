@@ -1,5 +1,5 @@
 <?php
-class JoinBook extends ActiveRecord\Model
+class JoinBook extends Activerecord\Model
 {
 	static $table_name = 'books';
 

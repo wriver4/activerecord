@@ -1,5 +1,5 @@
 <?php
-class PropertyAmenity extends ActiveRecord\Model
+class PropertyAmenity extends Activerecord\Model
 {
 	static $table_name = 'property_amenities';
 	static $primary_key = 'id';

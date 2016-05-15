@@ -1,5 +1,5 @@
 <?php
-class AwesomePerson extends ActiveRecord\Model
+class AwesomePerson extends Activerecord\Model
 {
 	static $belongs_to = array('author');
 }

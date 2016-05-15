@@ -1,5 +1,5 @@
 <?php
-class Employee extends ActiveRecord\Model
+class Employee extends Activerecord\Model
 {
 	static $has_one;
 };

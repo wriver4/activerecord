@@ -1,5 +1,5 @@
 <?php
-class Property extends ActiveRecord\Model
+class Property extends Activerecord\Model
 {
 	static $table_name = 'property';
 	static $primary_key = 'property_id';

@@ -1,5 +1,5 @@
 <?php
-class Host extends ActiveRecord\Model
+class Host extends Activerecord\Model
 {
 	static $has_many = array(
 		'events',

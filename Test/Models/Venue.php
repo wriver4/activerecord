@@ -1,5 +1,5 @@
 <?php
-class Venue extends ActiveRecord\Model
+class Venue extends Activerecord\Model
 {
 	static $use_custom_get_state_getter = false;
 	static $use_custom_set_state_setter = false;

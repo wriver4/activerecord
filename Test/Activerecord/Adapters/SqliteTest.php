@@ -5,6 +5,8 @@
  * and open the template in the editor.
  */
 
+namespace Test\Activerecord\Adapters;
+
 /**
  * Description of SqliteTest
  *

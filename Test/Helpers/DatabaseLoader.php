@@ -59,7 +59,7 @@ class DatabaseLoader
 			{
 				try {
 					$this->db->query("DROP SEQUENCE {$table}_seq");
-				} catch (ActiveRecord\DatabaseException $e) {
+				} catch (Activerecord\DatabaseException $e) {
 					// ignore
 				}
 			}

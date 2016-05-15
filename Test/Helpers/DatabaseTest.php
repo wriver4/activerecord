@@ -11,9 +11,9 @@ class DatabaseTest
 
     public function set_up($connection_name = null)
     {
-        ActiveRecord\Table::clear_cache();
+        Activerecord\Table::clear_cache();
 
-        $config = ActiveRecord\Config::instance();
+        $config = Activerecord\Config::instance();
         $this->original_default_connection = $config->get_default_connection();
 
         $this->original_date_class = $config->get_date_class();
@@ -23,7 +23,7 @@ class DatabaseTest
         if ($connection_name == 'sqlite' || $config->get_default_connection() == 'sqlite')
         {
             // need to create the db. the adapter specifically does not create it for us.
-            static::$db = substr(ActiveRecord\Config::instance()->get_connection('sqlite'),
+            static::$db = substr(Activerecord\Config::instance()->get_connection('sqlite'),
                     9);
             new SQLite3(static::$db);
         }
@@ -31,25 +31,25 @@ class DatabaseTest
         $this->connection_name = $connection_name;
         try
         {
-            $this->conn = ActiveRecord\ConnectionManager::get_connection($connection_name);
+            $this->conn = Activerecord\ConnectionManager::get_connection($connection_name);
         }
-        catch (ActiveRecord\DatabaseException $e)
+        catch (Activerecord\DatabaseException $e)
         {
             $this->mark_test_skipped($connection_name.' failed to connect. '.$e->getMessage());
         }
 
-        $GLOBALS['ACTIVERECORD_LOG'] = false;
+        $GLOBALS['Activerecord_LOG'] = false;
 
         $loader = new DatabaseLoader($this->conn);
         $loader->reset_table_data();
 
-        if (self::$log) $GLOBALS['ACTIVERECORD_LOG'] = true;
+        if (self::$log) $GLOBALS['Activerecord_LOG'] = true;
     }
 
     public function tear_down()
     {
-        ActiveRecord\Config::instance()->set_date_class($this->original_date_class);
-        if ($this->original_default_connection) ActiveRecord\Config::instance()->set_default_connection($this->original_default_connection);
+        Activerecord\Config::instance()->set_date_class($this->original_date_class);
+        if ($this->original_default_connection) Activerecord\Config::instance()->set_default_connection($this->original_default_connection);
     }
 
     public function assert_exception_message_contains($contains, $closure)
@@ -60,7 +60,7 @@ class DatabaseTest
         {
             $closure();
         }
-        catch (ActiveRecord\UndefinedPropertyException $e)
+        catch (Activerecord\UndefinedPropertyException $e)
         {
             $message = $e->getMessage();
         }
