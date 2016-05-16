@@ -1,4 +1,4 @@
-# activerecord
+# Activerecord
 
 Warning working on conforming to PSR-1 starting 5/11/2016 use Ver. 1.1
 
@@ -43,13 +43,13 @@ foreach ($bars as $bar)
     echo '<br>';
 }
 ```
-The php-activerecord.org instructions for use remain the same.
+The php-Activerecord.org instructions for use remain the same.
 
 ### Updated 4/25/2016
-A revised implementation of php-activerecord by jpfuentes;
+A revised implementation of php-Activerecord by jpfuentes;
 Currently working but testing system incomplete.
 
 ### Original Commit 12/9/2015
-A revised implementation of php-activerecord by jpfuentes
+A revised implementation of php-Activerecord by jpfuentes
 This is an inprocess version testing is not complete.
-So far the php-activerecord.org instructions for use remain the same.
+So far the php-Activerecord.org instructions for use remain the same.

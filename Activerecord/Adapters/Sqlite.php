@@ -9,7 +9,7 @@ use Activerecord\Column;
 use Activerecord\Connection;
 use Activerecord\Exceptions\ExceptionActiverecord;
 use Activerecord\Exceptions\ExceptionDatabase;
-use ActiveRecord\Utils;
+use Activerecord\Utils;
 use Activerecord\Inflector;
 
 /**

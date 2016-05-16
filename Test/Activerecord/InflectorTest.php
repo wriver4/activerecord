@@ -7,6 +7,8 @@
 
 namespace Test\Activerecord;
 
+use Activerecord\Inflector;
+
 /**
  * Description of InflectorTest
  *
@@ -16,31 +18,35 @@ class InflectorTest
         extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * @var \RemoteWebDriver
-     */
-    protected $webDriver;
-
     public function setUp()
     {
-        $capabilities = array(
-            \WebDriverCapabilityType::BROWSER_NAME => 'firefox');
-        $this->webDriver = RemoteWebDriver::create('http://localhost:4444/wd/hub',
-                        $capabilities);
+        $this->inflector = Inflector::instance();
     }
 
     public function tearDown()
     {
-        $this->webDriver->close();
+
     }
 
-    protected $url = 'http://www.netbeans.org/';
-
-    public function testSimple()
+    public function test_underscorify()
     {
-        $this->webDriver->get($this->url);
-        // checking that page title contains word 'NetBeans'
-        $this->assertContains('NetBeans', $this->webDriver->getTitle());
+        $this->assert_equals('rm__name__bob',
+                $this->inflector->variablize('rm--name  bob'));
+        $this->assert_equals('One_Two_Three',
+                $this->inflector->underscorify('OneTwoThree'));
+    }
+
+    public function test_tableize()
+    {
+        $this->assert_equals('angry_people',
+                $this->inflector->tableize('AngryPerson'));
+        $this->assert_equals('my_sqls', $this->inflector->tableize('MySQL'));
+    }
+
+    public function test_keyify()
+    {
+        $this->assert_equals('building_type_id',
+                $this->inflector->keyify('BuildingType'));
     }
 
 }

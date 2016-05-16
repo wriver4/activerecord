@@ -1,8 +1,8 @@
 {
-    "name": "wriver4/activerecord",
+    "name": "wriver4/Activerecord",
     "type": "library",
-    "description": "activerecord is a revised implementation of php-activerecord by jpfuent an open source ORM library based on the ActiveRecord pattern.",
-    "keywords": ["activerecord", "orm"],
+    "description": "Activerecord is a revised implementation of php-Activerecord by jpfuent an open source ORM library based on the Activerecord pattern.",
+    "keywords": ["Activerecord", "orm"],
     "homepage": "http://www.whizbangdevelopers.com/",
     "license": "MIT",
     "support": {

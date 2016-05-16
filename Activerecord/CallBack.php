@@ -1,6 +1,6 @@
 <?php
 /**
- * @package ActiveRecord
+ * @package Activerecord
  */
 
 namespace Activerecord;
@@ -12,7 +12,7 @@ use Activerecord\Reflections;
  * Callbacks allow the programmer to hook into the life cycle of a {@link Model}.
  *
  * You can control the state of your object by declaring certain methods to be
- * called before or after methods are invoked on your object inside of ActiveRecord.
+ * called before or after methods are invoked on your object inside of Activerecord.
  *
  * Valid callbacks are:
  * <ul>
@@ -36,7 +36,7 @@ use Activerecord\Reflections;
  * This class isn't meant to be used directly. Callbacks are defined on your model like the example below:
  *
  * <code>
- * class Person extends ActiveRecord\Model {
+ * class Person extends Activerecord\Model {
  *   static $before_save = array('make_name_uppercase');
  *   static $after_save = array('do_happy_dance');
  *
@@ -56,8 +56,8 @@ use Activerecord\Reflections;
  * <li><b>prepend:</b> puts the callback at the top of the callback chain instead of the bottom</li>
  * </ul>
  *
- * @package ActiveRecord
- * @link http://www.phpactiverecord.org/guides/callbacks
+ * @package Activerecord
+ * @link http://www.phpActiverecord.org/guides/callbacks
  */
 class CallBack
 {
@@ -231,7 +231,7 @@ class CallBack
      * @param mixed $closure_or_method_name Either a closure or the name of a method on the {@link Model}
      * @param array $options Options array
      * @return void
-     * @throws ActiveRecord if invalid callback type or callback method was not found
+     * @throws Activerecord if invalid callback type or callback method was not found
      */
     public function register($name, $closure_or_method_name = null,
             $options = [])

@@ -11,7 +11,7 @@ use Activerecord\Relations\HasOne;
 use Activerecord\Relations\InterfaceRelations;
 use Activerecord\SQLBuilder;
 use Activerecord\Table;
-use ActiveRecord\Utils;
+use Activerecord\Utils;
 
 /**
  * @package Activerecord

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package ActiveRecord
+ * @package Activerecord
  */
 
 namespace Activerecord;
@@ -15,7 +15,7 @@ use Activerecord\Exceptions\ExceptionExpressions;
  * 'id = IN(:ids)'
  * 'id IN(:subselect)'
  *
- * @package ActiveRecord
+ * @package Activerecord
  */
 class Expressions
 {

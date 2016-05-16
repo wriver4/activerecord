@@ -27,7 +27,7 @@ class Cache
      * a shared key/store (for instance a shared Memcached db)
      *
      * Ex:
-     * $cfg_ar = ActiveRecord\Config::instance();
+     * $cfg_ar = Activerecord\Config::instance();
      * $cfg_ar->set_cache('memcache://localhost:11211',array('namespace' => 'my_cool_app',
      * 																											 'expire'		 => 120
      * 																											 ));
@@ -46,7 +46,7 @@ class Cache
         {
             $url = \parse_url($url);
             $file = \ucwords(Inflector::instance()->camelize($url['scheme']));
-            $class = "ActiveRecord\\$file";
+            $class = "Activerecord\\$file";
             require_once __DIR__."/cache/$file.php";
             static::$adapter = new $class($url);
         }

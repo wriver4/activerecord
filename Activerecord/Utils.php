@@ -36,8 +36,8 @@ namespace Activerecord;
 
 use Activerecord\Inflector;
 use Activerecord\Utils;
-use function ActiveRecord\arrayFlatten;
-use function ActiveRecord\hasNamespace;
+use function Activerecord\arrayFlatten;
+use function Activerecord\hasNamespace;
 
 /**
  * Some internal utility functions.

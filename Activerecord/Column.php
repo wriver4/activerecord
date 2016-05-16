@@ -1,6 +1,6 @@
 <?php
 /**
- * @package ActiveRecord
+ * @package Activerecord
  */
 
 namespace Activerecord;
@@ -10,7 +10,7 @@ use Activerecord\Connection;
 /**
  * Class for a table column.
  *
- * @package ActiveRecord
+ * @package Activerecord
  */
 class Column
 {

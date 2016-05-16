@@ -1,9 +1,9 @@
 <?php
 /**
- * @package ActiveRecord
+ * @package Activerecord
  */
 
-namespace ActiveRecord;
+namespace Activerecord;
 
 /**
  * This implementation of the singleton pattern does not conform to the
@@ -12,7 +12,7 @@ namespace ActiveRecord;
  * achieved; however, multiple instantiations are also possible.
  * This allows the user more freedom with this pattern.
  *
- * @package ActiveRecord
+ * @package Activerecord
  */
 abstract class Singleton
 {

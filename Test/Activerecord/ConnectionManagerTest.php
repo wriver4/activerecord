@@ -7,40 +7,47 @@
 
 namespace Test\Activerecord;
 
+use Activerecord\Config;
+use Activerecord\ConnectionManager;
+
 /**
  * Description of ConnectionManagerTest
  *
  * @author mark weisser <mark at whizbangdevelopers.com>
  */
 class ConnectionManagerTest
-        extends PHPUnit_Framework_TestCase
+        extends DatabaseTest
 {
 
-    /**
-     * @var \RemoteWebDriver
-     */
-    protected $webDriver;
-
-    public function setUp()
+    public function test_get_connection_with_null_connection()
     {
-        $capabilities = array(
-            \WebDriverCapabilityType::BROWSER_NAME => 'firefox');
-        $this->webDriver = RemoteWebDriver::create('http://localhost:4444/wd/hub',
-                        $capabilities);
+        $this->assert_not_null(ConnectionManager::get_connection(null));
+        $this->assert_not_null(ConnectionManager::get_connection());
     }
 
-    public function tearDown()
+    public function test_get_connection()
     {
-        $this->webDriver->close();
+        $this->assert_not_null(ConnectionManager::get_connection('mysql'));
     }
 
-    protected $url = 'http://www.netbeans.org/';
-
-    public function testSimple()
+    public function test_get_connection_uses_existing_object()
     {
-        $this->webDriver->get($this->url);
-        // checking that page title contains word 'NetBeans'
-        $this->assertContains('NetBeans', $this->webDriver->getTitle());
+        $a = ConnectionManager::get_connection('mysql');
+        $a->harro = 'harro there';
+
+        $this->assert_same($a, ConnectionManager::get_connection('mysql'));
+    }
+
+    public function test_gh_91_get_connection_with_null_connection_is_always_default()
+    {
+        $conn_one = ConnectionManager::get_connection('mysql');
+        $conn_two = ConnectionManager::get_connection();
+        $conn_three = ConnectionManager::get_connection('mysql');
+        $conn_four = ConnectionManager::get_connection();
+
+        $this->assert_same($conn_one, $conn_three);
+        $this->assert_same($conn_two, $conn_three);
+        $this->assert_same($conn_four, $conn_three);
     }
 
 }
