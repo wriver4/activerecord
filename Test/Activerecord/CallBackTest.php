@@ -18,7 +18,7 @@ class CallBackTest
 
     public function setUp($connection_name = null)
     {
-        parent::set_up($connection_name);
+        parent::setUp($connection_name);
 
         // ensure VenueCB model has been loaded
         VenueCB::find(1);
@@ -35,7 +35,7 @@ class CallBackTest
     {
         if (!$method_name) $method_name = $callback_name;
 
-        $this->assert_true(in_array($method_name,
+        $this->assertTrue(in_array($method_name,
                         $this->callback->get_callbacks($callback_name)));
     }
 
@@ -53,7 +53,7 @@ class CallBackTest
             $i_ran[] = $second_method;
         });
         $this->callback->invoke(null, $second_method);
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             $first_method,
             $second_method), $i_ran);
     }
@@ -65,11 +65,11 @@ class CallBackTest
         $venue->city = 'Awesome City';
         $venue->save();
 
-        $this->assert_true(VenueAfterCreate::exists(array(
+        $this->assertTrue(VenueAfterCreate::exists(array(
                     'conditions' =>
                     array(
                         'name' => 'changed!'))));
-        $this->assert_false(VenueAfterCreate::exists(array(
+        $this->assertFalse(VenueAfterCreate::exists(array(
                     'conditions' =>
                     array(
                         'name' => 'change me'))));
@@ -142,7 +142,7 @@ class CallBackTest
         $this->callback->register('after_construct');
         $this->callback->register('after_construct',
                 'non_generic_after_construct');
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             'after_construct',
             'after_construct',
             'non_generic_after_construct'),
@@ -156,7 +156,7 @@ class CallBackTest
                 'non_generic_after_construct',
                 array(
             'prepend' => true));
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             'non_generic_after_construct',
             'after_construct',
             'after_construct'),
@@ -190,7 +190,7 @@ class CallBackTest
     {
         $this->callback->register('after_construct');
         $this->callback->register('after_construct');
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             'after_construct',
             'after_construct',
             'after_construct'),
@@ -204,14 +204,14 @@ class CallBackTest
 
         };
         $this->callback->register('after_save', $closure);
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             $closure), $this->callback->get_callbacks('after_save'));
     }
 
     public function test_get_callbacks_returns_array()
     {
         $this->callback->register('after_construct');
-        $this->assert_true(is_array($this->callback->get_callbacks('after_construct')));
+        $this->assertTrue(is_array($this->callback->get_callbacks('after_construct')));
     }
 
     public function test_get_callbacks_returns_null()
@@ -239,7 +239,7 @@ class CallBackTest
             $i_ran = true;
         });
         $this->callback->invoke(null, 'after_validation');
-        $this->assert_true($i_ran);
+        $this->assertTrue($i_ran);
     }
 
     public function test_invoke_implicitly_calls_save_first()
@@ -267,7 +267,7 @@ class CallBackTest
         {
             return false;
         });
-        $this->assert_false($this->callback->invoke(null, 'before_validation'));
+        $this->assertFalse($this->callback->invoke(null, 'before_validation'));
     }
 
     public function test_before_callbacks_does_not_pass_on_false_for_after_callbacks()
@@ -277,7 +277,7 @@ class CallBackTest
         {
             return false;
         });
-        $this->assert_true($this->callback->invoke(null, 'after_validation'));
+        $this->assertTrue($this->callback->invoke(null, 'after_validation'));
     }
 
     public function test_gh_28_after_create_should_be_invoked_after_auto_incrementing_pk_is_set()
@@ -285,7 +285,7 @@ class CallBackTest
         $that = $this;
         VenueCB::$after_create = function($model) use ($that)
         {
-            $that->assert_not_null($model->id);
+            $that->assertNotNull($model->id);
         };
         Activerecord\Table::clear_cache('VenueCB');
         $venue = VenueCB::find(1);
@@ -324,9 +324,9 @@ class CallBackTest
         $v->id = null;
         VenueCB::create($v->attributes());
 
-        $this->assert_true($i_should_have_ran);
-        $this->assert_false($i_ran);
-        $this->assert_true(strpos(Activerecord\Table::load('VenueCB')->last_sql,
+        $this->assertTrue($i_should_have_ran);
+        $this->assertFalse($i_ran);
+        $this->assertTrue(strpos(Activerecord\Table::load('VenueCB')->last_sql,
                         'INSERT') === false);
     }
 
@@ -359,10 +359,10 @@ class CallBackTest
         $v->name .= 'test';
         $ret = $v->save();
 
-        $this->assert_true($i_should_have_ran);
-        $this->assert_false($i_ran);
-        $this->assert_false($ret);
-        $this->assert_true(strpos(Activerecord\Table::load('VenueCB')->last_sql,
+        $this->assertTrue($i_should_have_ran);
+        $this->assertFalse($i_ran);
+        $this->assertFalse($ret);
+        $this->assertTrue(strpos(Activerecord\Table::load('VenueCB')->last_sql,
                         'UPDATE') === false);
     }
 
@@ -388,9 +388,9 @@ class CallBackTest
         $v = VenueCB::find(1);
         $ret = $v->delete();
 
-        $this->assert_false($i_ran);
-        $this->assert_false($ret);
-        $this->assert_true(strpos(Activerecord\Table::load('VenueCB')->last_sql,
+        $this->assertFalse($i_ran);
+        $this->assertFalse($ret);
+        $this->assertTrue(strpos(Activerecord\Table::load('VenueCB')->last_sql,
                         'DELETE') === false);
     }
 
@@ -405,8 +405,8 @@ class CallBackTest
         $v->name .= 'test';
         $ret = $v->save();
 
-        $this->assert_false($ret);
-        $this->assert_true(strpos(Activerecord\Table::load('VenueCB')->last_sql,
+        $this->assertFalse($ret);
+        $this->assertTrue(strpos(Activerecord\Table::load('VenueCB')->last_sql,
                         'UPDATE') === false);
     }
 

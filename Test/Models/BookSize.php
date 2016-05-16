@@ -7,6 +7,6 @@ class BookSize
 {
 
     static $table = 'books';
-    static $validates_size_of = array();
+    static $validates_size_of = [];
 
 }

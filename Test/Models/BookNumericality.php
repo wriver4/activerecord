@@ -7,9 +7,7 @@ class BookNumericality
 {
 
     static $table_name = 'books';
-    static $validates_numericality_of = array(
-        array(
-            'name')
-    );
+    static $validates_numericality_of = [[
+    'name']];
 
 }

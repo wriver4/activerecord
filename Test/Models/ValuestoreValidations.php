@@ -7,6 +7,6 @@ class ValuestoreValidations
 {
 
     static $table_name = 'valuestore';
-    static $validates_uniqueness_of = array();
+    static $validates_uniqueness_of = [];
 
 }

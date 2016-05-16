@@ -6,37 +6,42 @@ class DatabaseLoader
 {
 
     private $db;
-    static $instances = array();
+    static $instances = [];
 
     public function __construct($db)
     {
         $this->db = $db;
 
-        if (!isset(static::$instances[$db->protocol])) static::$instances[$db->protocol] =
-                    0;
+        if (!isset(static::$instances[$db->protocol]))
+        {
+            static::$instances[$db->protocol] = 0;
+        }
 
         if (static::$instances[$db->protocol] ++ == 0)
         {
             // drop and re-create the tables one time only
-            $this->drop_tables();
-            $this->exec_sql_script($db->protocol);
+            $this->dropTables();
+            $this->execSqlScript($db->protocol);
         }
     }
 
-    public function reset_table_data()
+    public function resetTableData()
     {
-        foreach ($this->get_fixture_tables() as $table)
+        foreach ($this->getFixtureTables() as $table)
         {
-            if ($this->db->protocol == 'oci' && $table == 'rm-bldg') continue;
+            if ($this->db->protocol == 'oci' && $table == 'rm-bldg')
+            {
+                continue;
+            }
 
-            $this->db->query('DELETE FROM '.$this->quote_name($table));
-            $this->load_fixture_data($table);
+            $this->db->query('DELETE FROM '.$this->quoteName($table));
+            $this->loadFixtureData($table);
         }
 
         $after_fixtures = $this->db->protocol.'-after-fixtures';
         try
         {
-            $this->exec_sql_script($after_fixtures);
+            $this->execSqlScript($after_fixtures);
         }
         catch (Exception $e)
         {
@@ -44,20 +49,26 @@ class DatabaseLoader
         }
     }
 
-    public function drop_tables()
+    public function dropDables()
     {
         $tables = $this->db->tables();
 
-        foreach ($this->get_fixture_tables() as $table)
+        foreach ($this->getFixtureTables() as $table)
         {
             if ($this->db->protocol == 'oci')
             {
-                $table = strtoupper($table);
+                $table = \strtoupper($table);
 
-                if ($table == 'RM-BLDG') continue;
+                if ($table == 'RM-BLDG')
+                {
+                    continue;
+                }
             }
 
-            if (in_array($table, $tables)) $this->db->query('DROP TABLE '.$this->quote_name($table));
+            if (\in_array($table, $tables))
+            {
+                $this->db->query('DROP TABLE '.$this->quoteName($table));
+            }
 
             if ($this->db->protocol == 'oci')
             {
@@ -65,7 +76,7 @@ class DatabaseLoader
                 {
                     $this->db->query("DROP SEQUENCE {$table}_seq");
                 }
-                catch (Activerecord\DatabaseException $e)
+                catch (ExceptionDatabase $e)
                 {
                     // ignore
                 }
@@ -73,17 +84,20 @@ class DatabaseLoader
         }
     }
 
-    public function exec_sql_script($file)
+    public function execSqlScript($file)
     {
-        foreach (explode(';', $this->get_sql($file)) as $sql)
+        foreach (\explode(';', $this->getSql($file)) as $sql)
         {
-            if (trim($sql) != '') $this->db->query($sql);
+            if (\trim($sql) != '')
+            {
+                $this->db->query($sql);
+            }
         }
     }
 
-    public function get_fixture_tables()
+    public function getFixtureTables()
     {
-        $tables = array();
+        $tables = [];
 
         foreach (glob(__DIR__.'/../fixtures/*.csv') as $file)
         {
@@ -94,42 +108,52 @@ class DatabaseLoader
         return $tables;
     }
 
-    public function get_sql($file)
+    public function getSql($file)
     {
         $file = __DIR__."/../sql/$file.sql";
 
-        if (!file_exists($file)) throw new Exception("File not found: $file");
+        if (!\file_exists($file))
+        {
+            throw new Exception("File not found: $file");
+        }
 
-        return file_get_contents($file);
+        return \file_get_contents($file);
     }
 
-    public function load_fixture_data($table)
+    public function loadFixtureData($table)
     {
-        $fp = fopen(__DIR__."/../fixtures/$table.csv", 'r');
-        $fields = fgetcsv($fp);
+        $fp = \fopen(__DIR__."/../fixtures/$table.csv", 'r');
+        $fields = \fgetcsv($fp);
 
         if (!empty($fields))
         {
-            $markers = join(',', array_fill(0, count($fields), '?'));
-            $table = $this->quote_name($table);
+            $markers = \join(',', \array_fill(0, \count($fields), '?'));
+            $table = $this->quoteName($table);
 
-            foreach ($fields as &$name) $name = $this->quote_name(trim($name));
+            foreach ($fields as &$name)
+            {
+                $name = $this->quoteName(\trim($name));
+            }
 
-            $fields = join(',', $fields);
+            $fields = \join(',', $fields);
 
-            while (($values = fgetcsv($fp)))
-                    $this->db->query("INSERT INTO $table($fields) VALUES($markers)",
+            while (($values = \fgetcsv($fp)))
+            {
+                $this->db->query("INSERT INTO $table($fields) VALUES($markers)",
                         $values);
+            }
         }
-        fclose($fp);
+        \fclose($fp);
     }
 
-    public function quote_name($name)
+    public function quoteName($name)
     {
-        if ($this->db->protocol == 'oci') $name = strtoupper($name);
+        if ($this->db->protocol == 'oci')
+        {
+            $name = \strtoupper($name);
+        }
 
         return $this->db->quote_name($name);
     }
 
 }
-?>

@@ -7,6 +7,6 @@ class BookLength
 {
 
     static $table = 'books';
-    static $validates_length_of = array();
+    static $validates_length_of = [];
 
 }

@@ -3,49 +3,51 @@
 namespace Test\Activerecord;
 
 use Activerecord\Cache;
+use Activerecord\Config;
+use Activerecord\Adapters\Pgsql;
 
 class ActiverecordCacheTest
-        extends DatabaseTest
+        extends \Test\Helpers\DatabaseTest
 {
 
-    public function set_up($connection_name = null)
+    public function setUp($connection_name = null)
     {
-        if (!extension_loaded('memcache'))
+        if (!extensionLoaded('memcache'))
         {
             $this->markTestSkipped('The memcache extension is not available');
             return;
         }
 
-        parent::set_up($connection_name);
+        parent::setUp($connection_name);
         Activerecord\Config::instance()->set_cache('memcache://localhost');
     }
 
-    public function tear_down()
+    public function tearDown()
     {
         Cache::flush();
         Cache::initialize(null);
     }
 
-    public function test_default_expire()
+    public function testDefaultExpire()
     {
-        $this->assert_equals(30, Cache::$options['expire']);
+        $this->assertEquals(30, Cache::$options['expire']);
     }
 
-    public function test_explicit_default_expire()
+    public function testExplicitDefaultExpire()
     {
-        Activerecord\Config::instance()->set_cache('memcache://localhost',
+        Config::instance()->setCache('memcache://localhost',
                 array(
             'expire' => 1));
-        $this->assert_equals(1, Cache::$options['expire']);
+        $this->assertEquals(1, Cache::$options['expire']);
     }
 
-    public function test_caches_column_meta_data()
+    public function testCachesColumnMetaData()
     {
         Author::first();
 
-        $table_name = Author::table()->get_fully_qualified_table_name(!($this->conn instanceof Activerecord\PgsqlAdapter));
+        $table_name = Author::table()->getFullyQualifiedTableName(!($this->conn instanceof Pgsql));
         $value = Cache::$adapter->read("get_meta_data-$table_name");
-        $this->assert_true(is_array($value));
+        $this->assertTrue(is_array($value));
     }
 
 }

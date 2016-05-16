@@ -7,9 +7,7 @@ class BookPresence
 {
 
     static $table_name = 'books';
-    static $validates_presence_of = array(
-        array(
-            'name')
-    );
+    static $validates_presence_of = [[
+    'name']];
 
 }

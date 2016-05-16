@@ -21,13 +21,13 @@ class ConnectionManagerTest
 
     public function test_get_connection_with_null_connection()
     {
-        $this->assert_not_null(ConnectionManager::get_connection(null));
-        $this->assert_not_null(ConnectionManager::get_connection());
+        $this->assertNotNull(ConnectionManager::get_connection(null));
+        $this->assertNotNull(ConnectionManager::get_connection());
     }
 
     public function test_get_connection()
     {
-        $this->assert_not_null(ConnectionManager::get_connection('mysql'));
+        $this->assertNotNull(ConnectionManager::get_connection('mysql'));
     }
 
     public function test_get_connection_uses_existing_object()

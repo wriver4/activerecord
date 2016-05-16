@@ -7,9 +7,7 @@ class AuthorPresence
 {
 
     static $table_name = 'authors';
-    static $validates_presence_of = array(
-        array(
-            'some_date')
-    );
+    static $validates_presence_of = [[
+    'some_date']];
 
 }

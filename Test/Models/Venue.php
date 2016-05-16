@@ -8,29 +8,39 @@ class Venue
 
     static $use_custom_get_state_getter = false;
     static $use_custom_set_state_setter = false;
-    static $has_many = array(
+    static $has_many = [
         'events',
-        array(
+        [
             'hosts',
-            'through' => 'events')
-    );
+            'through' => 'events']];
     static $has_one;
-    static $alias_attribute = array(
+    static $alias_attribute = [
         'marquee' => 'name',
         'mycity' => 'city'
-    );
+    ];
 
-    public function get_state()
+    public function getState()
     {
-        if (self::$use_custom_get_state_getter) return strtolower($this->read_attribute('state'));
-        else return $this->read_attribute('state');
+        if (self::$use_custom_get_state_getter)
+        {
+            return \strtolower($this->read_attribute('state'));
+        }
+        else
+        {
+            return $this->read_attribute('state');
+        }
     }
 
-    public function set_state($value)
+    public function setState($value)
     {
-        if (self::$use_custom_set_state_setter) return $this->assign_attribute('state',
-                            $value.'#');
-        else return $this->assign_attribute('state', $value);
+        if (self::$use_custom_set_state_setter)
+        {
+            return $this->assignAttribute('state', $value.'#');
+        }
+        else
+        {
+            return $this->assignAttribute('state', $value);
+        }
     }
 
 }

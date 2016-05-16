@@ -7,9 +7,7 @@ class BookFormat
 {
 
     static $table = 'books';
-    static $validates_format_of = array(
-        array(
-            'name')
-    );
+    static $validates_format_of = [[
+    'name']];
 
 }

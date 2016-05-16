@@ -2,60 +2,73 @@
 
 namespace Test\Helpers;
 
-require_once __DIR__.'/DatabaseLoader.php';
+use Test\Helpers\DatabaseLoader;
+use Activerecord\Table;
+use Activerecord\Config;
+use Activerecord\ConnectionManager;
+use Activerecord\Exceptions\ExceptionDatabase;
+use Activerecord\Exceptions\ExceptionUndefinedProperty;
 
 class DatabaseTest
-        extends SnakeCase_PHPUnit_Framework_TestCase
+        extends PHPUnit_Framework_TestCase
 {
 
     protected $conn;
     public static $log = false;
     public static $db;
 
-    public function set_up($connection_name = null)
+    public function setUp($connection_name = null)
     {
-        Activerecord\Table::clear_cache();
+        Table::clearCache();
 
-        $config = Activerecord\Config::instance();
-        $this->original_default_connection = $config->get_default_connection();
+        $config = Config::instance();
+        $this->original_default_connection = $config->getDefaultConnection();
 
-        $this->original_date_class = $config->get_date_class();
+        $this->original_date_class = $config->getDateClass();
 
-        if ($connection_name) $config->set_default_connection($connection_name);
+        if ($connection_name)
+        {
+            $config->setDefaultConnection($connection_name);
+        }
 
-        if ($connection_name == 'sqlite' || $config->get_default_connection() == 'sqlite')
+        if ($connection_name == 'sqlite' || $config->getDefaultConnection() == 'sqlite')
         {
             // need to create the db. the adapter specifically does not create it for us.
-            static::$db = substr(Activerecord\Config::instance()->get_connection('sqlite'),
-                    9);
-            new SQLite3(static::$db);
+            static::$db = substr(Config::instance()->getConnection('sqlite'), 9);
+            new SQLite(static::$db);
         }
 
         $this->connection_name = $connection_name;
         try
         {
-            $this->conn = Activerecord\ConnectionManager::get_connection($connection_name);
+            $this->conn = ConnectionManager::getConnection($connection_name);
         }
-        catch (Activerecord\DatabaseException $e)
+        catch (ExceptionDatabase $e)
         {
-            $this->mark_test_skipped($connection_name.' failed to connect. '.$e->getMessage());
+            $this->markTestSkipped($connection_name.' failed to connect. '.$e->getMessage());
         }
 
         $GLOBALS['Activerecord_LOG'] = false;
 
         $loader = new DatabaseLoader($this->conn);
-        $loader->reset_table_data();
+        $loader->resetTableData();
 
-        if (self::$log) $GLOBALS['Activerecord_LOG'] = true;
+        if (self::$log)
+        {
+            $GLOBALS['Activerecord_LOG'] = true;
+        }
     }
 
-    public function tear_down()
+    public function tearDown()
     {
-        Activerecord\Config::instance()->set_date_class($this->original_date_class);
-        if ($this->original_default_connection) Activerecord\Config::instance()->set_default_connection($this->original_default_connection);
+        Config::instance()->setDateClass($this->original_date_class);
+        if ($this->original_default_connection)
+        {
+            Config::instance()->setDefaultConnection($this->original_default_connection);
+        }
     }
 
-    public function assert_exception_message_contains($contains, $closure)
+    public function assertExceptionMessageContains($contains, $closure)
     {
         $message = "";
 
@@ -63,7 +76,7 @@ class DatabaseTest
         {
             $closure();
         }
-        catch (Activerecord\UndefinedPropertyException $e)
+        catch (ExceptionUndefinedProperty $e)
         {
             $message = $e->getMessage();
         }
@@ -77,25 +90,25 @@ class DatabaseTest
      * Takes database specific quotes into account by removing them. So, this won't
      * work if you have actual quotes in your strings.
      */
-    public function assert_sql_has($needle, $haystack)
+    public function assertSqlHas($needle, $haystack)
     {
-        $needle = str_replace(array(
+        $needle = \str_replace([
             '"',
-            '`'), '', $needle);
-        $haystack = str_replace(array(
+            '`'], '', $needle);
+        $haystack = \str_replace([
             '"',
-            '`'), '', $haystack);
+            '`'], '', $haystack);
         return $this->assertContains($needle, $haystack);
     }
 
-    public function assert_sql_doesnt_has($needle, $haystack)
+    public function assertSqlDoesNotContain($needle, $haystack)
     {
-        $needle = str_replace(array(
+        $needle = \str_replace([
             '"',
-            '`'), '', $needle);
-        $haystack = str_replace(array(
+            '`'], '', $needle);
+        $haystack = \str_replace([
             '"',
-            '`'), '', $haystack);
+            '`'], '', $haystack);
         return $this->assertNotContains($needle, $haystack);
     }
 

@@ -43,13 +43,13 @@ class ConfigTest
 
     public function test_get_connections()
     {
-        $this->assert_equals($this->connections,
+        $this->assertEquals($this->connections,
                 $this->config->get_connections());
     }
 
     public function test_get_connection()
     {
-        $this->assert_equals($this->connections['development'],
+        $this->assertEquals($this->connections['development'],
                 $this->config->get_connection('development'));
     }
 
@@ -61,17 +61,17 @@ class ConfigTest
     public function test_get_default_connection_and_connection()
     {
         $this->config->set_default_connection('development');
-        $this->assert_equals('development',
+        $this->assertEquals('development',
                 $this->config->get_default_connection());
-        $this->assert_equals($this->connections['development'],
+        $this->assertEquals($this->connections['development'],
                 $this->config->get_default_connection_string());
     }
 
     public function test_get_default_connection_and_connection_string_defaults_to_development()
     {
-        $this->assert_equals('development',
+        $this->assertEquals('development',
                 $this->config->get_default_connection());
-        $this->assert_equals($this->connections['development'],
+        $this->assertEquals($this->connections['development'],
                 $this->config->get_default_connection_string());
     }
 
@@ -85,19 +85,19 @@ class ConfigTest
     {
         $this->config->set_connections(array(
             'development' => $this->connections['development']));
-        $this->assert_equals('development',
+        $this->assertEquals('development',
                 $this->config->get_default_connection());
     }
 
     public function test_set_connections_with_default()
     {
         $this->config->set_connections($this->connections, 'test');
-        $this->assert_equals('test', $this->config->get_default_connection());
+        $this->assertEquals('test', $this->config->get_default_connection());
     }
 
     public function test_get_date_class_with_default()
     {
-        $this->assert_equals('Activerecord\\DateTime',
+        $this->assertEquals('Activerecord\\DateTime',
                 $this->config->get_date_class());
     }
 
@@ -128,7 +128,7 @@ class ConfigTest
     public function test_set_date_class_with_valid_class()
     {
         $this->config->set_date_class('FormatDateTimeTest');
-        $this->assert_equals('FormatDateTimeTest',
+        $this->assertEquals('FormatDateTimeTest',
                 $this->config->get_date_class());
     }
 
@@ -138,8 +138,8 @@ class ConfigTest
 
         Config::initialize(function($cfg) use ($test)
         {
-            $test->assert_not_null($cfg);
-            $test->assert_equals('Activerecord\Config', get_class($cfg));
+            $test->assertNotNull($cfg);
+            $test->assertEquals('Activerecord\Config', get_class($cfg));
         });
     }
 
@@ -152,7 +152,7 @@ class ConfigTest
         }
         catch (ExceptionConfig $e)
         {
-            $this->assert_equals($e->getMessage(),
+            $this->assertEquals($e->getMessage(),
                     "Logger object must implement a public log method");
         }
     }

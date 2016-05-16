@@ -10,9 +10,8 @@ class AuthorWithNonModelRelationship
 
     static $pk = 'id';
     static $table_name = 'authors';
-    static $has_many = array(
-        array(
-            'books',
-            'class_name' => 'NotModel'));
+    static $has_many = [[
+    'books',
+    'class_name' => 'NotModel']];
 
 }

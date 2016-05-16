@@ -6,35 +6,40 @@ class Book
         extends \Activerecord\Model
 {
 
-    static $belongs_to = array(
-        'author');
-    static $has_one = array();
+    static $belongs_to = ['author'];
+    static $has_one = [];
     static $use_custom_get_name_getter = false;
 
-    public function upper_name()
+    public function upperName()
     {
-        return strtoupper($this->name);
+        return \strtoupper($this->name);
     }
 
     public function name()
     {
-        return strtolower($this->name);
+        return \strtolower($this->name);
     }
 
-    public function get_name()
+    public function getName()
     {
-        if (self::$use_custom_get_name_getter) return strtoupper($this->read_attribute('name'));
-        else return $this->read_attribute('name');
+        if (self::$use_custom_get_name_getter)
+        {
+            return \strtoupper($this->readAttribute('name'));
+        }
+        else
+        {
+            return $this->readAttribute('name');
+        }
     }
 
-    public function get_upper_name()
+    public function getUpperName()
     {
-        return strtoupper($this->name);
+        return \strtoupper($this->name);
     }
 
-    public function get_lower_name()
+    public function getLowerName()
     {
-        return strtolower($this->name);
+        return \strtolower($this->name);
     }
 
 }

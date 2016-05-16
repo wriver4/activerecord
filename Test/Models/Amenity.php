@@ -8,8 +8,6 @@ class Amenity
 
     static $table_name = 'amenities';
     static $primary_key = 'amenity_id';
-    static $has_many = array(
-        'property_amenities'
-    );
+    static $has_many = ['property_amenities'];
 
 }

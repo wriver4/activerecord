@@ -12,19 +12,19 @@ class VenueCB
     static $before_create;
     static $before_validation;
     static $before_destroy = 'before_destroy_using_string';
-    static $after_destroy = array(
+    static $after_destroy = [
         'after_destroy_one',
-        'after_destroy_two');
+        'after_destroy_two'];
     static $after_create;
 
     // DO NOT add a static $after_construct for this. we are testing
     // auto registration of callback with this
-    public function after_construct()
+    public function afterConstruct()
     {
 
     }
 
-    public function non_generic_after_construct()
+    public function nonGenericAfterConstruct()
     {
 
     }
@@ -34,32 +34,32 @@ class VenueCB
 
     }
 
-    public function after_destroy_two()
+    public function afterDestroyTwo()
     {
 
     }
 
-    public function before_destroy_using_string()
+    public function beforeDestroyUsingString()
     {
 
     }
 
-    public function before_update_halt_execution()
-    {
-        return false;
-    }
-
-    public function before_destroy_halt_execution()
+    public function beforeUpdateHaltExecution()
     {
         return false;
     }
 
-    public function before_create_halt_execution()
+    public function beforeDestroyHaltExecution()
     {
         return false;
     }
 
-    public function before_validation_halt_execution()
+    public function beforeCreateHaltExecution()
+    {
+        return false;
+    }
+
+    public function beforeValidationHaltExecution()
     {
         return false;
     }

@@ -6,11 +6,8 @@ class UserNewsletter
         extends \ActiveRecord\Model
 {
 
-    static $belong_to = array(
-        array(
-            'user'),
-        array(
-            'newsletter'),
-    );
+    static $belong_to = [[
+    'user'],
+        ['newsletter'],];
 
 }

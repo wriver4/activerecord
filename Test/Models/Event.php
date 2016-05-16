@@ -6,19 +6,17 @@ class Event
         extends \Activerecord\Model
 {
 
-    static $belongs_to = array(
+    static $belongs_to = [
         'host',
         'venue'
-    );
-    static $delegate = array(
-        array(
-            'state',
-            'address',
-            'to' => 'venue'),
-        array(
+    ];
+    static $delegate = [[
+    'state',
+    'address',
+    'to' => 'venue'],
+        [
             'name',
             'to' => 'host',
-            'prefix' => 'woot')
-    );
+            'prefix' => 'woot']];
 
 }

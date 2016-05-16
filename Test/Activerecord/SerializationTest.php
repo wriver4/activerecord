@@ -10,9 +10,9 @@ class SerializationTest
         extends DatabaseTest
 {
 
-    public function tear_down()
+    public function tearDown()
     {
-        parent::tear_down();
+        parent::tearDown();
         SerializeArray::$include_root = false;
         SerializeJson::$include_root = false;
     }
@@ -82,14 +82,14 @@ class SerializationTest
         $a = $this->_a(array(
             'methods' => array(
                 'upper_name')));
-        $this->assert_equals('ANCIENT ART OF MAIN TANKING', $a['upper_name']);
+        $this->assertEquals('ANCIENT ART OF MAIN TANKING', $a['upper_name']);
     }
 
     public function test_methods_takes_a_string()
     {
         $a = $this->_a(array(
             'methods' => 'upper_name'));
-        $this->assert_equals('ANCIENT ART OF MAIN TANKING', $a['upper_name']);
+        $this->assertEquals('ANCIENT ART OF MAIN TANKING', $a['upper_name']);
     }
 
     // methods added last should we shuld have value of the method in our json
@@ -98,7 +98,7 @@ class SerializationTest
     {
         $a = $this->_a(array(
             'methods' => 'name'));
-        $this->assert_equals('ancient art of main tanking', $a['name']);
+        $this->assertEquals('ancient art of main tanking', $a['name']);
     }
 
     public function test_include()
@@ -120,9 +120,9 @@ class SerializationTest
                         'host' => array(
                             'only' => 'id'))))), Host::find(4));
 
-        $this->assert_equals(3, count($a['events']));
+        $this->assertEquals(3, count($a['events']));
         $this->assert_doesnt_has_keys('title', $a['events'][0]);
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             'id' => 4), $a['events'][0]['host']);
     }
 
@@ -133,7 +133,7 @@ class SerializationTest
             'only' => 'created_at'),
                 new Author(array(
             'created_at' => $now)));
-        $this->assert_equals($now->format(Activerecord\Serialization::$DATETIME_FORMAT),
+        $this->assertEquals($now->format(Activerecord\Serialization::$DATETIME_FORMAT),
                 $a['created_at']);
     }
 
@@ -141,13 +141,13 @@ class SerializationTest
     {
         $book = Book::find(1);
         $json = $book->to_json();
-        $this->assert_equals($book->attributes(), (array) json_decode($json));
+        $this->assertEquals($book->attributes(), (array) json_decode($json));
     }
 
     public function test_to_json_include_root()
     {
         Activerecord\JsonSerializer::$include_root = true;
-        $this->assert_not_null(json_decode(Book::find(1)->to_json())->book);
+        $this->assertNotNull(json_decode(Book::find(1)->to_json())->book);
     }
 
     public function test_to_xml_include()
@@ -156,13 +156,13 @@ class SerializationTest
             'include' => 'events'));
         $decoded = get_object_vars(new SimpleXMLElement($xml));
 
-        $this->assert_equals(3, count($decoded['events']->event));
+        $this->assertEquals(3, count($decoded['events']->event));
     }
 
     public function test_to_xml()
     {
         $book = Book::find(1);
-        $this->assert_equals($book->attributes(),
+        $this->assertEquals($book->attributes(),
                 get_object_vars(new SimpleXMLElement($book->to_xml())));
     }
 
@@ -170,7 +170,7 @@ class SerializationTest
     {
         $book = Book::find(1);
         $array = $book->to_array();
-        $this->assert_equals($book->attributes(), $array);
+        $this->assertEquals($book->attributes(), $array);
     }
 
     public function test_to_array_include_root()
@@ -180,7 +180,7 @@ class SerializationTest
         $array = $book->to_array();
         $book_attributes = array(
             'book' => $book->attributes());
-        $this->assert_equals($book_attributes, $array);
+        $this->assertEquals($book_attributes, $array);
     }
 
     public function test_to_array_except()
@@ -191,7 +191,7 @@ class SerializationTest
                 'special')));
         $book_attributes = $book->attributes();
         unset($book_attributes['special']);
-        $this->assert_equals($book_attributes, $array);
+        $this->assertEquals($book_attributes, $array);
     }
 
     public function test_works_with_datetime()
@@ -223,14 +223,14 @@ class SerializationTest
     public function test_to_csv()
     {
         $book = Book::find(1);
-        $this->assert_equals('1,1,2,"Ancient Art of Main Tanking",0,0',
+        $this->assertEquals('1,1,2,"Ancient Art of Main Tanking",0,0',
                 $book->to_csv());
     }
 
     public function test_to_csv_only_header()
     {
         $book = Book::find(1);
-        $this->assert_equals('book_id,author_id,secondary_author_id,name,numeric_test,special',
+        $this->assertEquals('book_id,author_id,secondary_author_id,name,numeric_test,special',
                 $book->to_csv(array(
                     'only_header' => true))
         );
@@ -239,7 +239,7 @@ class SerializationTest
     public function test_to_csv_only_method()
     {
         $book = Book::find(1);
-        $this->assert_equals('2,"Ancient Art of Main Tanking"',
+        $this->assertEquals('2,"Ancient Art of Main Tanking"',
                 $book->to_csv(array(
                     'only' => array(
                         'name',
@@ -250,7 +250,7 @@ class SerializationTest
     public function test_to_csv_only_method_on_header()
     {
         $book = Book::find(1);
-        $this->assert_equals('secondary_author_id,name',
+        $this->assertEquals('secondary_author_id,name',
                 $book->to_csv(array(
                     'only' => array(
                         'secondary_author_id',
@@ -263,7 +263,7 @@ class SerializationTest
     {
         $book = Book::find(1);
         Activerecord\CsvSerializer::$delimiter = ';';
-        $this->assert_equals('1;1;2;"Ancient Art of Main Tanking";0;0',
+        $this->assertEquals('1;1;2;"Ancient Art of Main Tanking";0;0',
                 $book->to_csv());
     }
 
@@ -272,7 +272,7 @@ class SerializationTest
         $book = Book::find(1);
         Activerecord\CsvSerializer::$delimiter = ',';
         Activerecord\CsvSerializer::$enclosure = "'";
-        $this->assert_equals("1,1,2,'Ancient Art of Main Tanking',0,0",
+        $this->assertEquals("1,1,2,'Ancient Art of Main Tanking',0,0",
                 $book->to_csv());
     }
 

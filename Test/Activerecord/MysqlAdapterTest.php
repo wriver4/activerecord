@@ -9,16 +9,16 @@ class MysqlAdapterTest
         extends AdapterTest
 {
 
-    public function set_up($connection_name = null)
+    public function setUp($connection_name = null)
     {
-        parent::set_up('mysql');
+        parent::setUp('mysql');
     }
 
     public function test_enum()
     {
         $author_columns = $this->conn->columns('authors');
-        $this->assert_equals('enum', $author_columns['some_enum']->raw_type);
-        $this->assert_equals(Column::STRING, $author_columns['some_enum']->type);
+        $this->assertEquals('enum', $author_columns['some_enum']->raw_type);
+        $this->assertEquals(Column::STRING, $author_columns['some_enum']->type);
         $this->assert_same(null, $author_columns['some_enum']->length);
     }
 
@@ -26,10 +26,10 @@ class MysqlAdapterTest
     {
         $connection_string = Activerecord\Config::instance()->get_connection($this->connection_name);
         $conn = Activerecord\Connection::instance($connection_string.'?charset=utf8');
-        $this->assert_equals('SET NAMES ?', $conn->last_query);
+        $this->assertEquals('SET NAMES ?', $conn->last_query);
     }
 
-    public function test_limit_with_null_offset_does_not_contain_offset()
+    public function testLimit_with_null_offset_does_not_contain_offset()
     {
         $ret = array();
         $sql = 'SELECT * FROM authors ORDER BY name ASC';
@@ -39,7 +39,7 @@ class MysqlAdapterTest
             $ret[] = $row;
         });
 
-        $this->assert_true(strpos($this->conn->last_query, 'LIMIT 1') !== false);
+        $this->assertTrue(strpos($this->conn->last_query, 'LIMIT 1') !== false);
     }
 
 }

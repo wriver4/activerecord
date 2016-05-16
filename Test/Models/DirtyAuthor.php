@@ -9,7 +9,7 @@ class DirtyAuthor
     static $table = 'authors';
     static $before_save = 'before_save';
 
-    public function before_save()
+    public function beforeSave()
     {
         $this->name = 'i saved';
     }

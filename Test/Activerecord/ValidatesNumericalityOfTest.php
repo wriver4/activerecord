@@ -51,9 +51,9 @@ class ValidatesNumericalityOfTest
         "12.12.13.12",
         "123\nnot a number");
 
-    public function set_up($connection_name = null)
+    public function setUp($connection_name = null)
     {
-        parent::set_up($connection_name);
+        parent::setUp($connection_name);
         BookNumericality::$validates_numericality_of = array(
             array(
                 'numeric_test')
@@ -67,13 +67,13 @@ class ValidatesNumericalityOfTest
 
         if ($boolean == 'valid')
         {
-            $this->assert_true($book->save());
-            $this->assert_false($book->errors->is_invalid('numeric_test'));
+            $this->assertTrue($book->save());
+            $this->assertFalse($book->errors->is_invalid('numeric_test'));
         }
         else
         {
-            $this->assert_false($book->save());
-            $this->assert_true($book->errors->is_invalid('numeric_test'));
+            $this->assertFalse($book->save());
+            $this->assertTrue($book->errors->is_invalid('numeric_test'));
 
             if (!is_null($msg)) $this->assert_same($msg,
                         $book->errors->on('numeric_test'));
@@ -106,20 +106,20 @@ class ValidatesNumericalityOfTest
             'blah'), 'is not a number');
     }
 
-    public function test_invalid_null()
+    public function testInvalid_null()
     {
         $this->assert_invalid(array(
             null));
     }
 
-    public function test_invalid_blank()
+    public function testInvalid_blank()
     {
         $this->assert_invalid(array(
             ' ',
             '  '), 'is not a number');
     }
 
-    public function test_invalid_whitespace()
+    public function testInvalid_whitespace()
     {
         $this->assert_invalid(array(
             ''));
@@ -238,7 +238,7 @@ class ValidatesNumericalityOfTest
         $book = new BookNumericality(array(
             'numeric_test' => 'NaN'));
         $book->is_valid();
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             'Numeric test Hello'), $book->errors->full_messages());
     }
 

@@ -8,41 +8,41 @@ class ValidatesPresenceOfTest
     {
         $book = new BookPresence(array(
             'name' => 'blah'));
-        $this->assert_false($book->is_invalid());
+        $this->assertFalse($book->is_invalid());
     }
 
     public function test_presence_on_date_field_is_valid()
     {
         $author = new AuthorPresence(array(
             'some_date' => '2010-01-01'));
-        $this->assert_true($author->is_valid());
+        $this->assertTrue($author->is_valid());
     }
 
     public function test_presence_on_date_field_is_not_valid()
     {
         $author = new AuthorPresence();
-        $this->assert_false($author->is_valid());
+        $this->assertFalse($author->is_valid());
     }
 
-    public function test_invalid_null()
+    public function testInvalid_null()
     {
         $book = new BookPresence(array(
             'name' => null));
-        $this->assert_true($book->is_invalid());
+        $this->assertTrue($book->is_invalid());
     }
 
-    public function test_invalid_blank()
+    public function testInvalid_blank()
     {
         $book = new BookPresence(array(
             'name' => ''));
-        $this->assert_true($book->is_invalid());
+        $this->assertTrue($book->is_invalid());
     }
 
     public function test_valid_white_space()
     {
         $book = new BookPresence(array(
             'name' => ' '));
-        $this->assert_false($book->is_invalid());
+        $this->assertFalse($book->is_invalid());
     }
 
     public function test_custom_message()
@@ -52,7 +52,7 @@ class ValidatesPresenceOfTest
         $book = new BookPresence(array(
             'name' => null));
         $book->is_valid();
-        $this->assert_equals('is using a custom message.',
+        $this->assertEquals('is using a custom message.',
                 $book->errors->on('name'));
     }
 
@@ -60,7 +60,7 @@ class ValidatesPresenceOfTest
     {
         $book = new BookPresence(array(
             'name' => 0));
-        $this->assert_true($book->is_valid());
+        $this->assertTrue($book->is_valid());
     }
 
 }

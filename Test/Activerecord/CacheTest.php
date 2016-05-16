@@ -44,7 +44,7 @@ class CacheTest
 
     public function test_initialize()
     {
-        $this->assert_not_null(Cache::$adapter);
+        $this->assertNotNull(Cache::$adapter);
     }
 
     public function test_initialize_with_null()
@@ -55,13 +55,13 @@ class CacheTest
 
     public function test_get_returns_the_value()
     {
-        $this->assert_equals("abcd", $this->cache_get());
+        $this->assertEquals("abcd", $this->cache_get());
     }
 
     public function test_get_writes_to_the_cache()
     {
         $this->cache_get();
-        $this->assert_equals("abcd", Cache::$adapter->read("1337"));
+        $this->assertEquals("abcd", Cache::$adapter->read("1337"));
     }
 
     public function test_get_does_not_execute_closure_on_cache_hit()
@@ -82,7 +82,7 @@ class CacheTest
     public function test_get_works_without_caching_enabled()
     {
         Cache::$adapter = null;
-        $this->assert_equals("abcd", $this->cache_get());
+        $this->assertEquals("abcd", $this->cache_get());
     }
 
     public function test_cache_expire()

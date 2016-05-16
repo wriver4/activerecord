@@ -25,7 +25,7 @@ class SQLBuilderTest
 
     public function setUp($connection_name = null)
     {
-        parent::set_up($connection_name);
+        parent::setUp($connection_name);
         $this->sql = new SQLBuilder($this->conn, $this->table_name);
         $this->table = Table::load($this->class_name);
     }
@@ -48,12 +48,12 @@ class SQLBuilderTest
                         $underscored_string, $values, $map);
         $this->assert_sql_has($expected_sql, array_shift($cond));
 
-        if ($values) $this->assert_equals(array_values(array_filter($values,
+        if ($values) $this->assertEquals(array_values(array_filter($values,
                                     function($s)
                             {
                                 return $s !== null;
                             })), array_values($cond));
-        else $this->assert_equals(array(), $cond);
+        else $this->assertEquals(array(), $cond);
     }
 
     /**
@@ -66,7 +66,7 @@ class SQLBuilderTest
 
     public function test_nothing()
     {
-        $this->assert_equals('SELECT * FROM authors', (string) $this->sql);
+        $this->assertEquals('SELECT * FROM authors', (string) $this->sql);
     }
 
     public function test_where_with_array()
@@ -76,7 +76,7 @@ class SQLBuilderTest
             'Mexican'));
         $this->assert_sql_has("SELECT * FROM authors WHERE id=? AND name IN(?,?)",
                 (string) $this->sql);
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             1,
             'Tito',
             'Mexican'), $this->sql->get_where_values());
@@ -89,7 +89,7 @@ class SQLBuilderTest
             'name' => 'Tito'));
         $this->assert_sql_has("SELECT * FROM authors WHERE id=? AND name=?",
                 (string) $this->sql);
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             1,
             'Tito'), $this->sql->get_where_values());
     }
@@ -103,7 +103,7 @@ class SQLBuilderTest
                 'Mexican')));
         $this->assert_sql_has("SELECT * FROM authors WHERE id=? AND name IN(?,?)",
                 (string) $this->sql);
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             1,
             'Tito',
             'Mexican'), $this->sql->get_where_values());
@@ -116,7 +116,7 @@ class SQLBuilderTest
             'name' => null));
         $this->assert_sql_has("SELECT * FROM authors WHERE id=? AND name IS ?",
                 (string) $this->sql);
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             1,
             null), $this->sql->get_where_values());
     }
@@ -124,53 +124,53 @@ class SQLBuilderTest
     public function test_where_with_null()
     {
         $this->sql->where(null);
-        $this->assert_equals('SELECT * FROM authors', (string) $this->sql);
+        $this->assertEquals('SELECT * FROM authors', (string) $this->sql);
     }
 
     public function test_where_with_no_args()
     {
         $this->sql->where();
-        $this->assert_equals('SELECT * FROM authors', (string) $this->sql);
+        $this->assertEquals('SELECT * FROM authors', (string) $this->sql);
     }
 
     public function test_order()
     {
         $this->sql->order('name');
-        $this->assert_equals('SELECT * FROM authors ORDER BY name',
+        $this->assertEquals('SELECT * FROM authors ORDER BY name',
                 (string) $this->sql);
     }
 
-    public function test_limit()
+    public function testLimit()
     {
         $this->sql->limit(10)->offset(1);
-        $this->assert_equals($this->conn->limit('SELECT * FROM authors', 1, 10),
+        $this->assertEquals($this->conn->limit('SELECT * FROM authors', 1, 10),
                 (string) $this->sql);
     }
 
     public function test_select()
     {
         $this->sql->select('id,name');
-        $this->assert_equals('SELECT id,name FROM authors', (string) $this->sql);
+        $this->assertEquals('SELECT id,name FROM authors', (string) $this->sql);
     }
 
     public function test_joins()
     {
         $join = 'inner join books on(authors.id=books.author_id)';
         $this->sql->joins($join);
-        $this->assert_equals("SELECT * FROM authors $join", (string) $this->sql);
+        $this->assertEquals("SELECT * FROM authors $join", (string) $this->sql);
     }
 
     public function test_group()
     {
         $this->sql->group('name');
-        $this->assert_equals('SELECT * FROM authors GROUP BY name',
+        $this->assertEquals('SELECT * FROM authors GROUP BY name',
                 (string) $this->sql);
     }
 
     public function test_having()
     {
         $this->sql->having("created_at > '2009-01-01'");
-        $this->assert_equals("SELECT * FROM authors HAVING created_at > '2009-01-01'",
+        $this->assertEquals("SELECT * FROM authors HAVING created_at > '2009-01-01'",
                 (string) $this->sql);
     }
 
@@ -223,7 +223,7 @@ class SQLBuilderTest
             'Mexican'));
         $this->assert_sql_has("UPDATE authors SET id=?, name=? WHERE id=1 AND name IN(?,?)",
                 (string) $this->sql);
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             1,
             'Tito',
             'Tito',
@@ -259,7 +259,7 @@ class SQLBuilderTest
     public function test_delete()
     {
         $this->sql->delete();
-        $this->assert_equals('DELETE FROM authors', $this->sql->to_s());
+        $this->assertEquals('DELETE FROM authors', $this->sql->to_s());
     }
 
     public function test_delete_with_where()
@@ -267,9 +267,9 @@ class SQLBuilderTest
         $this->sql->delete('id=? or name in(?)', 1, array(
             'Tito',
             'Mexican'));
-        $this->assert_equals('DELETE FROM authors WHERE id=? or name in(?,?)',
+        $this->assertEquals('DELETE FROM authors WHERE id=? or name in(?,?)',
                 $this->sql->to_s());
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             1,
             'Tito',
             'Mexican'), $this->sql->bind_values());
@@ -284,7 +284,7 @@ class SQLBuilderTest
                 'Mexican')));
         $this->assert_sql_has("DELETE FROM authors WHERE id=? AND name IN(?,?)",
                 $this->sql->to_s());
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             1,
             'Tito',
             'Mexican'), $this->sql->get_where_values());
@@ -302,16 +302,16 @@ class SQLBuilderTest
 
     public function test_reverse_order()
     {
-        $this->assert_equals('id ASC, name DESC',
+        $this->assertEquals('id ASC, name DESC',
                 SQLBuilder::reverse_order('id DESC, name ASC'));
-        $this->assert_equals('id ASC, name DESC , zzz ASC',
+        $this->assertEquals('id ASC, name DESC , zzz ASC',
                 SQLBuilder::reverse_order('id DESC, name ASC , zzz DESC'));
-        $this->assert_equals('id DESC, name DESC',
+        $this->assertEquals('id DESC, name DESC',
                 SQLBuilder::reverse_order('id, name'));
-        $this->assert_equals('id DESC', SQLBuilder::reverse_order('id'));
-        $this->assert_equals('', SQLBuilder::reverse_order(''));
-        $this->assert_equals(' ', SQLBuilder::reverse_order(' '));
-        $this->assert_equals(null, SQLBuilder::reverse_order(null));
+        $this->assertEquals('id DESC', SQLBuilder::reverse_order('id'));
+        $this->assertEquals('', SQLBuilder::reverse_order(''));
+        $this->assertEquals(' ', SQLBuilder::reverse_order(' '));
+        $this->assertEquals(null, SQLBuilder::reverse_order(null));
     }
 
     public function test_create_conditions_from_underscored_string()
@@ -355,8 +355,8 @@ class SQLBuilderTest
 
     public function test_create_conditions_from_underscored_string_invalid()
     {
-        $this->assert_equals(null, $this->cond_from_s(''));
-        $this->assert_equals(null, $this->cond_from_s(null));
+        $this->assertEquals(null, $this->cond_from_s(''));
+        $this->assertEquals(null, $this->cond_from_s(null));
     }
 
     public function test_create_conditions_from_underscored_string_with_mapped_columns()
@@ -374,7 +374,7 @@ class SQLBuilderTest
             'Tito');
         $hash = SQLBuilder::create_hash_from_underscored_string('id_and_my_name',
                         $values);
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             'id' => 1,
             'my_name' => 'Tito'), $hash);
     }
@@ -388,7 +388,7 @@ class SQLBuilderTest
             'my_name' => 'name');
         $hash = SQLBuilder::create_hash_from_underscored_string('id_and_my_name',
                         $values, $map);
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             'id' => 1,
             'name' => 'Tito'), $hash);
     }

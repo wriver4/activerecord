@@ -29,33 +29,33 @@ class ValidationsTest
     public function test_is_valid_invokes_validations()
     {
         $book = new Book;
-        $this->assert_true(empty($book->errors));
+        $this->assertTrue(empty($book->errors));
         $book->is_valid();
-        $this->assert_false(empty($book->errors));
+        $this->assertFalse(empty($book->errors));
     }
 
     public function test_is_valid_returns_true_if_no_validations_exist()
     {
         $book = new Book;
-        $this->assert_true($book->is_valid());
+        $this->assertTrue($book->is_valid());
     }
 
     public function test_is_valid_returns_false_if_failed_validations()
     {
         $book = new BookValidations;
-        $this->assert_false($book->is_valid());
+        $this->assertFalse($book->is_valid());
     }
 
     public function test_is_invalid()
     {
         $book = new Book();
-        $this->assert_false($book->is_invalid());
+        $this->assertFalse($book->is_invalid());
     }
 
     public function test_is_invalid_is_true()
     {
         $book = new BookValidations();
-        $this->assert_true($book->is_invalid());
+        $this->assertTrue($book->is_invalid());
     }
 
     public function test_is_iterable()
@@ -64,7 +64,7 @@ class ValidationsTest
         $book->is_valid();
 
         foreach ($book->errors as $name => $message)
-                $this->assert_equals("Name can't be blank", $message);
+                $this->assertEquals("Name can't be blank", $message);
     }
 
     public function test_full_messages()
@@ -72,7 +72,7 @@ class ValidationsTest
         $book = new BookValidations();
         $book->is_valid();
 
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             "Name can't be blank"),
                 array_values($book->errors->full_messages(array(
                             'hash' => true))));
@@ -83,7 +83,7 @@ class ValidationsTest
         $book = new BookValidations();
         $book->is_valid();
 
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             "name" => array(
                 "Name can't be blank")), $book->errors->to_array());
     }
@@ -94,7 +94,7 @@ class ValidationsTest
         $book->is_valid();
         $book->errors->add('secondary_author_id', "is invalid");
 
-        $this->assert_equals("Name can't be blank\nSecondary author id is invalid",
+        $this->assertEquals("Name can't be blank\nSecondary author id is invalid",
                 (string) $book->errors);
     }
 
@@ -105,9 +105,9 @@ class ValidationsTest
         $book = BookValidations::create(array(
                     'name' => 'bob'));
 
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             "Name must be unique"), $book->errors->full_messages());
-        $this->assert_equals(1,
+        $this->assertEquals(1,
                 BookValidations::count(array(
                     'conditions' => "name='bob'")));
     }
@@ -115,7 +115,7 @@ class ValidationsTest
     public function test_validates_uniqueness_of_excludes_self()
     {
         $book = BookValidations::first();
-        $this->assert_equals(true, $book->is_valid());
+        $this->assertEquals(true, $book->is_valid());
     }
 
     public function test_validates_uniqueness_of_with_multiple_fields()
@@ -128,7 +128,7 @@ class ValidationsTest
         $book2 = new BookValidations(array(
             'name' => $book1->name,
             'special' => $book1->special + 1));
-        $this->assert_true($book2->is_valid());
+        $this->assertTrue($book2->is_valid());
     }
 
     public function test_validates_uniqueness_of_with_multiple_fields_is_not_unique()
@@ -141,8 +141,8 @@ class ValidationsTest
         $book2 = new BookValidations(array(
             'name' => $book1->name,
             'special' => $book1->special));
-        $this->assert_false($book2->is_valid());
-        $this->assert_equals(array(
+        $this->assertFalse($book2->is_valid());
+        $this->assertEquals(array(
             'Name and special must be unique'), $book2->errors->full_messages());
     }
 
@@ -155,8 +155,8 @@ class ValidationsTest
         $book = BookValidations::create(array(
                     'name_alias' => 'Another Book',
                     'x' => 2));
-        $this->assert_false($book->is_valid());
-        $this->assert_equals(array(
+        $this->assertFalse($book->is_valid());
+        $this->assertEquals(array(
             'Name alias and x must be unique'), $book->errors->full_messages());
     }
 
@@ -169,9 +169,9 @@ class ValidationsTest
                     'key' => 'GA_KEY',
                     'value' => 'UA-1234567-2'));
 
-        $this->assert_equals(array(
+        $this->assertEquals(array(
             "Key must be unique"), $valuestore->errors->full_messages());
-        $this->assert_equals(1,
+        $this->assertEquals(1,
                 ValuestoreValidations::count(array(
                     'conditions' => "`key`='GA_KEY'")));
     }
@@ -179,7 +179,7 @@ class ValidationsTest
     public function test_get_validation_rules()
     {
         $validators = BookValidations::first()->get_validation_rules();
-        $this->assert_true(in_array(array(
+        $this->assertTrue(in_array(array(
             'validator' => 'validates_presence_of'), $validators['name']));
     }
 
@@ -187,7 +187,7 @@ class ValidationsTest
     {
         $book = new BookValidations();
         $book->is_valid();
-        $this->assert_true(strpos(serialize($book->errors), 'model";N;') !== false);
+        $this->assertTrue(strpos(serialize($book->errors), 'model";N;') !== false);
     }
 
     public function test_validations_takes_strings()
@@ -200,7 +200,7 @@ class ValidationsTest
         $book = new BookValidations(array(
             'numeric_test' => 1,
             'special' => 1));
-        $this->assert_false($book->is_valid());
+        $this->assertFalse($book->is_valid());
     }
 
     public function test_gh131_custom_validation()
@@ -208,8 +208,8 @@ class ValidationsTest
         $book = new BookValidations(array(
             'name' => 'test_custom_validation'));
         $book->save();
-        $this->assert_true($book->errors->is_invalid('name'));
-        $this->assert_equals(BookValidations::$custom_validator_error_msg,
+        $this->assertTrue($book->errors->is_invalid('name'));
+        $this->assertEquals(BookValidations::$custom_validator_error_msg,
                 $book->errors->on('name'));
     }
 

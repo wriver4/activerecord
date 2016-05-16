@@ -7,13 +7,12 @@ class BookExclusion
 {
 
     static $table = 'books';
-    public static $validates_exclusion_of = array(
-        array(
-            'name',
-            'in' => array(
-                'blah',
-                'alpha',
-                'bravo'))
-    );
+    public static $validates_exclusion_of = [[
+    'name',
+    'in' => [
+        'blah',
+        'alpha',
+        'bravo']]
+    ];
 
 }

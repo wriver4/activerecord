@@ -95,85 +95,85 @@ class DateTimeTest
 
     public function test_get_format_with_friendly()
     {
-        $this->assert_equals('Y-m-d H:i:s', DateTime::get_format('db'));
+        $this->assertEquals('Y-m-d H:i:s', DateTime::get_format('db'));
     }
 
     public function test_get_format_with_format()
     {
-        $this->assert_equals('Y-m-d', DateTime::get_format('Y-m-d'));
+        $this->assertEquals('Y-m-d', DateTime::get_format('Y-m-d'));
     }
 
     public function test_get_format_with_null()
     {
-        $this->assert_equals(\DateTime::RFC2822, DateTime::get_format());
+        $this->assertEquals(\DateTime::RFC2822, DateTime::get_format());
     }
 
     public function test_format()
     {
-        $this->assert_true(is_string($this->date->format()));
-        $this->assert_true(is_string($this->date->format('Y-m-d')));
+        $this->assertTrue(is_string($this->date->format()));
+        $this->assertTrue(is_string($this->date->format('Y-m-d')));
     }
 
     public function test_format_by_friendly_name()
     {
         $d = date(DateTime::get_format('db'));
-        $this->assert_equals($d, $this->date->format('db'));
+        $this->assertEquals($d, $this->date->format('db'));
     }
 
     public function test_format_by_custom_format()
     {
         $format = 'Y/m/d';
-        $this->assert_equals(date($format), $this->date->format($format));
+        $this->assertEquals(date($format), $this->date->format($format));
     }
 
     public function test_format_uses_default()
     {
         $d = date(DateTime::$FORMATS[DateTime::$DEFAULT_FORMAT]);
-        $this->assert_equals($d, $this->date->format());
+        $this->assertEquals($d, $this->date->format());
     }
 
     public function test_all_formats()
     {
         foreach (DateTime::$FORMATS as $name => $format)
-                $this->assert_equals(date($format), $this->date->format($name));
+                $this->assertEquals(date($format), $this->date->format($name));
     }
 
     public function test_change_default_format_to_format_string()
     {
         DateTime::$DEFAULT_FORMAT = 'H:i:s';
-        $this->assert_equals(date(DateTime::$DEFAULT_FORMAT),
+        $this->assertEquals(date(DateTime::$DEFAULT_FORMAT),
                 $this->date->format());
     }
 
     public function test_change_default_format_to_friently()
     {
         DateTime::$DEFAULT_FORMAT = 'short';
-        $this->assert_equals(date(DateTime::$FORMATS['short']),
+        $this->assertEquals(date(DateTime::$FORMATS['short']),
                 $this->date->format());
     }
 
     public function test_to_string()
     {
-        $this->assert_equals(date(DateTime::get_format()), "".$this->date);
+        $this->assertEquals(date(DateTime::get_format()), "".$this->date);
     }
 
     public function test_create_from_format_error_handling()
     {
         $d = DateTime::createFromFormat('H:i:s Y-d-m', '!!!');
-        $this->assert_false($d);
+        $this->assertFalse($d);
     }
 
     public function test_create_from_format_without_tz()
     {
         $d = DateTime::createFromFormat('H:i:s Y-d-m', '03:04:05 2000-02-01');
-        $this->assert_equals(new DateTime('2000-01-02 03:04:05'), $d);
+        $this->assertEquals(new DateTime('2000-01-02 03:04:05'), $d);
     }
 
     public function test_create_from_format_with_tz()
     {
         $d = DateTime::createFromFormat('Y-m-d H:i:s', '2000-02-01 03:04:05',
                         new \DateTimeZone('Etc/GMT-10'));
-        $this->assert_equals(new DateTime('2000-01-31 17:04:05'), $d);
+        $this->assertEquals(new DateTime('2000-01-31 17:04:05'), $d);
     }
 
 }

@@ -9,34 +9,32 @@ class Author
     static $pk = 'author_id';
 //	static $has_one = array(array('awesome_person', 'foreign_key' => 'author_id', 'primary_key' => 'author_id'),
 //	array('parent_author', 'class_name' => 'Author', 'foreign_key' => 'parent_author_id'));
-    static $has_many = array(
-        'books');
-    static $has_one = array(
-        array(
+    static $has_many = ['books'];
+    static $has_one = [
+        [
             'awesome_person',
             'foreign_key' => 'author_id',
-            'primary_key' => 'author_id'),
-        array(
+            'primary_key' => 'author_id'],
+        [
             'parent_author',
             'class_name' => 'Author',
-            'foreign_key' => 'parent_author_id'));
-    static $belongs_to = array();
+            'foreign_key' => 'parent_author_id']];
+    static $belongs_to = [];
 
-    public function set_password($plaintext)
+    public function setPassword($plaintext)
     {
-        $this->encrypted_password = md5($plaintext);
+        $this->encrypted_password = \md5($plaintext);
     }
 
-    public function set_name($value)
+    public function setName($value)
     {
-        $value = strtoupper($value);
-        $this->assign_attribute('name', $value);
+        $value = \strtoupper($value);
+        $this->assignAttribute('name', $value);
     }
 
-    public function return_something()
+    public function returnSomething()
     {
-        return array(
-            "sharks" => "lasers");
+        return ["sharks" => "lasers"];
     }
 
 }
