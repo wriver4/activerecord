@@ -16,38 +16,38 @@ use Activerecord\ConnectionManager;
  * @author mark weisser <mark at whizbangdevelopers.com>
  */
 class ConnectionManagerTest
-        extends DatabaseTest
+        extends \Test\Helpers\DatabaseTest
 {
 
-    public function test_get_connection_with_null_connection()
+    public function testGetConnectionWithNullConnection()
     {
-        $this->assertNotNull(ConnectionManager::get_connection(null));
-        $this->assertNotNull(ConnectionManager::get_connection());
+        $this->assertNotNull(ConnectionManager::getConnection(null));
+        $this->assertNotNull(ConnectionManager::getConnection());
     }
 
-    public function test_get_connection()
+    public function testGetConnection()
     {
-        $this->assertNotNull(ConnectionManager::get_connection('mysql'));
+        $this->assertNotNull(ConnectionManager::getConnection('mysql'));
     }
 
-    public function test_get_connection_uses_existing_object()
+    public function testGetConnectionUsesExistingObject()
     {
-        $a = ConnectionManager::get_connection('mysql');
+        $a = ConnectionManager::getConnection('mysql');
         $a->harro = 'harro there';
 
-        $this->assert_same($a, ConnectionManager::get_connection('mysql'));
+        $this->assertSame($a, ConnectionManager::getConnection('mysql'));
     }
 
-    public function test_gh_91_get_connection_with_null_connection_is_always_default()
+    public function testGh91GetConnectionWithNullConnectionIsAlwaysDefault()
     {
-        $conn_one = ConnectionManager::get_connection('mysql');
-        $conn_two = ConnectionManager::get_connection();
-        $conn_three = ConnectionManager::get_connection('mysql');
-        $conn_four = ConnectionManager::get_connection();
+        $conn_one = ConnectionManager::getConnection('mysql');
+        $conn_two = ConnectionManager::getConnection();
+        $conn_three = ConnectionManager::getConnection('mysql');
+        $conn_four = ConnectionManager::getConnection();
 
-        $this->assert_same($conn_one, $conn_three);
-        $this->assert_same($conn_two, $conn_three);
-        $this->assert_same($conn_four, $conn_three);
+        $this->assertSame($conn_one, $conn_three);
+        $this->assertSame($conn_two, $conn_three);
+        $this->assertSame($conn_four, $conn_three);
     }
 
 }

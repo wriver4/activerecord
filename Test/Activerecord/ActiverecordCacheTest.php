@@ -19,7 +19,7 @@ class ActiverecordCacheTest
         }
 
         parent::setUp($connection_name);
-        Activerecord\Config::instance()->set_cache('memcache://localhost');
+        Config::instance()->set_cache('memcache://localhost');
     }
 
     public function tearDown()

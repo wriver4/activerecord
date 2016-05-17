@@ -16,13 +16,8 @@ use Activerecord\Exceptions\ExceptionDatabase;
  * @author mark weisser <mark at whizbangdevelopers.com>
  */
 class DateTimeTest
-        extends PHPUnit_Framework_TestCase
+        extends \PHPUnit_Framework_TestCase
 {
-
-    /**
-     * @var \RemoteWebDriver
-     */
-    protected $webDriver;
 
     public function setUp()
     {
@@ -35,7 +30,7 @@ class DateTimeTest
         DateTime::$DEFAULT_FORMAT = $this->original_format;
     }
 
-    private function assert_dirtifies($method /* , method params, ... */)
+    private function assertDirtifies($method /* , method params, ... */)
     {
         try
         {
@@ -43,21 +38,21 @@ class DateTimeTest
         }
         catch (ExceptionDatabase $e)
         {
-            $this->mark_test_skipped('failed to connect. '.$e->getMessage());
+            $this->markTestSkipped('failed to connect. '.$e->getMessage());
         }
         $datetime = new DateTime();
-        $datetime->attribute_of($model, 'some_date');
+        $datetime->attributeOf($model, 'some_date');
 
-        $args = func_get_args();
-        array_shift($args);
+        $args = \func_get_args();
+        \array_shift($args);
 
-        call_user_func_array(array(
+        \call_user_func_array(array(
             $datetime,
             $method), $args);
-        $this->assert_has_keys('some_date', $model->dirty_attributes());
+        $this->assertHasKeys('some_date', $model->dirtyAttributes());
     }
 
-    public function test_should_flag_the_attribute_dirty()
+    public function testShouldFlagTheAttributeDirty()
     {
         $interval = new DateInterval('PT1S');
         $timezone = new DateTimeZone('America/New_York');
@@ -71,7 +66,7 @@ class DateTimeTest
         $this->assert_dirtifies('sub', $interval);
     }
 
-    public function test_set_iso_date()
+    public function testSetIsoDate()
     {
         $a = new \DateTime();
         $a->setISODate(2001, 1);
@@ -79,10 +74,10 @@ class DateTimeTest
         $b = new DateTime();
         $b->setISODate(2001, 1);
 
-        $this->assert_datetime_equals($a, $b);
+        $this->assertDatetimeEquals($a, $b);
     }
 
-    public function test_set_time()
+    public function testSetTime()
     {
         $a = new \DateTime();
         $a->setTime(1, 1);
@@ -90,86 +85,86 @@ class DateTimeTest
         $b = new DateTime();
         $b->setTime(1, 1);
 
-        $this->assert_datetime_equals($a, $b);
+        $this->assertDatetimeEquals($a, $b);
     }
 
-    public function test_get_format_with_friendly()
+    public function testGetFormatWithFriendly()
     {
-        $this->assertEquals('Y-m-d H:i:s', DateTime::get_format('db'));
+        $this->assertEquals('Y-m-d H:i:s', DateTime::getFormat('db'));
     }
 
-    public function test_get_format_with_format()
+    public function testGetFormatWithFormat()
     {
-        $this->assertEquals('Y-m-d', DateTime::get_format('Y-m-d'));
+        $this->assertEquals('Y-m-d', DateTime::getFormat('Y-m-d'));
     }
 
-    public function test_get_format_with_null()
+    public function testGetFormatWithNull()
     {
-        $this->assertEquals(\DateTime::RFC2822, DateTime::get_format());
+        $this->assertEquals(\DateTime::RFC2822, DateTime::getFormat());
     }
 
-    public function test_format()
+    public function testFormat()
     {
-        $this->assertTrue(is_string($this->date->format()));
-        $this->assertTrue(is_string($this->date->format('Y-m-d')));
+        $this->assertTrue(\is_string($this->date->format()));
+        $this->assertTrue(\is_string($this->date->format('Y-m-d')));
     }
 
-    public function test_format_by_friendly_name()
+    public function testFormatByFriendlyName()
     {
-        $d = date(DateTime::get_format('db'));
+        $d = date(DateTime::getFormat('db'));
         $this->assertEquals($d, $this->date->format('db'));
     }
 
-    public function test_format_by_custom_format()
+    public function testFormatByCustomFormat()
     {
         $format = 'Y/m/d';
         $this->assertEquals(date($format), $this->date->format($format));
     }
 
-    public function test_format_uses_default()
+    public function testFormatUsesDefault()
     {
-        $d = date(DateTime::$FORMATS[DateTime::$DEFAULT_FORMAT]);
+        $d = \date(DateTime::$FORMATS[DateTime::$DEFAULT_FORMAT]);
         $this->assertEquals($d, $this->date->format());
     }
 
-    public function test_all_formats()
+    public function testAllFormats()
     {
         foreach (DateTime::$FORMATS as $name => $format)
                 $this->assertEquals(date($format), $this->date->format($name));
     }
 
-    public function test_change_default_format_to_format_string()
+    public function testChangeDefaultFormatToFormatString()
     {
         DateTime::$DEFAULT_FORMAT = 'H:i:s';
-        $this->assertEquals(date(DateTime::$DEFAULT_FORMAT),
+        $this->assertEquals(\date(DateTime::$DEFAULT_FORMAT),
                 $this->date->format());
     }
 
-    public function test_change_default_format_to_friently()
+    public function testChangeDefaultFormatToFriently()
     {
         DateTime::$DEFAULT_FORMAT = 'short';
-        $this->assertEquals(date(DateTime::$FORMATS['short']),
+        $this->assertEquals(\date(DateTime::$FORMATS['short']),
                 $this->date->format());
     }
 
-    public function test_to_string()
+    public function testToString()
     {
-        $this->assertEquals(date(DateTime::get_format()), "".$this->date);
+        $this->assertEquals(\date(DateTime::getFormat()), "".$this->date);
     }
 
-    public function test_create_from_format_error_handling()
+    public function testCreateFromFormatErrorHandling()
     {
         $d = DateTime::createFromFormat('H:i:s Y-d-m', '!!!');
         $this->assertFalse($d);
     }
 
-    public function test_create_from_format_without_tz()
+    public function testCreateFromFormatWithoutTz()
     {
         $d = DateTime::createFromFormat('H:i:s Y-d-m', '03:04:05 2000-02-01');
         $this->assertEquals(new DateTime('2000-01-02 03:04:05'), $d);
     }
 
-    public function test_create_from_format_with_tz()
+    public function testCreateFromFormatWithTz()
     {
         $d = DateTime::createFromFormat('Y-m-d H:i:s', '2000-02-01 03:04:05',
                         new \DateTimeZone('Etc/GMT-10'));

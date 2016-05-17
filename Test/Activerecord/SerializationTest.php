@@ -27,7 +27,7 @@ class SerializationTest
 
     public function test_only()
     {
-        $this->assert_has_keys('name', 'special',
+        $this->assertHasKeys('name', 'special',
                 $this->_a(array(
                     'only' => array(
                         'name',
@@ -36,18 +36,18 @@ class SerializationTest
 
     public function test_only_not_array()
     {
-        $this->assert_has_keys('name',
+        $this->assertHasKeys('name',
                 $this->_a(array(
                     'only' => 'name')));
     }
 
     public function test_only_should_only_apply_to_attributes()
     {
-        $this->assert_has_keys('name', 'author',
+        $this->assertHasKeys('name', 'author',
                 $this->_a(array(
                     'only' => 'name',
                     'include' => 'author')));
-        $this->assert_has_keys('book_id', 'upper_name',
+        $this->assertHasKeys('book_id', 'upper_name',
                 $this->_a(array(
                     'only' => 'book_id',
                     'methods' => 'upper_name')));
@@ -55,7 +55,7 @@ class SerializationTest
 
     public function test_only_overrides_except()
     {
-        $this->assert_has_keys('name',
+        $this->assertHasKeys('name',
                 $this->_a(array(
                     'only' => 'name',
                     'except' => 'name')));
@@ -106,7 +106,7 @@ class SerializationTest
         $a = $this->_a(array(
             'include' => array(
                 'author')));
-        $this->assert_has_keys('parent_author_id', $a['author']);
+        $this->assertHasKeys('parent_author_id', $a['author']);
     }
 
     public function test_include_nested_with_nested_options()
@@ -205,10 +205,10 @@ class SerializationTest
 
     public function test_to_xml_skip_instruct()
     {
-        $this->assert_same(false,
+        $this->assertSame(false,
                 strpos(Book::find(1)->to_xml(array(
                             'skip_instruct' => true)), '<?xml version'));
-        $this->assert_same(0,
+        $this->assertSame(0,
                 strpos(Book::find(1)->to_xml(array(
                             'skip_instruct' => false)), '<?xml version'));
     }

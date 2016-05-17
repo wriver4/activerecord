@@ -17,7 +17,7 @@ use Activerecord\Exceptions\ExceptionDatabase;
  * @author mark weisser <mark at whizbangdevelopers.com>
  */
 class ExpressionsTest
-        extends PHPUnit_Framework_TestCase
+        extends \PHPUnit_Framework_TestCase
 {
 
     public function setUp()
@@ -30,266 +30,240 @@ class ExpressionsTest
 
     }
 
-    public function test_values()
+    public function testValues()
     {
         $c = new Expressions(null, 'a=? and b=?', 1, 2);
-        $this->assertEquals(array(
-            1,
-            2), $c->values());
+        $this->assertEquals([1,
+            2], $c->values());
     }
 
-    public function test_one_variable()
+    public function testOneVariable()
     {
         $c = new Expressions(null, 'name=?', 'Tito');
-        $this->assertEquals('name=?', $c->to_s());
-        $this->assertEquals(array(
-            'Tito'), $c->values());
+        $this->assertEquals('name=?', $c->toString());
+        $this->assertEquals(['Tito'], $c->values());
     }
 
-    public function test_array_variable()
+    public function testArrayVariable()
     {
         $c = new Expressions(null, 'name IN(?) and id=?',
-                array(
-            'Tito',
-            'George'), 1);
-        $this->assertEquals(array(
-            array(
-                'Tito',
-                'George'),
-            1), $c->values());
+                ['Tito',
+            'George'], 1);
+        $this->assertEquals([[
+        'Tito',
+        'George'],
+            1], $c->values());
     }
 
-    public function test_multiple_variables()
+    public function testMultipleVariables()
     {
         $c = new Expressions(null, 'name=? and book=?', 'Tito', 'Sharks');
-        $this->assertEquals('name=? and book=?', $c->to_s());
-        $this->assertEquals(array(
+        $this->assertEquals('name=? and book=?', $c->toString());
+        $this->assertEquals([
             'Tito',
-            'Sharks'), $c->values());
+            'Sharks'], $c->values());
     }
 
-    public function test_to_string()
+    public function testToString()
     {
         $c = new Expressions(null, 'name=? and book=?', 'Tito', 'Sharks');
-        $this->assertEquals('name=? and book=?', $c->to_s());
+        $this->assertEquals('name=? and book=?', $c->toString());
     }
 
-    public function test_to_string_with_array_variable()
+    public function testToStringWithArrayVariable()
     {
         $c = new Expressions(null, 'name IN(?) and id=?',
-                array(
-            'Tito',
-            'George'), 1);
-        $this->assertEquals('name IN(?,?) and id=?', $c->to_s());
+                ['Tito',
+            'George'], 1);
+        $this->assertEquals('name IN(?,?) and id=?', $c->toString());
     }
 
-    public function test_to_string_with_null_options()
+    public function testToStringWithNullOptions()
     {
         $c = new Expressions(null, 'name=? and book=?', 'Tito', 'Sharks');
         $x = null;
-        $this->assertEquals('name=? and book=?', $c->to_s(false, $x));
+        $this->assertEquals('name=? and book=?', $c->toString(false, $x));
     }
 
     /**
      * @expectedException Activerecord\ExpressionsException
      */
-    public function test_insufficient_variables()
+    public function testInsufficientVariables()
     {
         $c = new Expressions(null, 'name=? and id=?', 'Tito');
-        $c->to_s();
+        $c->toString();
     }
 
-    public function test_no_values()
+    public function testNoValues()
     {
         $c = new Expressions(null, "name='Tito'");
-        $this->assertEquals("name='Tito'", $c->to_s());
-        $this->assertEquals(0, count($c->values()));
+        $this->assertEquals("name='Tito'", $c->toString());
+        $this->assertEquals(0, \count($c->values()));
     }
 
-    public function test_null_variable()
+    public function testNullVariable()
     {
         $a = new Expressions(null, 'name=?', null);
-        $this->assertEquals('name=?', $a->to_s());
-        $this->assertEquals(array(
-            null), $a->values());
+        $this->assertEquals('name=?', $a->toString());
+        $this->assertEquals([null], $a->values());
     }
 
-    public function test_zero_variable()
+    public function testZeroVariable()
     {
         $a = new Expressions(null, 'name=?', 0);
-        $this->assertEquals('name=?', $a->to_s());
-        $this->assertEquals(array(
-            0), $a->values());
+        $this->assertEquals('name=?', $a->toString());
+        $this->assertEquals([0], $a->values());
     }
 
-    public function test_empty_array_variable()
+    public function testEmptyArrayVariable()
     {
         $a = new Expressions(null, 'id IN(?)', array());
-        $this->assertEquals('id IN(?)', $a->to_s());
-        $this->assertEquals(array(
-            array()), $a->values());
+        $this->assertEquals('id IN(?)', $a->toString());
+        $this->assertEquals([[]], $a->values());
     }
 
-    public function test_ignore_invalid_parameter_marker()
+    public function testIgnoreInvalidParameterMarker()
     {
         $a = new Expressions(null,
                 "question='Do you love backslashes?' and id in(?)",
-                array(
-            1,
-            2));
+                [1,
+            2]);
         $this->assertEquals("question='Do you love backslashes?' and id in(?,?)",
-                $a->to_s());
+                $a->toString());
     }
 
-    public function test_ignore_parameter_marker_with_escaped_quote()
+    public function testIgnoreParameterMarkerWithEscapedQuote()
     {
         $a = new Expressions(null,
                 "question='Do you love''s backslashes?' and id in(?)",
-                array(
-            1,
-            2));
+                [1,
+            2]);
         $this->assertEquals("question='Do you love''s backslashes?' and id in(?,?)",
-                $a->to_s());
+                $a->toString());
     }
 
-    public function test_ignore_parameter_marker_with_backspace_escaped_quote()
+    public function testIgnoreParameterMarkerWithBackspaceEscapedQuote()
     {
         $a = new Expressions(null,
                 "question='Do you love\\'s backslashes?' and id in(?)",
-                array(
-            1,
-            2));
+                [1,
+            2]);
         $this->assertEquals("question='Do you love\\'s backslashes?' and id in(?,?)",
-                $a->to_s());
+                $a->toString());
     }
 
-    public function test_substitute()
+    public function testSubstitute()
     {
         $a = new Expressions(null, 'name=? and id=?', 'Tito', 1);
-        $this->assertEquals("name='Tito' and id=1", $a->to_s(true));
+        $this->assertEquals("name='Tito' and id=1", $a->toString(true));
     }
 
-    public function test_substitute_quotes_scalars_but_not_others()
+    public function testSubstituteQuotesScalarsButNotOthers()
     {
         $a = new Expressions(null, 'id in(?)',
-                array(
-            1,
+                [1,
             '2',
-            3.5));
-        $this->assertEquals("id in(1,'2',3.5)", $a->to_s(true));
+            3.5]);
+        $this->assertEquals("id in(1,'2',3.5)", $a->toString(true));
     }
 
-    public function test_substitute_where_value_has_question_mark()
+    public function testSubstituteWhereValueHasQuestionMark()
     {
         $a = new Expressions(null, 'name=? and id=?', '??????', 1);
-        $this->assertEquals("name='??????' and id=1", $a->to_s(true));
+        $this->assertEquals("name='??????' and id=1", $a->toString(true));
     }
 
-    public function test_substitute_array_value()
+    public function testSubstituteArrayValue()
     {
-        $a = new Expressions(null, 'id in(?)',
-                array(
-            1,
-            2));
-        $this->assertEquals("id in(1,2)", $a->to_s(true));
+        $a = new Expressions(null, 'id in(?)', [1,
+            2]);
+        $this->assertEquals("id in(1,2)", $a->toString(true));
     }
 
-    public function test_substitute_escapes_quotes()
+    public function testSubstituteEscapesQuotes()
     {
         $a = new Expressions(null, 'name=? or name in(?)', "Tito's Guild",
-                array(
-            1,
-            "Tito's Guild"));
+                [1,
+            "Tito's Guild"]);
         $this->assertEquals("name='Tito''s Guild' or name in(1,'Tito''s Guild')",
-                $a->to_s(true));
+                $a->toString(true));
     }
 
-    public function test_substitute_escape_quotes_with_connections_escape_method()
+    public function testSubstituteEscapeQuotesWithConnectionsEscapeMethod()
     {
         try
         {
-            $conn = ConnectionManager::get_connection();
+            $conn = ConnectionManager::getConnection();
         }
         catch (ExceptionDatabase $e)
         {
-            $this->mark_test_skipped('failed to connect. '.$e->getMessage());
+            $this->markTestSkipped('failed to connect. '.$e->getMessage());
         }
         $a = new Expressions(null, 'name=?', "Tito's Guild");
-        $a->set_connection($conn);
+        $a->setConnection($conn);
         $escaped = $conn->escape("Tito's Guild");
-        $this->assertEquals("name=$escaped", $a->to_s(true));
+        $this->assertEquals("name=$escaped", $a->toString(true));
     }
 
-    public function test_bind()
+    public function testBind()
     {
         $a = new Expressions(null, 'name=? and id=?', 'Tito');
         $a->bind(2, 1);
-        $this->assertEquals(array(
-            'Tito',
-            1), $a->values());
+        $this->assertEquals(['Tito',
+            1], $a->values());
     }
 
-    public function test_bind_overwrite_existing()
+    public function testBindOverwriteExisting()
     {
         $a = new Expressions(null, 'name=? and id=?', 'Tito', 1);
         $a->bind(2, 99);
-        $this->assertEquals(array(
-            'Tito',
-            99), $a->values());
+        $this->assertEquals(['Tito',
+            99], $a->values());
     }
 
     /**
      * @expectedException Activerecord\ExpressionsException
      */
-    public function test_bind_invalid_parameter_number()
+    public function testBindInvalidParameterNumber()
     {
         $a = new Expressions(null, 'name=?');
         $a->bind(0, 99);
     }
 
-    public function test_subsitute_using_alternate_values()
+    public function testSubsituteUsingAlternateValues()
     {
         $a = new Expressions(null, 'name=?', 'Tito');
-        $this->assertEquals("name='Tito'", $a->to_s(true));
-        $x = array(
-            'values' => array(
-                'Hocus'));
-        $this->assertEquals("name='Hocus'", $a->to_s(true, $x));
+        $this->assertEquals("name='Tito'", $a->toString(true));
+        $x = ['values' => ['Hocus']];
+        $this->assertEquals("name='Hocus'", $a->toString(true, $x));
     }
 
-    public function test_null_value()
+    public function testNullValue()
     {
         $a = new Expressions(null, 'name=?', null);
-        $this->assertEquals('name=NULL', $a->to_s(true));
+        $this->assertEquals('name=NULL', $a->toString(true));
     }
 
-    public function test_hash_with_default_glue()
+    public function testHashWithDefaultGlue()
     {
-        $a = new Expressions(null,
-                array(
-            'id' => 1,
-            'name' => 'Tito'));
-        $this->assertEquals('id=? AND name=?', $a->to_s());
+        $a = new Expressions(null, ['id' => 1,
+            'name' => 'Tito']);
+        $this->assertEquals('id=? AND name=?', $a->toString());
     }
 
-    public function test_hash_with_glue()
+    public function testHashWithGlue()
     {
-        $a = new Expressions(null,
-                array(
-            'id' => 1,
-            'name' => 'Tito'), ', ');
-        $this->assertEquals('id=?, name=?', $a->to_s());
+        $a = new Expressions(null, ['id' => 1,
+            'name' => 'Tito'], ', ');
+        $this->assertEquals('id=?, name=?', $a->toString());
     }
 
-    public function test_hash_with_array()
+    public function testHashWithArray()
     {
-        $a = new Expressions(null,
-                array(
-            'id' => 1,
-            'name' => array(
-                'Tito',
-                'Mexican')));
-        $this->assertEquals('id=? AND name IN(?,?)', $a->to_s());
+        $a = new Expressions(null, ['id' => 1,
+            'name' => ['Tito',
+                'Mexican']]);
+        $this->assertEquals('id=? AND name IN(?,?)', $a->toString());
     }
 
 }

@@ -15,7 +15,7 @@ use Activerecord\Inflector;
  * @author mark weisser <mark at whizbangdevelopers.com>
  */
 class InflectorTest
-        extends PHPUnit_Framework_TestCase
+        extends \PHPUnit_Framework_TestCase
 {
 
     public function setUp()
@@ -28,7 +28,7 @@ class InflectorTest
 
     }
 
-    public function test_underscorify()
+    public function testUnderscorify()
     {
         $this->assertEquals('rm__name__bob',
                 $this->inflector->variablize('rm--name  bob'));
@@ -36,14 +36,14 @@ class InflectorTest
                 $this->inflector->underscorify('OneTwoThree'));
     }
 
-    public function test_tableize()
+    public function testTableize()
     {
         $this->assertEquals('angry_people',
                 $this->inflector->tableize('AngryPerson'));
         $this->assertEquals('my_sqls', $this->inflector->tableize('MySQL'));
     }
 
-    public function test_keyify()
+    public function testKeyify()
     {
         $this->assertEquals('building_type_id',
                 $this->inflector->keyify('BuildingType'));

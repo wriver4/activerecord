@@ -35,17 +35,17 @@ if (getenv('LOG') !== 'false') DatabaseTest::$log = true;
 Activerecord\Config::initialize(function($cfg)
 {
     $cfg->set_model_directory(realpath(__DIR__.'/../models'));
-    $cfg->set_connections(array(
+    $cfg->setConnections(array(
         'mysql' => getenv('PHPAR_MYSQL') ? : 'mysql://test:test@127.0.0.1/test',
         'pgsql' => getenv('PHPAR_PGSQL') ? : 'pgsql://test:test@127.0.0.1/test',
         'oci' => getenv('PHPAR_OCI') ? : 'oci://test:test@127.0.0.1/dev',
         'sqlite' => getenv('PHPAR_SQLITE') ? : 'sqlite://test.db'));
 
-    $cfg->set_default_connection('mysql');
+    $cfg->setDefaultConnection('mysql');
 
     for ($i = 0; $i < count($GLOBALS['argv']); ++$i)
     {
-        if ($GLOBALS['argv'][$i] == '--adapter') $cfg->set_default_connection($GLOBALS['argv'][$i
+        if ($GLOBALS['argv'][$i] == '--adapter') $cfg->setDefaultConnection($GLOBALS['argv'][$i
                     + 1]);
         elseif ($GLOBALS['argv'][$i] == '--slow-tests') $GLOBALS['slow_tests'] =
                     true;

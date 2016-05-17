@@ -75,7 +75,7 @@ class ValidatesNumericalityOfTest
             $this->assertFalse($book->save());
             $this->assertTrue($book->errors->is_invalid('numeric_test'));
 
-            if (!is_null($msg)) $this->assert_same($msg,
+            if (!is_null($msg)) $this->assertSame($msg,
                         $book->errors->on('numeric_test'));
         }
     }

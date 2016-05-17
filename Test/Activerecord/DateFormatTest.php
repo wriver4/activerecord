@@ -3,10 +3,10 @@
 namespace Test\Activerecord;
 
 class DateFormatTest
-        extends DatabaseTest
+        extends \Test\Helpers\DatabaseTest
 {
 
-    public function test_datefield_gets_converted_to_ar_datetime()
+    public function testDatefieldGetsConvertedToArDatetime()
     {
         //make sure first author has a date
         $author = Author::first();
@@ -14,7 +14,7 @@ class DateFormatTest
         $author->save();
 
         $author = Author::first();
-        $this->assert_is_a("Activerecord\\DateTime", $author->some_date);
+        $this->assertIsA("Activerecord\\DateTime", $author->some_date);
     }
 
 }

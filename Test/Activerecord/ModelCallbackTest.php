@@ -3,7 +3,7 @@
 namespace Test\Activerecord;
 
 class ModelCallbackTest
-        extends DatabaseTest
+        extends \Test\Helpers\DatabaseTest
 {
 
     public function setUp($connection_name = null)
@@ -19,12 +19,14 @@ class ModelCallbackTest
 
     }
 
-    public function register_and_invoke_callbacks($callbacks, $return, $closure)
+    public function registerAndInvokeCallbacks($callbacks, $return, $closure)
     {
-        if (!is_array($callbacks)) $callbacks = array(
-                $callbacks);
+        if (!\is_array($callbacks))
+        {
+            $callbacks = [$callbacks];
+        }
 
-        $fired = array();
+        $fired = [];
 
         foreach ($callbacks as $name)
                 $this->callback->register($name,
@@ -35,37 +37,37 @@ class ModelCallbackTest
             });
 
         $closure($this->venue);
-        return array_intersect($callbacks, $fired);
+        return \array_intersect($callbacks, $fired);
     }
 
-    public function assert_fires($callbacks, $closure)
+    public function assertFires($callbacks, $closure)
     {
-        $executed = $this->register_and_invoke_callbacks($callbacks, true,
-                $closure);
-        $this->assertEquals(count($callbacks), count($executed));
+        $executed = $this->registerAndInvokeCallbacks($callbacks, true, $closure);
+        $this->assertEquals(\count($callbacks), \count($executed));
     }
 
-    public function assert_does_not_fire($callbacks, $closure)
+    public function assertDoesNotFire($callbacks, $closure)
     {
-        $executed = $this->register_and_invoke_callbacks($callbacks, true,
-                $closure);
-        $this->assertEquals(0, count($executed));
+        $executed = $this->registerAndInvokeCallbacks($callbacks, true, $closure);
+        $this->assertEquals(0, \count($executed));
     }
 
-    public function assert_fires_returns_false($callbacks, $only_fire, $closure)
+    public function assertFiresReturnsFalse($callbacks, $only_fire, $closure)
     {
-        if (!is_array($only_fire)) $only_fire = array(
-                $only_fire);
+        if (!\is_array($only_fire))
+        {
+            $only_fire = [$only_fire];
+        }
 
-        $executed = $this->register_and_invoke_callbacks($callbacks, false,
+        $executed = $this->registerAndInvokeCallbacks($callbacks, false,
                 $closure);
-        sort($only_fire);
-        $intersect = array_intersect($only_fire, $executed);
-        sort($intersect);
+        \sort($only_fire);
+        $intersect = \array_intersect($only_fire, $executed);
+        \sort($intersect);
         $this->assertEquals($only_fire, $intersect);
     }
 
-    public function test_after_construct_fires_by_default()
+    public function testAfterConstructFiresByDefault()
     {
         $this->assert_fires('after_construct',
                 function($model)
@@ -74,13 +76,12 @@ class ModelCallbackTest
         });
     }
 
-    public function test_fire_validation_callbacks_on_insert()
+    public function testFireValidationCallbacksOnInsert()
     {
-        $this->assert_fires(array(
-            'before_validation',
+        $this->assertFires(['before_validation',
             'after_validation',
             'before_validation_on_create',
-            'after_validation_on_create'),
+            'after_validation_on_create'],
                 function($model)
         {
             $model = new Venue();
@@ -88,13 +89,12 @@ class ModelCallbackTest
         });
     }
 
-    public function test_fire_validation_callbacks_on_update()
+    public function testFireValidationCallbacksOnUpdate()
     {
-        $this->assert_fires(array(
-            'before_validation',
+        $this->assertFires(['before_validation',
             'after_validation',
             'before_validation_on_update',
-            'after_validation_on_update'),
+            'after_validation_on_update'],
                 function($model)
         {
             $model = Venue::first();
@@ -102,31 +102,30 @@ class ModelCallbackTest
         });
     }
 
-    public function test_validation_call_backs_not_fired_due_to_bypassing_validations()
+    public function testValidationCallBacksNotFiredDueToBypassingValidations()
     {
-        $this->assert_does_not_fire('before_validation',
+        $this->assertDoesNotFire('before_validation',
                 function($model)
         {
             $model->save(false);
         });
     }
 
-    public function test_before_validation_returning_false_cancels_callbacks()
+    public function testBeforeValidationReturningFalseCancelsCallbacks()
     {
-        $this->assert_fires_returns_false(array(
+        $this->assertFiresReturnsFalse([
             'before_validation',
-            'after_validation'), 'before_validation',
+            'after_validation'], 'before_validation',
                 function($model)
         {
             $model->save();
         });
     }
 
-    public function test_fires_before_save_and_before_update_when_updating()
+    public function testFiresBeforeSaveAndBeforeUpdateWhenUpdating()
     {
-        $this->assert_fires(array(
-            'before_save',
-            'before_update'),
+        $this->assertFires(['before_save',
+            'before_update'],
                 function($model)
         {
             $model = Venue::first();
@@ -135,11 +134,10 @@ class ModelCallbackTest
         });
     }
 
-    public function test_before_save_returning_false_cancels_callbacks()
+    public function testBeforeSaveReturningFalseCancelsCallbacks()
     {
-        $this->assert_fires_returns_false(array(
-            'before_save',
-            'before_create'), 'before_save',
+        $this->assertFiresReturnsFalse(['before_save',
+            'before_create'], 'before_save',
                 function($model)
         {
             $model = new Venue();
@@ -147,11 +145,10 @@ class ModelCallbackTest
         });
     }
 
-    public function test_destroy()
+    public function testDestroy()
     {
-        $this->assert_fires(array(
-            'before_destroy',
-            'after_destroy'),
+        $this->assertFires(['before_destroy',
+            'after_destroy'],
                 function($model)
         {
             $model->delete();

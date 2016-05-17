@@ -16,138 +16,131 @@ use Activerecord\Exceptions\ExceptionConfig;
  * @author mark weisser <mark at whizbangdevelopers.com>
  */
 class ConfigTest
-        extends PHPUnit_Framework_TestCase
+        extends \PHPUnit_Framework_TestCase
 {
 
     public function setUp()
     {
         $this->config = new Config();
-        $this->connections = array(
-            'development' => 'mysql://blah/development',
-            'test' => 'mysql://blah/test');
-        $this->config->set_connections($this->connections);
+        $this->connections = ['development' => 'mysql://blah/development',
+            'test' => 'mysql://blah/test'];
+        $this->config->setConnections($this->connections);
     }
 
     public function tearDown()
     {
-        $this->webDriver->close();
+
     }
 
     /**
      * @expectedException Activerecord\ConfigException
      */
-    public function test_set_connections_must_be_array()
+    public function testSetConnectionsMustBeArray()
     {
-        $this->config->set_connections(null);
+        $this->config->setConnections(null);
     }
 
-    public function test_get_connections()
+    public function testGetConnections()
     {
-        $this->assertEquals($this->connections,
-                $this->config->get_connections());
+        $this->assertEquals($this->connections, $this->config->getConnections());
     }
 
-    public function test_get_connection()
+    public function testGetConnection()
     {
         $this->assertEquals($this->connections['development'],
-                $this->config->get_connection('development'));
+                $this->config->getConnection('development'));
     }
 
-    public function test_get_invalid_connection()
+    public function testGetInvalidConnection()
     {
-        $this->assert_null($this->config->get_connection('whiskey tango foxtrot'));
+        $this->assertNull($this->config->getConnection('whiskey tango foxtrot'));
     }
 
-    public function test_get_default_connection_and_connection()
+    public function testGetDefaultConnectionAndConnection()
     {
-        $this->config->set_default_connection('development');
-        $this->assertEquals('development',
-                $this->config->get_default_connection());
+        $this->config->setDefaultConnection('development');
+        $this->assertEquals('development', $this->config->getDefaultConnection());
         $this->assertEquals($this->connections['development'],
-                $this->config->get_default_connection_string());
+                $this->config->getDefaultConnectionString());
     }
 
-    public function test_get_default_connection_and_connection_string_defaults_to_development()
+    public function testGetDefaultConnectionAndConnectionStringDefaultsToDevelopment()
     {
-        $this->assertEquals('development',
-                $this->config->get_default_connection());
+        $this->assertEquals('development', $this->config->getDefaultConnection());
         $this->assertEquals($this->connections['development'],
-                $this->config->get_default_connection_string());
+                $this->config->getDefaultConnectionString());
     }
 
-    public function test_get_default_connection_string_when_connection_name_is_not_valid()
+    public function testGetDefaultConnectionStringWhenConnectionNameIsNotValid()
     {
-        $this->config->set_default_connection('little mac');
-        $this->assert_null($this->config->get_default_connection_string());
+        $this->config->setDefaultConnection('little mac');
+        $this->assertNull($this->config->getDefaultConnectionString());
     }
 
-    public function test_default_connection_is_set_when_only_one_connection_is_present()
+    public function testDefaultConnectionIsSetWhenOnlyOneConnectionIsPresent()
     {
-        $this->config->set_connections(array(
-            'development' => $this->connections['development']));
-        $this->assertEquals('development',
-                $this->config->get_default_connection());
+        $this->config->setConnections(['development' => $this->connections['development']]);
+        $this->assertEquals('development', $this->config->getDefaultConnection());
     }
 
-    public function test_set_connections_with_default()
+    public function testSetConnectionsWithDefault()
     {
-        $this->config->set_connections($this->connections, 'test');
-        $this->assertEquals('test', $this->config->get_default_connection());
+        $this->config->setConnections($this->connections, 'test');
+        $this->assertEquals('test', $this->config->getDefaultConnection());
     }
 
-    public function test_get_date_class_with_default()
+    public function testGetDateClassWithDefault()
     {
         $this->assertEquals('Activerecord\\DateTime',
-                $this->config->get_date_class());
+                $this->config->getDateClass());
     }
 
     /**
      * @expectedException Activerecord\ConfigException
      */
-    public function test_set_date_class_when_class_doesnt_exist()
+    public function testSetDateClassWhenClassDoesNotExist()
     {
-        $this->config->set_date_class('doesntexist');
+        $this->config->setDateClass('doesntexist');
     }
 
     /**
      * @expectedException Activerecord\ConfigException
      */
-    public function test_set_date_class_when_class_doesnt_have_format_or_createfromformat()
+    public function testSetDateClassWhenClassDoesNotHaveFormatOrCreateFromFormat()
     {
-        $this->config->set_date_class('LoggerTest');
+        $this->config->setDateClass('LoggerTest');
     }
 
     /**
      * @expectedException Activerecord\ConfigException
      */
-    public function test_set_date_class_when_class_doesnt_have_createfromformat()
+    public function testSetDateClassWhenClassDoesNotHaveCreateFromFormat()
     {
-        $this->config->set_date_class('DateTimeWithoutCreateFromFormatTest');
+        $this->config->setDateClass('DateTimeWithoutCreateFromFormatTest');
     }
 
-    public function test_set_date_class_with_valid_class()
+    public function testSetDateClassWithValidClass()
     {
-        $this->config->set_date_class('FormatDateTimeTest');
-        $this->assertEquals('FormatDateTimeTest',
-                $this->config->get_date_class());
+        $this->config->setDateClass('FormatDateTimeTest');
+        $this->assertEquals('FormatDateTimeTest', $this->config->getDateClass());
     }
 
-    public function test_initialize_closure()
+    public function testInitializeClosure()
     {
         $test = $this;
 
         Config::initialize(function($cfg) use ($test)
         {
             $test->assertNotNull($cfg);
-            $test->assertEquals('Activerecord\Config', get_class($cfg));
+            $test->assertEquals('Config', get_class($cfg));
         });
     }
 
-    public function test_logger_object_must_implement_log_method()
+    public function testLoggerObjectMustImplementLogMethod()
     {
         try
         {
-            $this->config->set_logger(new LoggerTest);
+            $this->config->setLogger(new LoggerTest);
             $this->fail();
         }
         catch (ExceptionConfig $e)

@@ -46,7 +46,7 @@ class SQLBuilderTest
     {
         $cond = SQLBuilder::create_conditions_from_underscored_string($this->table->conn,
                         $underscored_string, $values, $map);
-        $this->assert_sql_has($expected_sql, array_shift($cond));
+        $this->assertSqlHas($expected_sql, array_shift($cond));
 
         if ($values) $this->assertEquals(array_values(array_filter($values,
                                     function($s)
@@ -74,7 +74,7 @@ class SQLBuilderTest
         $this->sql->where("id=? AND name IN(?)", 1, array(
             'Tito',
             'Mexican'));
-        $this->assert_sql_has("SELECT * FROM authors WHERE id=? AND name IN(?,?)",
+        $this->assertSqlHas("SELECT * FROM authors WHERE id=? AND name IN(?,?)",
                 (string) $this->sql);
         $this->assertEquals(array(
             1,
@@ -87,7 +87,7 @@ class SQLBuilderTest
         $this->sql->where(array(
             'id' => 1,
             'name' => 'Tito'));
-        $this->assert_sql_has("SELECT * FROM authors WHERE id=? AND name=?",
+        $this->assertSqlHas("SELECT * FROM authors WHERE id=? AND name=?",
                 (string) $this->sql);
         $this->assertEquals(array(
             1,
@@ -101,7 +101,7 @@ class SQLBuilderTest
             'name' => array(
                 'Tito',
                 'Mexican')));
-        $this->assert_sql_has("SELECT * FROM authors WHERE id=? AND name IN(?,?)",
+        $this->assertSqlHas("SELECT * FROM authors WHERE id=? AND name IN(?,?)",
                 (string) $this->sql);
         $this->assertEquals(array(
             1,
@@ -114,7 +114,7 @@ class SQLBuilderTest
         $this->sql->where(array(
             'id' => 1,
             'name' => null));
-        $this->assert_sql_has("SELECT * FROM authors WHERE id=? AND name IS ?",
+        $this->assertSqlHas("SELECT * FROM authors WHERE id=? AND name IS ?",
                 (string) $this->sql);
         $this->assertEquals(array(
             1,
@@ -182,7 +182,7 @@ class SQLBuilderTest
         $this->sql->group('name');
         $this->sql->where(array(
             'id' => 1));
-        $this->assert_sql_has($this->conn->limit("SELECT * FROM authors WHERE id=? GROUP BY name HAVING created_at > '2009-01-01' ORDER BY name",
+        $this->assertSqlHas($this->conn->limit("SELECT * FROM authors WHERE id=? GROUP BY name HAVING created_at > '2009-01-01' ORDER BY name",
                         1, 10), (string) $this->sql);
     }
 
@@ -200,7 +200,7 @@ class SQLBuilderTest
         $this->sql->insert(array(
             'id' => 1,
             'name' => 'Tito'));
-        $this->assert_sql_has("INSERT INTO authors(id,name) VALUES(?,?)",
+        $this->assertSqlHas("INSERT INTO authors(id,name) VALUES(?,?)",
                 (string) $this->sql);
     }
 
@@ -209,7 +209,7 @@ class SQLBuilderTest
         $this->sql->insert(array(
             'id' => 1,
             'name' => null));
-        $this->assert_sql_has("INSERT INTO authors(id,name) VALUES(?,?)",
+        $this->assertSqlHas("INSERT INTO authors(id,name) VALUES(?,?)",
                 $this->sql->to_s());
     }
 
@@ -221,7 +221,7 @@ class SQLBuilderTest
                 array(
             'Tito',
             'Mexican'));
-        $this->assert_sql_has("UPDATE authors SET id=?, name=? WHERE id=1 AND name IN(?,?)",
+        $this->assertSqlHas("UPDATE authors SET id=?, name=? WHERE id=1 AND name IN(?,?)",
                 (string) $this->sql);
         $this->assertEquals(array(
             1,
@@ -232,18 +232,18 @@ class SQLBuilderTest
 
     public function test_update_with_limit_and_order()
     {
-        if (!$this->conn->accepts_limit_and_order_for_update_and_delete()) $this->mark_test_skipped('Only MySQL & Sqlite accept limit/order with UPDATE operation');
+        if (!$this->conn->accepts_limit_and_order_for_update_and_delete()) $this->markTestSkipped('Only MySQL & Sqlite accept limit/order with UPDATE operation');
 
         $this->sql->update(array(
             'id' => 1))->order('name asc')->limit(1);
-        $this->assert_sql_has("UPDATE authors SET id=? ORDER BY name asc LIMIT 1",
+        $this->assertSqlHas("UPDATE authors SET id=? ORDER BY name asc LIMIT 1",
                 $this->sql->to_s());
     }
 
     public function test_update_with_string()
     {
         $this->sql->update("name='Bob'");
-        $this->assert_sql_has("UPDATE authors SET name='Bob'",
+        $this->assertSqlHas("UPDATE authors SET name='Bob'",
                 $this->sql->to_s());
     }
 
@@ -252,7 +252,7 @@ class SQLBuilderTest
         $this->sql->update(array(
             'id' => 1,
             'name' => null))->where('id=1');
-        $this->assert_sql_has("UPDATE authors SET id=?, name=? WHERE id=1",
+        $this->assertSqlHas("UPDATE authors SET id=?, name=? WHERE id=1",
                 $this->sql->to_s());
     }
 
@@ -282,7 +282,7 @@ class SQLBuilderTest
             'name' => array(
                 'Tito',
                 'Mexican')));
-        $this->assert_sql_has("DELETE FROM authors WHERE id=? AND name IN(?,?)",
+        $this->assertSqlHas("DELETE FROM authors WHERE id=? AND name IN(?,?)",
                 $this->sql->to_s());
         $this->assertEquals(array(
             1,
@@ -292,11 +292,11 @@ class SQLBuilderTest
 
     public function test_delete_with_limit_and_order()
     {
-        if (!$this->conn->accepts_limit_and_order_for_update_and_delete()) $this->mark_test_skipped('Only MySQL & Sqlite accept limit/order with DELETE operation');
+        if (!$this->conn->accepts_limit_and_order_for_update_and_delete()) $this->markTestSkipped('Only MySQL & Sqlite accept limit/order with DELETE operation');
 
         $this->sql->delete(array(
             'id' => 1))->order('name asc')->limit(1);
-        $this->assert_sql_has("DELETE FROM authors WHERE id=? ORDER BY name asc LIMIT 1",
+        $this->assertSqlHas("DELETE FROM authors WHERE id=? ORDER BY name asc LIMIT 1",
                 $this->sql->to_s());
     }
 
@@ -402,7 +402,7 @@ class SQLBuilderTest
             'id' => 1,
             'name' => 'Tito'));
 
-        $this->assert_sql_has("SELECT * FROM authors $joins WHERE authors.id=? AND authors.name=?",
+        $this->assertSqlHas("SELECT * FROM authors $joins WHERE authors.id=? AND authors.name=?",
                 (string) $this->sql);
     }
 
