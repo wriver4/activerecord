@@ -153,7 +153,7 @@ class DatabaseLoader
             $name = \strtoupper($name);
         }
 
-        return $this->db->quote_name($name);
+        return $this->db->quoteName($name);
     }
 
 }

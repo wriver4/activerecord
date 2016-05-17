@@ -8,6 +8,7 @@
 namespace Test\Activerecord;
 
 //use ActiveRecord as AR;
+use Activerecord\Utils;
 
 /**
  * Description of UtilsTest
@@ -15,19 +16,13 @@ namespace Test\Activerecord;
  * @author mark weisser <mark at whizbangdevelopers.com>
  */
 class UtilsTest
-        extends PHPUnit_Framework_TestCase
+        extends \PHPUnit_Framework_TestCase
 {
-
-    /**
-     * @var \RemoteWebDriver
-     */
-    protected $webDriver;
 
     public function setUp()
     {
-        $this->object_array = array(
-            null,
-            null);
+        $this->object_array = [null,
+            null];
         $this->object_array[0] = new stdClass();
         $this->object_array[0]->a = "0a";
         $this->object_array[0]->b = "0b";
@@ -44,205 +39,173 @@ class UtilsTest
                 "b" => "1b"));
     }
 
-    public function test_collect_with_array_of_objects_using_closure()
+    public function tearDown()
     {
-        $this->assertEquals(array(
-            "0a",
-            "1a"),
-                AR\collect($this->object_array,
+
+    }
+
+    public function testCollectWithArrayOfObjectsUsingClosure()
+    {
+        $this->assertEquals(["0a",
+            "1a"],
+                Utils::collect($this->object_array,
                         function($obj)
                 {
                     return $obj->a;
                 }));
     }
 
-    public function test_collect_with_array_of_objects_using_string()
+    public function testCollectWithArrayOfObjectsUsingString()
     {
-        $this->assertEquals(array(
-            "0a",
-            "1a"), AR\collect($this->object_array, "a"));
+        $this->assertEquals(["0a",
+            "1a"], Utils::collect($this->object_array, "a"));
     }
 
-    public function test_collect_with_array_hash_using_closure()
+    public function testCollectWithArrayHashUsingClosure()
     {
-        $this->assertEquals(array(
-            "0a",
-            "1a"),
-                AR\collect($this->array_hash,
+        $this->assertEquals(["0a",
+            "1a"],
+                Utils::collect($this->array_hash,
                         function($item)
                 {
                     return $item["a"];
                 }));
     }
 
-    public function test_collect_with_array_hash_using_string()
+    public function testCollectWithArrayHashUsingString()
     {
-        $this->assertEquals(array(
-            "0a",
-            "1a"), AR\collect($this->array_hash, "a"));
+        $this->assertEquals(["0a",
+            "1a"], Utils::collect($this->array_hash, "a"));
     }
 
-    public function test_array_flatten()
+    public function testArrayFlatten()
     {
-        $this->assertEquals(array(), AR\array_flatten(array()));
-        $this->assertEquals(array(
-            1), AR\array_flatten(array(
-            1)));
-        $this->assertEquals(array(
-            1), AR\array_flatten(array(
-            array(
-                1))));
-        $this->assertEquals(array(
-            1,
-            2),
-                AR\array_flatten(array(
-            array(
+        $this->assertEquals([], Utils::arrayFlatten([]));
+        $this->assertEquals([1], Utils::arrayFlatten([1]));
+        $this->assertEquals([1], Utils::arrayFlatten([[
+                1]]));
+        $this->assertEquals([1,
+            2], Utils::arrayFlatten([[
                 1,
-                2))));
-        $this->assertEquals(array(
+                2]]));
+        $this->assertEquals([1,
+            2],
+                Utils::arrayFlatten([[
+                1],
+                    2]));
+        $this->assertEquals([
             1,
-            2),
-                AR\array_flatten(array(
-            array(
-                1),
-            2)));
-        $this->assertEquals(array(
-            1,
-            2),
-                AR\array_flatten(array(
-            1,
-            array(
-                2))));
-        $this->assertEquals(array(
-            1,
+            2], Utils::arrayFlatten([1,
+                    [2]]));
+        $this->assertEquals([1,
             2,
-            3),
-                AR\array_flatten(array(
-            1,
-            array(
-                2),
-            3)));
-        $this->assertEquals(array(
-            1,
+            3],
+                Utils::arrayFlatten([1,
+                    [2],
+                    3]));
+        $this->assertEquals([1,
             2,
             3,
-            4),
-                AR\array_flatten(array(
-            1,
-            array(
-                2,
-                3),
-            4)));
-        $this->assertEquals(array(
+            4],
+                Utils::arrayFlatten([
+                    1,
+                    [2,
+                        3],
+                    4]));
+        $this->assertEquals([
             1,
             2,
             3,
             4,
             5,
-            6),
-                AR\array_flatten(array(
-            1,
-            array(
-                2,
-                3),
-            4,
-            array(
-                5,
-                6))));
+            6],
+                Utils::arrayFlatten([1,
+                    [2,
+                        3],
+                    4,
+                    [5,
+                        6]]));
     }
 
-    public function test_all()
+    public function testAll()
     {
-        $this->assertTrue(AR\all(null,
-                        array(
-            null,
-            null)));
-        $this->assertTrue(AR\all(1, array(
-            1,
-            1)));
-        $this->assertFalse(AR\all(1, array(
-            1,
-            '1')));
-        $this->assertFalse(AR\all(null,
-                        array(
-            '',
-            null)));
+        $this->assertTrue(Utils::all(null, [null,
+                    null]));
+        $this->assertTrue(Utils::all(1, [1,
+                    1]));
+        $this->assertFalse(Utils::all(1, [1,
+                    '1']));
+        $this->assertFalse(Utils::all(null, ['',
+                    null]));
     }
 
-    public function test_classify()
+    public function testClassify()
     {
-        $bad_class_names = array(
+        $bad_class_names = [
             'ubuntu_rox',
             'stop_the_Snake_Case',
             'CamelCased',
-            'camelCased');
-        $good_class_names = array(
+            'camelCased'];
+        $good_class_names = [
             'UbuntuRox',
             'StopTheSnakeCase',
             'CamelCased',
-            'CamelCased');
+            'CamelCased'];
 
-        $class_names = array();
-        foreach ($bad_class_names as $s) $class_names[] = AR\classify($s);
+        $class_names = [];
+        foreach ($bad_class_names as $s)
+        {
+            $class_names[] = Utils::classify($s);
+        }
 
         $this->assertEquals($class_names, $good_class_names);
     }
 
-    public function test_classify_singularize()
+    public function testClassifySingularize()
     {
-        $bad_class_names = array(
-            'events',
+        $bad_class_names = ['events',
             'stop_the_Snake_Cases',
             'angry_boxes',
             'Mad_Sheep_herders',
-            'happy_People');
-        $good_class_names = array(
+            'happy_People'];
+        $good_class_names = [
             'Event',
             'StopTheSnakeCase',
             'AngryBox',
             'MadSheepHerder',
-            'HappyPerson');
+            'HappyPerson'];
 
-        $class_names = array();
-        foreach ($bad_class_names as $s) $class_names[] = AR\classify($s, true);
+        $class_names = [];
+        foreach ($bad_class_names as $s)
+        {
+            $class_names[] = Utils::classify($s, true);
+        }
 
         $this->assertEquals($class_names, $good_class_names);
     }
 
-    public function test_singularize()
+    public function testSingularize()
     {
-        $this->assertEquals('order_status',
-                AR\Utils::singularize('order_status'));
-        $this->assertEquals('order_status',
-                AR\Utils::singularize('order_statuses'));
-        $this->assertEquals('os_type', AR\Utils::singularize('os_type'));
-        $this->assertEquals('os_type', AR\Utils::singularize('os_types'));
-        $this->assertEquals('photo', AR\Utils::singularize('photos'));
-        $this->assertEquals('pass', AR\Utils::singularize('pass'));
-        $this->assertEquals('pass', AR\Utils::singularize('passes'));
+        $this->assertEquals('order_status', Utils::singularize('order_status'));
+        $this->assertEquals('order_status', Utils::singularize('order_statuses'));
+        $this->assertEquals('os_type', Utils::singularize('os_type'));
+        $this->assertEquals('os_type', Utils::singularize('os_types'));
+        $this->assertEquals('photo', Utils::singularize('photos'));
+        $this->assertEquals('pass', Utils::singularize('pass'));
+        $this->assertEquals('pass', Utils::singularize('passes'));
     }
 
-    public function test_wrap_strings_in_arrays()
+    public function testWrapStringsInArrays()
     {
-        $x = array(
-            '1',
-            array(
-                '2'));
-        $this->assertEquals(array(
-            array(
-                '1'),
-            array(
-                '2')), ActiveRecord\wrap_strings_in_arrays($x));
+        $x = ['1',
+            ['2']];
+        $this->assertEquals([[
+        '1'],
+            ['2']], Utils::wrapStringsInArrays($x));
 
         $x = '1';
-        $this->assertEquals(array(
-            array(
-                '1')), ActiveRecord\wrap_strings_in_arrays($x));
-    }
-
-    public function tearDown()
-    {
-        $this->webDriver->close();
+        $this->assertEquals([[
+        '1']], Utils::wrapStringsInArrays($x));
     }
 
 }

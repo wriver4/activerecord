@@ -359,9 +359,9 @@ class ActiverecordTest
         try
         {
             $book->save();
-            $this->fail('expected exception ExceptionReadonly');
+            $this->fail('expected exception ExceptionReadOnly');
         }
-        catch (ExceptionReadonly $e)
+        catch (ExceptionReadOnly $e)
         {
 
         }

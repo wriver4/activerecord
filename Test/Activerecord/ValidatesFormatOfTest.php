@@ -13,53 +13,51 @@ class ValidatesFormatOfTest
             'name');
     }
 
-    public function test_format()
+    public function testFormat()
     {
         BookFormat::$validates_format_of[0]['with'] = '/^[a-z\W]*$/';
-        $book = new BookFormat(array(
-            'author_id' => 1,
-            'name' => 'testing reg'));
+        $book = new BookFormat(['author_id' => 1,
+            'name' => 'testing reg']);
         $book->save();
-        $this->assertFalse($book->errors->is_invalid('name'));
+        $this->assertFalse($book->errors->isInvalid('name'));
 
         BookFormat::$validates_format_of[0]['with'] = '/[0-9]/';
-        $book = new BookFormat(array(
+        $book = new BookFormat([
             'author_id' => 1,
-            'name' => 12));
+            'name' => 12]);
         $book->save();
-        $this->assertFalse($book->errors->is_invalid('name'));
+        $this->assertFalse($book->errors->isInvalid('name'));
     }
 
-    public function testInvalid_null()
+    public function testInvalidNull()
     {
         BookFormat::$validates_format_of[0]['with'] = '/[^0-9]/';
         $book = new BookFormat;
         $book->name = null;
         $book->save();
-        $this->assertTrue($book->errors->is_invalid('name'));
+        $this->assertTrue($book->errors->isInvalid('name'));
     }
 
-    public function testInvalid_blank()
+    public function testInvalidBlank()
     {
         BookFormat::$validates_format_of[0]['with'] = '/[^0-9]/';
         $book = new BookFormat;
         $book->name = '';
         $book->save();
-        $this->assertTrue($book->errors->is_invalid('name'));
+        $this->assertTrue($book->errors->isInvalid('name'));
     }
 
-    public function test_valid_blank_andallow_blank()
+    public function testValidBlankAndAllowBlank()
     {
         BookFormat::$validates_format_of[0]['allow_blank'] = true;
         BookFormat::$validates_format_of[0]['with'] = '/[^0-9]/';
-        $book = new BookFormat(array(
-            'author_id' => 1,
-            'name' => ''));
+        $book = new BookFormat(['author_id' => 1,
+            'name' => '']);
         $book->save();
-        $this->assertFalse($book->errors->is_invalid('name'));
+        $this->assertFalse($book->errors->isInvalid('name'));
     }
 
-    public function test_valid_null_and_allow_null()
+    public function testValidNullAndAllowNull()
     {
         BookFormat::$validates_format_of[0]['allow_null'] = true;
         BookFormat::$validates_format_of[0]['with'] = '/[^0-9]/';
@@ -67,13 +65,13 @@ class ValidatesFormatOfTest
         $book->author_id = 1;
         $book->name = null;
         $book->save();
-        $this->assertFalse($book->errors->is_invalid('name'));
+        $this->assertFalse($book->errors->isInvalid('name'));
     }
 
     /**
      * @expectedException Activerecord\ValidationsArgumentError
      */
-    public function testInvalid_lack_of_with_key()
+    public function testInvalidLackOfWithKey()
     {
         $book = new BookFormat;
         $book->name = null;
@@ -83,25 +81,24 @@ class ValidatesFormatOfTest
     /**
      * @expectedException Activerecord\ValidationsArgumentError
      */
-    public function testInvalid_with_expression_as_non_string()
+    public function testInvalidWithExpressionAsNonString()
     {
-        BookFormat::$validates_format_of[0]['with'] = array(
-            'test');
+        BookFormat::$validates_format_of[0]['with'] = ['test'];
         $book = new BookFormat;
         $book->name = null;
         $book->save();
     }
 
-    public function testInvalid_with_expression_as_non_regexp()
+    public function testInvalidWithExpressionAsNonRegexp()
     {
         BookFormat::$validates_format_of[0]['with'] = 'blah';
         $book = new BookFormat;
         $book->name = 'blah';
         $book->save();
-        $this->assertTrue($book->errors->is_invalid('name'));
+        $this->assertTrue($book->errors->isInvalid('name'));
     }
 
-    public function test_custom_message()
+    public function testCustomMessage()
     {
         BookFormat::$validates_format_of[0]['message'] = 'is using a custom message.';
         BookFormat::$validates_format_of[0]['with'] = '/[^0-9]/';

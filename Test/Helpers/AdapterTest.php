@@ -460,7 +460,7 @@ class AdapterTest
         $q = $c::$QUOTE_CHARACTER;
         $qn = function($s) use ($c)
         {
-            return $c->quote_name($s);
+            return $c->quoteName($s);
         };
 
         $this->assertEquals("{$q}string", $qn("{$q}string"));

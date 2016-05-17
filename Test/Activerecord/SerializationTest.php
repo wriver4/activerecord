@@ -3,11 +3,12 @@
 namespace Test\Activerecord;
 
 use Activerecord\DateTime;
+use Activerecord\Serializers\AbstractSerialize;
 use Activerecord\Serializers\SerializeArray;
 use Activerecord\Serializers\SerializeJson;
 
 class SerializationTest
-        extends DatabaseTest
+        extends \Test\Helpers\DatabaseTest
 {
 
     public function tearDown()
@@ -17,263 +18,241 @@ class SerializationTest
         SerializeJson::$include_root = false;
     }
 
-    public function _a($options = array(), $model = null)
+    public function testSerializeArray($options = [], $model = null)
     {
-        if (!$model) $model = Book::find(1);
+        if (!$model)
+        {
+            $model = Book::find(1);
+        }
 
-        $s = new Activerecord\JsonSerializer($model, $options);
-        return $s->to_a();
+        $s = new SerializeJson($model, $options);
+        return $s->toArray();
     }
 
-    public function test_only()
+    public function testOnly()
     {
         $this->assertHasKeys('name', 'special',
-                $this->_a(array(
-                    'only' => array(
+                $this->testSerializeArray([
+                    'only' => [
                         'name',
-                        'special'))));
+                        'special']]));
     }
 
-    public function test_only_not_array()
+    public function testOnlyNotArray()
     {
         $this->assertHasKeys('name',
-                $this->_a(array(
-                    'only' => 'name')));
+                $this->testSerializeArray(['only' => 'name']));
     }
 
-    public function test_only_should_only_apply_to_attributes()
+    public function testOnlyShouldOnlyApplyToAttributes()
     {
         $this->assertHasKeys('name', 'author',
-                $this->_a(array(
+                $this->testSerializeArray([
                     'only' => 'name',
-                    'include' => 'author')));
+                    'include' => 'author']));
         $this->assertHasKeys('book_id', 'upper_name',
-                $this->_a(array(
+                $this->testSerializeArray([
                     'only' => 'book_id',
-                    'methods' => 'upper_name')));
+                    'methods' => 'upper_name']));
     }
 
-    public function test_only_overrides_except()
+    public function testOnlyOverridesExcept()
     {
         $this->assertHasKeys('name',
-                $this->_a(array(
+                $this->testSerializeArray([
                     'only' => 'name',
-                    'except' => 'name')));
+                    'except' => 'name']));
     }
 
-    public function test_except()
+    public function testExcept()
     {
-        $this->assert_doesnt_has_keys('name', 'special',
-                $this->_a(array(
-                    'except' => array(
+        $this->assertDoesNotHasKeys('name', 'special',
+                $this->testSerializeArray([
+                    'except' => [
                         'name',
-                        'special'))));
+                        'special']]));
     }
 
-    public function test_except_takes_a_string()
+    public function testExceptTakesAString()
     {
-        $this->assert_doesnt_has_keys('name',
-                $this->_a(array(
-                    'except' => 'name')));
+        $this->assertDoesNotHasKeys('name',
+                $this->testSerializeArray(['except' => 'name']));
     }
 
-    public function test_methods()
+    public function testMethods()
     {
-        $a = $this->_a(array(
-            'methods' => array(
-                'upper_name')));
+        $a = $this->testSerializeArray(['methods' => ['upper_name']]);
         $this->assertEquals('ANCIENT ART OF MAIN TANKING', $a['upper_name']);
     }
 
-    public function test_methods_takes_a_string()
+    public function testMethodsTakesAString()
     {
-        $a = $this->_a(array(
-            'methods' => 'upper_name'));
+        $a = $this->testSerializeArray(['methods' => 'upper_name']);
         $this->assertEquals('ANCIENT ART OF MAIN TANKING', $a['upper_name']);
     }
 
     // methods added last should we shuld have value of the method in our json
     // rather than the regular attribute value
-    public function test_methods_method_same_as_attribute()
+    public function testMethodsMethodSameAsAttribute()
     {
-        $a = $this->_a(array(
-            'methods' => 'name'));
+        $a = $this->testSerializeArray(['methods' => 'name']);
         $this->assertEquals('ancient art of main tanking', $a['name']);
     }
 
-    public function test_include()
+    public function testInclude()
     {
-        $a = $this->_a(array(
-            'include' => array(
-                'author')));
+        $a = $this->testSerializeArray(['include' => ['author']]);
         $this->assertHasKeys('parent_author_id', $a['author']);
     }
 
-    public function test_include_nested_with_nested_options()
+    public function testIncludeNestedWithNestedOptions()
     {
-        $a = $this->_a(
-                array(
-            'include' => array(
-                'events' => array(
-                    'except' => 'title',
-                    'include' => array(
-                        'host' => array(
-                            'only' => 'id'))))), Host::find(4));
+        $a = $this->testSerializeArray(['include' => ['events' => ['except' => 'title',
+                    'include' => ['host' => ['only' => 'id']]]]], Host::find(4));
 
-        $this->assertEquals(3, count($a['events']));
-        $this->assert_doesnt_has_keys('title', $a['events'][0]);
-        $this->assertEquals(array(
-            'id' => 4), $a['events'][0]['host']);
+        $this->assertEquals(3, \count($a['events']));
+        $this->assertDoesNotHasKeys('title', $a['events'][0]);
+        $this->assertEquals(['id' => 4], $a['events'][0]['host']);
     }
 
-    public function test_datetime_values_get_converted_to_strings()
+    public function testDatetimeValuesGetConvertedToStrings()
     {
         $now = new DateTime();
-        $a = $this->_a(array(
-            'only' => 'created_at'),
-                new Author(array(
-            'created_at' => $now)));
-        $this->assertEquals($now->format(Activerecord\Serialization::$DATETIME_FORMAT),
+        $a = $this->testSerializeArray([
+            'only' => 'created_at'], new Author(['created_at' => $now]));
+        $this->assertEquals($now->format(AbstractSerialize::$DATETIME_FORMAT),
                 $a['created_at']);
     }
 
-    public function test_to_json()
+    public function testToJson()
     {
         $book = Book::find(1);
-        $json = $book->to_json();
-        $this->assertEquals($book->attributes(), (array) json_decode($json));
+        $json = $book->toJson();
+        $this->assertEquals($book->attributes(), (array) \json_decode($json));
     }
 
-    public function test_to_json_include_root()
+    public function testToJsonIncludeRoot()
     {
-        Activerecord\JsonSerializer::$include_root = true;
-        $this->assertNotNull(json_decode(Book::find(1)->to_json())->book);
+        SerializeJson::$include_root = true;
+        $this->assertNotNull(\json_decode(Book::find(1)->toJson())->book);
     }
 
-    public function test_to_xml_include()
+    public function testToXmlInclude()
     {
-        $xml = Host::find(4)->to_xml(array(
+        $xml = Host::find(4)->toXml(array(
             'include' => 'events'));
-        $decoded = get_object_vars(new SimpleXMLElement($xml));
+        $decoded = \get_object_vars(new SimpleXMLElement($xml));
 
-        $this->assertEquals(3, count($decoded['events']->event));
+        $this->assertEquals(3, \count($decoded['events']->event));
     }
 
-    public function test_to_xml()
+    public function testToXml()
     {
         $book = Book::find(1);
         $this->assertEquals($book->attributes(),
-                get_object_vars(new SimpleXMLElement($book->to_xml())));
+                \get_object_vars(new SimpleXMLElement($book->toXml())));
     }
 
-    public function test_to_array()
+    public function testToArray()
     {
         $book = Book::find(1);
-        $array = $book->to_array();
+        $array = $book->toArray();
         $this->assertEquals($book->attributes(), $array);
     }
 
-    public function test_to_array_include_root()
+    public function testToArrayIncludeRoot()
     {
-        Activerecord\ArraySerializer::$include_root = true;
+        SerializeArray::$include_root = true;
         $book = Book::find(1);
-        $array = $book->to_array();
-        $book_attributes = array(
-            'book' => $book->attributes());
+        $array = $book->toArray();
+        $book_attributes = ['book' => $book->attributes()];
         $this->assertEquals($book_attributes, $array);
     }
 
-    public function test_to_array_except()
+    public function testToArrayExcept()
     {
         $book = Book::find(1);
-        $array = $book->to_array(array(
-            'except' => array(
-                'special')));
+        $array = $book->toArray(['except' => ['special']]);
         $book_attributes = $book->attributes();
         unset($book_attributes['special']);
         $this->assertEquals($book_attributes, $array);
     }
 
-    public function test_works_with_datetime()
+    public function testWorksWithDatetime()
     {
-        Author::find(1)->update_attribute('created_at', new DateTime());
-        $this->assert_reg_exp('/<updated_at>[0-9]{4}-[0-9]{2}-[0-9]{2}/',
-                Author::find(1)->to_xml());
-        $this->assert_reg_exp('/"updated_at":"[0-9]{4}-[0-9]{2}-[0-9]{2}/',
-                Author::find(1)->to_json());
+        Author::find(1)->updateAttribute('created_at', new DateTime());
+        $this->assertRegExp('/<updated_at>[0-9]{4}-[0-9]{2}-[0-9]{2}/',
+                Author::find(1)->toXml());
+        $this->assertRegExp('/"updated_at":"[0-9]{4}-[0-9]{2}-[0-9]{2}/',
+                Author::find(1)->toJson());
     }
 
-    public function test_to_xml_skip_instruct()
+    public function testToXmlSkipInstruct()
     {
         $this->assertSame(false,
-                strpos(Book::find(1)->to_xml(array(
-                            'skip_instruct' => true)), '<?xml version'));
+                \strpos(Book::find(1)->toXml(['skip_instruct' => true]),
+                        '<?xml version'));
         $this->assertSame(0,
-                strpos(Book::find(1)->to_xml(array(
-                            'skip_instruct' => false)), '<?xml version'));
+                \strpos(Book::find(1)->toXml(['skip_instruct' => false]),
+                        '<?xml version'));
     }
 
-    public function test_only_method()
+    public function testOnlyMethod()
     {
-        $this->assert_contains('<sharks>lasers</sharks>',
-                Author::first()->to_xml(array(
-                    'only_method' => 'return_something')));
+        $this->assertContains('<sharks>lasers</sharks>',
+                Author::first()->toXml(['only_method' => 'return_something']));
     }
 
-    public function test_to_csv()
+    public function testToCsv()
     {
         $book = Book::find(1);
         $this->assertEquals('1,1,2,"Ancient Art of Main Tanking",0,0',
-                $book->to_csv());
+                $book->toCsv());
     }
 
-    public function test_to_csv_only_header()
+    public function testToCsvOnlyHeader()
     {
         $book = Book::find(1);
         $this->assertEquals('book_id,author_id,secondary_author_id,name,numeric_test,special',
-                $book->to_csv(array(
-                    'only_header' => true))
+                $book->toCsv(['only_header' => true])
         );
     }
 
-    public function test_to_csv_only_method()
+    public function testToCsvOnlyMethod()
     {
         $book = Book::find(1);
         $this->assertEquals('2,"Ancient Art of Main Tanking"',
-                $book->to_csv(array(
-                    'only' => array(
+                $book->toCsv([
+                    'only' => [
                         'name',
-                        'secondary_author_id')))
-        );
+                        'secondary_author_id']]));
     }
 
-    public function test_to_csv_only_method_on_header()
+    public function testToCsvOnlyMethodOnHeader()
     {
         $book = Book::find(1);
         $this->assertEquals('secondary_author_id,name',
-                $book->to_csv(array(
-                    'only' => array(
-                        'secondary_author_id',
-                        'name'),
-                    'only_header' => true))
+                $book->toCsv(['only' => ['secondary_author_id',
+                        'name'],
+                    'only_header' => true])
         );
     }
 
-    public function test_to_csv_with_custom_delimiter()
+    public function testToCsvWithCustomDelimiter()
     {
         $book = Book::find(1);
-        Activerecord\CsvSerializer::$delimiter = ';';
+        SerializeCsv::$delimiter = ';';
         $this->assertEquals('1;1;2;"Ancient Art of Main Tanking";0;0',
-                $book->to_csv());
+                $book->toCsv());
     }
 
-    public function test_to_csv_with_custom_enclosure()
+    public function testToCsvWithCustomEnclosure()
     {
         $book = Book::find(1);
-        Activerecord\CsvSerializer::$delimiter = ',';
-        Activerecord\CsvSerializer::$enclosure = "'";
+        SerializeCsv::$delimiter = ',';
+        SerializeCsv::$enclosure = "'";
         $this->assertEquals("1,1,2,'Ancient Art of Main Tanking',0,0",
-                $book->to_csv());
+                $book->toCsv());
     }
 
 }

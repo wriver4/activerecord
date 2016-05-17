@@ -3,152 +3,145 @@
 namespace Test\Activerecord;
 
 class ValidatesInclusionAndExclusionOfTest
-        extends DatabaseTest
+        extends \Test\Helpers\DatabaseTest
 {
 
     public function setUp($connection_name = null)
     {
         parent::setUp($connection_name);
-        BookInclusion::$validates_inclusion_of[0] = array(
+        BookInclusion::$validates_inclusion_of[0] = [
             'name',
-            'in' => array(
+            'in' => [
                 'blah',
                 'tanker',
-                'shark'));
-        BookExclusion::$validates_exclusion_of[0] = array(
+                'shark']];
+        BookExclusion::$validates_exclusion_of[0] = [
             'name',
-            'in' => array(
+            'in' => [
                 'blah',
                 'alpha',
-                'bravo'));
+                'bravo']];
     }
 
-    public function test_inclusion()
+    public function testInclusion()
     {
         $book = new BookInclusion;
         $book->name = 'blah';
         $book->save();
-        $this->assertFalse($book->errors->is_invalid('name'));
+        $this->assertFalse($book->errors->isInvalid('name'));
     }
 
-    public function test_exclusion()
+    public function testExclusion()
     {
         $book = new BookExclusion;
         $book->name = 'blahh';
         $book->save();
-        $this->assertFalse($book->errors->is_invalid('name'));
+        $this->assertFalse($book->errors->isInvalid('name'));
     }
 
-    public function testInvalid_inclusion()
+    public function testInvalidInclusion()
     {
         $book = new BookInclusion;
         $book->name = 'thanker';
         $book->save();
-        $this->assertTrue($book->errors->is_invalid('name'));
+        $this->assertTrue($book->errors->isInvalid('name'));
         $book->name = 'alpha ';
         $book->save();
-        $this->assertTrue($book->errors->is_invalid('name'));
+        $this->assertTrue($book->errors->isInvalid('name'));
     }
 
-    public function testInvalid_exclusion()
+    public function testInvalidExclusion()
     {
         $book = new BookExclusion;
         $book->name = 'alpha';
         $book->save();
-        $this->assertTrue($book->errors->is_invalid('name'));
+        $this->assertTrue($book->errors->isInvalid('name'));
 
         $book = new BookExclusion;
         $book->name = 'bravo';
         $book->save();
-        $this->assertTrue($book->errors->is_invalid('name'));
+        $this->assertTrue($book->errors->isInvalid('name'));
     }
 
-    public function test_inclusion_with_numeric()
+    public function testInclusionWithNumeric()
     {
-        BookInclusion::$validates_inclusion_of[0]['in'] = array(
-            0,
+        BookInclusion::$validates_inclusion_of[0]['in'] = [0,
             1,
-            2);
+            2];
         $book = new BookInclusion;
         $book->name = 2;
         $book->save();
-        $this->assertFalse($book->errors->is_invalid('name'));
+        $this->assertFalse($book->errors->isInvalid('name'));
     }
 
-    public function test_inclusion_with_boolean()
+    public function testInclusionWithBoolean()
     {
-        BookInclusion::$validates_inclusion_of[0]['in'] = array(
-            true);
+        BookInclusion::$validates_inclusion_of[0]['in'] = [true];
         $book = new BookInclusion;
         $book->name = true;
         $book->save();
-        $this->assertFalse($book->errors->is_invalid('name'));
+        $this->assertFalse($book->errors->isInvalid('name'));
     }
 
-    public function test_inclusion_with_null()
+    public function testInclusionWithNull()
     {
-        BookInclusion::$validates_inclusion_of[0]['in'] = array(
-            null);
+        BookInclusion::$validates_inclusion_of[0]['in'] = [null];
         $book = new BookInclusion;
         $book->name = null;
         $book->save();
-        $this->assertFalse($book->errors->is_invalid('name'));
+        $this->assertFalse($book->errors->isInvalid('name'));
     }
 
-    public function testInvalid_inclusion_with_numeric()
+    public function testInvalidInclusionWithNumeric()
     {
-        BookInclusion::$validates_inclusion_of[0]['in'] = array(
-            0,
+        BookInclusion::$validates_inclusion_of[0]['in'] = [0,
             1,
-            2);
+            2];
         $book = new BookInclusion;
         $book->name = 5;
         $book->save();
-        $this->assertTrue($book->errors->is_invalid('name'));
+        $this->assertTrue($book->errors->isInvalid('name'));
     }
 
-    public function tes_inclusion_within_option()
+    public function testInclusionWithinOption()
     {
-        BookInclusion::$validates_inclusion_of[0] = array(
-            'name',
-            'within' => array(
-                'okay'));
+        BookInclusion::$validates_inclusion_of[0] = ['name',
+            'within' => ['okay']];
         $book = new BookInclusion;
         $book->name = 'okay';
         $book->save();
-        $this->assertFalse($book->errors->is_invalid('name'));
+        $this->assertFalse($book->errors->isInvalid('name'));
     }
 
-    public function tes_inclusion_scalar_value()
+    public function testInclusionScalarValue()
     {
-        BookInclusion::$validates_inclusion_of[0] = array(
-            'name',
-            'within' => 'okay');
+        BookInclusion::$validates_inclusion_of[0] = ['name',
+            'within' => 'okay'];
         $book = new BookInclusion;
         $book->name = 'okay';
         $book->save();
-        $this->assertFalse($book->errors->is_invalid('name'));
+        $this->assertFalse($book->errors->isInvalid('name'));
     }
 
-    public function test_valid_null()
+    public function testValidNull()
     {
         BookInclusion::$validates_inclusion_of[0]['allow_null'] = true;
         $book = new BookInclusion;
         $book->name = null;
         $book->save();
-        $this->assertFalse($book->errors->is_invalid('name'));
+        $this->assertFalse($book->errors->isInvalid('name'));
     }
 
-    public function test_valid_blank()
+    public function testValidBlank()
     {
         BookInclusion::$validates_inclusion_of[0]['allow_blank'] = true;
         $book = new BookInclusion;
         $book->name = '';
         $book->save();
-        $this->assertFalse($book->errors->is_invalid('name'));
+        $this->assertFalse($book->errors->isInvalid('name'));
     }
 
-    public function test_custom_message()
+    public function testCustomMessage()
     {
         $msg = 'is using a custom message.';
         BookInclusion::$validates_inclusion_of[0]['message'] = $msg;
