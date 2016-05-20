@@ -7,11 +7,20 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         bootstrap="test/helpers/config.php"
+         bootstrap="Activerecord/Test/bootstrap.php"
 >
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">C:\GitHub\activerecord\Activerecord</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="C:\xampp\tmp\report" lowUpperBound="35"
+             highLowerBound="70"/>
+    </logging>
     <testsuites>
         <testsuite name="Activerecord Test Suite">
-            <directory>./Activerecord/Test/</directory>
+            <directory>C:\GitHub\activerecord\Activerecord\Test</directory>
         </testsuite>
     </testsuites>
 </phpunit>

@@ -5,6 +5,7 @@ namespace Activerecord\Test\Helpers;
 use Activerecord\Test\Helpers\DatabaseLoader;
 use Activerecord\Table;
 use Activerecord\Config;
+use Activerecord\Adapters\Sqlite;
 use Activerecord\ConnectionManager;
 use Activerecord\Exceptions\ExceptionDatabase;
 use Activerecord\Exceptions\ExceptionUndefinedProperty;
