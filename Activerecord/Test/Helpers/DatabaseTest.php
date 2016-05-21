@@ -36,7 +36,7 @@ class DatabaseTest
         {
             // need to create the db. the adapter specifically does not create it for us.
             static::$db = substr(Config::instance()->getConnection('sqlite'), 9);
-            new SQLite(static::$db);
+            new Sqlite(static::$db);
         }
 
         $this->connection_name = $connection_name;

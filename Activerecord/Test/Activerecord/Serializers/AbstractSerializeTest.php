@@ -7,6 +7,12 @@
 
 namespace Activerecord\Test\Activerecord\Serializers;
 
+use Activerecord\DateTime;
+use Activerecord\Serializers\AbstractSerialize;
+use Activerecord\Serializers\SerializeArray;
+use Activerecord\Serializers\SerializeJson;
+use Activerecord\Test\Helpers\DatabaseTest;
+
 /**
  * Description of AbstractSerializeTest
  *
@@ -14,6 +20,7 @@ namespace Activerecord\Test\Activerecord\Serializers;
  */
 class AbstractSerializeTest
         extends \PHPUnit_Framework_TestCase
+// maybe extends DatabaseTest or PHPUnit_Extensions_Database_TestCase
 {
 
     public function setUp()

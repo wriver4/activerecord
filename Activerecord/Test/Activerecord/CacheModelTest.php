@@ -35,6 +35,54 @@ class CacheModelTest
         Cache::initialize(null);
     }
 
+    public function testGetReturnsTheValue()
+    {
+        $this->assertEquals("abcd", $this->cache_get());
+    }
+
+    public function testGetWritesToTheCache()
+    {
+        $this->cacheGet();
+        $this->assertEquals("abcd", Cache::$adapter->read("1337"));
+    }
+
+    public function testGetDoesNotExecuteClosureOnCacheHit()
+    {
+        $this->cacheGet();
+        Cache::get("1337",
+                function()
+        {
+            throw new Exception("I better not execute!");
+        });
+    }
+
+    public function testCacheAdapterReturnsFalseOnCacheMiss()
+    {
+        $this->assertSame(false, Cache::$adapter->read("some-key"));
+    }
+
+    public function testGetWorksWithoutCachingEnabled()
+    {
+        Cache::$adapter = null;
+        $this->assertEquals("abcd", $this->cacheGet());
+    }
+
+    public function testCacheExpire()
+    {
+        Cache::$options['expire'] = 1;
+        $this->cacheGet();
+        sleep(2);
+
+        $this->assertSame(false, Cache::$adapter->read("1337"));
+    }
+
+    public function testNamespaceIsSetProperly()
+    {
+        Cache::$options['namespace'] = 'myapp';
+        $this->cacheGet();
+        $this->assertSame("abcd", Cache::$adapter->read("myapp::1337"));
+    }
+
     public function testDefaultExpire()
     {
         $this->assertEquals(30, Author::table()->cache_model_expire);

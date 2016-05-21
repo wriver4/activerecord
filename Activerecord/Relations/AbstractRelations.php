@@ -259,10 +259,12 @@ abstract class AbstractRelations
     }
 
     /**
-     * Creates a new instance of specified {@link Model} with the attributes pre-loaded.
+     * Creates a new instance of specified {@link Model} with the
+     * attributes pre-loaded.
      *
      * @param Model $model The model which holds this association
-     * @param array $attributes Hash containing attributes to initialize the model with
+     * @param array $attributes Hash containing attributes to initialize
+     * the model with
      * @return Model
      */
     public function buildAssociation(Model $model, $attributes = [],

@@ -7,18 +7,26 @@
 
 namespace Activerecord\Test\Activerecord\Relations;
 
+use Activerecord\Table;
+use Activerecord\Exceptions\ExceptionUndefinedProperty;
+use Activerecord\Exceptions\ExceptionReadOnly;
+use Activerecord\Test\Helpers\DatabaseTest;
+
 /**
  * Description of HasAndBelongsToManyTest
  *
  * @author mark weisser <mark at whizbangdevelopers.com>
  */
 class HasAndBelongsToManyTest
-        extends \PHPUnit_Framework_TestCase
+        extends DatabaseTest
 {
 
-    public function setUp()
-    {
+    protected $relationship_name;
+    protected $relationship_names = [];
 
+    public function setUp($connection_name = null)
+    {
+        parent::setUp($connection_name);
     }
 
     public function tearDown()

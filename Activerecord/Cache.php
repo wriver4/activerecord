@@ -55,8 +55,7 @@ class Cache
             static::$adapter = null;
         }
 
-        static::$options = \array_merge([
-            'expire' => 30,
+        static::$options = \array_merge(['expire' => 30,
             'namespace' => ''], $options);
     }
 

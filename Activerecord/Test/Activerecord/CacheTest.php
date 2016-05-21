@@ -1,19 +1,9 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace Activerecord\Test\Activerecord;
 
-use Activerecord\Cache;
+use ActiveRecord\Cache;
 
-/**
- * Description of CacheTest
- *
- * @author mark weisser <mark at whizbangdevelopers.com>
- */
 class CacheTest
         extends \PHPUnit_Framework_TestCase
 {
@@ -56,7 +46,7 @@ class CacheTest
 
     public function testGetReturnsTheValue()
     {
-        $this->assertEquals("abcd", $this->cache_get());
+        $this->assert_equals("abcd", $this->cache_get());
     }
 
     public function testGetWritesToTheCache()
@@ -83,23 +73,23 @@ class CacheTest
     public function testGetWorksWithoutCachingEnabled()
     {
         Cache::$adapter = null;
-        $this->assertEquals("abcd", $this->cacheGet());
+        $this->assert_equals("abcd", $this->cache_get());
     }
 
     public function testCacheExpire()
     {
         Cache::$options['expire'] = 1;
-        $this->cacheGet();
+        $this->cache_get();
         sleep(2);
 
-        $this->assertSame(false, Cache::$adapter->read("1337"));
+        $this->assert_same(false, Cache::$adapter->read("1337"));
     }
 
     public function testNamespaceIsSetProperly()
     {
         Cache::$options['namespace'] = 'myapp';
-        $this->cacheGet();
-        $this->assertSame("abcd", Cache::$adapter->read("myapp::1337"));
+        $this->cache_get();
+        $this->assert_same("abcd", Cache::$adapter->read("myapp::1337"));
     }
 
 }
