@@ -8,7 +8,7 @@ use Activerecord\Model;
 use Activerecord\Adapters\Oci;
 use Activerecord\Test\Helpers\DatabaseTest;
 
-class ActiverecordFindTest
+class FindersTest
         extends DatabaseTest
 {
 

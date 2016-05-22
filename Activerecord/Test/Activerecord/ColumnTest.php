@@ -162,4 +162,34 @@ class ColumnTest
         $this->assertEquals(null, $column->cast('', $this->conn));
     }
 
+    public function testNativeDateTimeAttributeCopiesExactTz()
+    {
+        $dt = new \DateTime(null, new \DateTimeZone('America/New_York'));
+
+        $column = new Column();
+        $column->type = Column::DATETIME;
+
+        $dt2 = $column->cast($dt, $this->conn);
+
+        $this->assertEquals($dt->getTimestamp(), $dt2->getTimestamp());
+        $this->assertEquals($dt->getTimeZone(), $dt2->getTimeZone());
+        $this->assertEquals($dt->getTimeZone()->getName(),
+                $dt2->getTimeZone()->getName());
+    }
+
+    public function testArDateTimeAttributeCopiesExactTz()
+    {
+        $dt = new DateTime(null, new \DateTimeZone('America/New_York'));
+
+        $column = new Column();
+        $column->type = Column::DATETIME;
+
+        $dt2 = $column->cast($dt, $this->conn);
+
+        $this->assertEquals($dt->getTimestamp(), $dt2->getTimestamp());
+        $this->assertEquals($dt->getTimeZone(), $dt2->getTimeZone());
+        $this->assertEquals($dt->getTimeZone()->getName(),
+                $dt2->getTimeZone()->getName());
+    }
+
 }

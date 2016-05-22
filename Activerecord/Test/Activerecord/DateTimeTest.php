@@ -171,4 +171,55 @@ class DateTimeTest
         $this->assertEquals(new DateTime('2000-01-31 17:04:05'), $d);
     }
 
+    public function testNativeDateTimeAttributeCopiesExactTz()
+    {
+        $dt = new \DateTime(null, new \DateTimeZone('America/New_York'));
+        $model = new Author();
+
+        // Test that the data transforms without modification
+        $model->assignAttribute('updated_at', $dt);
+        $dt2 = $model->read_attribute('updated_at');
+
+        $this->assertEquals($dt->getTimestamp(), $dt2->getTimestamp());
+        $this->assertEquals($dt->getTimeZone(), $dt2->getTimeZone());
+        $this->assertEquals($dt->getTimeZone()->getName(),
+                $dt2->getTimeZone()->getName());
+    }
+
+    public function testArDateTimeAttributeCopiesExactTz()
+    {
+        $dt = new DateTime(null, new \DateTimeZone('America/New_York'));
+        $model = new Author();
+
+        // Test that the data transforms without modification
+        $model->assignAttribute('updated_at', $dt);
+        $dt2 = $model->readAttribute('updated_at');
+
+        $this->assertEquals($dt->getTimestamp(), $dt2->getTimestamp());
+        $this->assertEquals($dt->getTimeZone(), $dt2->getTimeZone());
+        $this->assertEquals($dt->getTimeZone()->getName(),
+                $dt2->getTimeZone()->getName());
+    }
+
+    public function testDatefieldGetsConvertedToArDatetime()
+    {
+        //make sure first author has a date
+        $author = Author::first();
+        $author->some_date = new DateTime();
+        $author->save();
+
+        $author = Author::first();
+        $this->assertIsA("Activerecord\\DateTime", $author->some_date);
+    }
+
+    public function format($format = null)
+    {
+
+    }
+
+    public static function createFromFormat($format, $time)
+    {
+
+    }
+
 }

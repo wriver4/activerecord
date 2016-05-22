@@ -234,7 +234,7 @@ class ActiverecordWriteTest
             'name'), array_keys($book->dirtyAttributes()));
     }
 
-    public function test_timestamps_set_before_save()
+    public function testTimestampsSetBeforeSave()
     {
         $author = new Author;
         $author->save();

@@ -8,6 +8,8 @@
 namespace Activerecord\Test\Activerecord;
 
 use Activerecord\Config;
+use Activerecord\DateTime;
+use Activerecord\Test\Stubs\DateTimeWithoutCreateFromFormatTest;
 use Activerecord\Exceptions\ExceptionConfig;
 
 /**
@@ -91,8 +93,7 @@ class ConfigTest
 
     public function testGetDateClassWithDefault()
     {
-        // $this->assertEquals('Activerecord\\DateTime',
-        //        $this->config->getDateClass());
+        $this->assertEquals('DateTime', $this->config->getDateClass());
     }
 
     /**
@@ -116,7 +117,7 @@ class ConfigTest
      */
     public function testSetDateClassWhenClassDoesNotHaveCreateFromFormat()
     {
-        //  $this->config->setDateClass('DateTimeWithoutCreateFromFormatTest');
+        $this->config->setDateClass('DateTimeWithoutCreateFromFormatTest');
     }
 
     public function testSetDateClassWithValidClass()
@@ -148,6 +149,11 @@ class ConfigTest
             $this->assertEquals($e->getMessage(),
                     "Logger object must implement a public log method");
         }
+    }
+
+    private function log()
+    {
+
     }
 
 }

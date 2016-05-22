@@ -6,7 +6,7 @@ use Activerecord\Cache;
 use Activerecord\Config;
 use Activerecord\Test\Helpers\DatabaseTest;
 
-class CacheModelTest
+class ModelCacheTest
         extends DatabaseTest
 {
 
