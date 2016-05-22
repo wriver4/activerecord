@@ -1,6 +1,6 @@
 <?php
 
-namespace Activerecord\Test\Activerecord;
+namespace Activerecord\Test\Activerecord\ModelTests;
 
 use Activerecord\Exceptions\ExceptionRecordNotFound;
 use Activerecord\Exceptions\ExceptionUndefinedProperty;

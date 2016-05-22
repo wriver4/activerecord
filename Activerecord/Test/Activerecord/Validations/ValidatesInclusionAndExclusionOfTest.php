@@ -1,6 +1,6 @@
 <?php
 
-namespace Activerecord\Test\Activerecord;
+namespace Activerecord\Test\Activerecord\Validations;
 
 use Activerecord\Test\Helpers\DatabaseTest;
 

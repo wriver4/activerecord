@@ -1,10 +1,10 @@
 <?php
 
-namespace Activerecord\Test\Activerecord;
+namespace Activerecord\Test\Activerecord\ModelTests;
 
 use Activerecord\Test\Helpers\DatabaseTest;
 
-class ModelCallbackTest
+class CallbackTest
         extends DatabaseTest
 {
 

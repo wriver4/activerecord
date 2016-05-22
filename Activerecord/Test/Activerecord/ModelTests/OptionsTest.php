@@ -1,12 +1,12 @@
 <?php
 
-namespace Activerecord\Test\Activerecord;
+namespace Activerecord\Test\Activerecord\ModelTests;
 
 use Activerecord\Table;
 use Activerecord\Exceptions\ExceptionReadOnly;
 use Activerecord\Test\Helpers\DatabaseTest;
 
-class ActiverecordTest
+class OptionsTest
         extends DatabaseTest
 {
 

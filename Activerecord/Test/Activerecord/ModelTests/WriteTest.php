@@ -1,13 +1,13 @@
 <?php
 
-namespace Activerecord\Test\Activerecord;
+namespace Activerecord\Test\Activerecord\ModelTests;
 
 use Activerecord\DateTime;
 use Activerecord\Exceptions\ExceptionDatabase;
 use Activerecord\Adapters\Oci;
 use Activerecord\Test\Helpers\DatabaseTest;
 
-class ActiverecordWriteTest
+class WriteTest
         extends DatabaseTest
 {
 

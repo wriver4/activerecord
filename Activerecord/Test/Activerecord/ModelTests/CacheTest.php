@@ -1,12 +1,12 @@
 <?php
 
-namespace Activerecord\Test\Activerecord;
+namespace Activerecord\Test\Activerecord\ModelTests;
 
 use Activerecord\Cache;
 use Activerecord\Config;
 use Activerecord\Test\Helpers\DatabaseTest;
 
-class ModelCacheTest
+class CacheTest
         extends DatabaseTest
 {
 
