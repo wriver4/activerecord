@@ -12,11 +12,6 @@ class ComposerStaticInite20cbe2fec4c2d13168dc87a3dd0a1fc
             'Activerecord\\Test\\Models\\' => 25,
             'Activerecord\\Test\\Helpers\\' => 26,
             'Activerecord\\Test\\Activerecord\\' => 31,
-            'Activerecord\\Serializers\\' => 25,
-            'Activerecord\\Relationss\\' => 24,
-            'Activerecord\\Exceptions\\' => 24,
-            'Activerecord\\Cache\\' => 19,
-            'Activerecord\\Adapters\\' => 22,
             'Activerecord\\' => 13,
         ),
     );
@@ -33,26 +28,6 @@ class ComposerStaticInite20cbe2fec4c2d13168dc87a3dd0a1fc
         'Activerecord\\Test\\Activerecord\\' => 
         array (
             0 => __DIR__ . '/../..' . '/Activerecord/Test/Activerecord',
-        ),
-        'Activerecord\\Serializers\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/Activerecord/Serializers',
-        ),
-        'Activerecord\\Relationss\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/Activerecord/Relations',
-        ),
-        'Activerecord\\Exceptions\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/Activerecord/Exceptions',
-        ),
-        'Activerecord\\Cache\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/Activerecord/Cache',
-        ),
-        'Activerecord\\Adapters\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/Activerecord/Adapters',
         ),
         'Activerecord\\' => 
         array (

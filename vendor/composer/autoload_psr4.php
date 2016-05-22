@@ -9,10 +9,5 @@ return array(
     'Activerecord\\Test\\Models\\' => array($baseDir . '/Activerecord/Test/Models'),
     'Activerecord\\Test\\Helpers\\' => array($baseDir . '/Activerecord/Test/Helpers'),
     'Activerecord\\Test\\Activerecord\\' => array($baseDir . '/Activerecord/Test/Activerecord'),
-    'Activerecord\\Serializers\\' => array($baseDir . '/Activerecord/Serializers'),
-    'Activerecord\\Relationss\\' => array($baseDir . '/Activerecord/Relations'),
-    'Activerecord\\Exceptions\\' => array($baseDir . '/Activerecord/Exceptions'),
-    'Activerecord\\Cache\\' => array($baseDir . '/Activerecord/Cache'),
-    'Activerecord\\Adapters\\' => array($baseDir . '/Activerecord/Adapters'),
     'Activerecord\\' => array($baseDir . '/Activerecord'),
 );

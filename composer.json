@@ -14,13 +14,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Activerecord\\": "Activerecord/",
-            "Activerecord\\Adapters\\": "Activerecord/Adapters/",
-            "Activerecord\\Cache\\": "Activerecord/Cache/",
-            "Activerecord\\Exceptions\\": "Activerecord/Exceptions/",
-            "Activerecord\\Relationss\\": "Activerecord/Relations/",
-            "Activerecord\\Serializers\\": "Activerecord/Serializers/"
-
+            "Activerecord\\": "Activerecord/"
         }
     }
 
