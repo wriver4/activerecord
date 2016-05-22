@@ -8,7 +8,7 @@ namespace Activerecord;
 use Activerecord\Cache;
 use Activerecord\Exceptions\ExceptionConfig;
 use Activerecord\Reflections;
-use Activerecord\Serialization;
+use Activerecord\Serializers\AbstractSerialize;
 use Activerecord\Singleton;
 
 /**
@@ -293,7 +293,7 @@ class Config
     {
         trigger_error('Use Activerecord\Serializers\AbstractSerialize::$datetime_format. Config::getDateFormat() has been deprecated.',
                 E_USER_DEPRECATED);
-        return Activerecord\Serializers\AbstractSerialize::$datetime_format;
+        return AbstractSerialize::$datetime_format;
     }
 
     /**
@@ -303,7 +303,7 @@ class Config
     {
         trigger_error('Use Activerecord\Serializers\AbstractSerialize::$datetime_format. Config::setDateFormat() has been deprecated.',
                 E_USER_DEPRECATED);
-        Activerecord\Serializers\AbstractSerialize::$datetime_format = $format;
+        AbstractSerialize::$datetime_format = $format;
     }
 
     /**
