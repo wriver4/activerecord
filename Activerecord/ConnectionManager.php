@@ -1,6 +1,6 @@
 <?php
 /**
- * @package ActiveRecord
+ * @package Activerecord
  */
 
 namespace Activerecord;
@@ -12,7 +12,7 @@ use Activerecord\Singleton;
 /**
  * Singleton to manage any and all database connections.
  *
- * @package ActiveRecord
+ * @package Activerecord
  */
 class ConnectionManager
         extends Singleton

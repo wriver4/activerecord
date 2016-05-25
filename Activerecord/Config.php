@@ -1,6 +1,6 @@
 <?php
 /**
- * @package ActiveRecord
+ * @package Activerecord
  */
 
 namespace Activerecord;
@@ -12,10 +12,10 @@ use Activerecord\Serializers\AbstractSerialize;
 use Activerecord\Singleton;
 
 /**
- * Manages configuration options for ActiveRecord.
+ * Manages configuration options for Activerecord.
  *
  * <code>
- * ActiveRecord::initialize(function($cfg) {
+ * Activerecord::initialize(function($cfg) {
  *   $cfg->set_model_home('models');
  *   $cfg->setConnections(array(
  *     'development' => 'mysql://user:pass@development.com/awesome_development',
@@ -23,7 +23,7 @@ use Activerecord\Singleton;
  * });
  * </code>
  *
- * @package ActiveRecord
+ * @package Activerecord
  */
 class Config
         extends Singleton
@@ -33,7 +33,7 @@ class Config
      * Name of the connection to use by default.
      *
      * <code>
-     * ActiveRecord\Config::initialize(function($cfg) {
+     * Activerecord\Config::initialize(function($cfg) {
      *   $cfg->setModelDirectory('/your/app/models');
      *   $cfg->setConnections(array(
      *     'development' => 'mysql://user:pass@development.com/awesome_development',
@@ -44,7 +44,7 @@ class Config
      * This is a singleton class so you can retrieve the {@link Singleton} instance by doing:
      *
      * <code>
-     * $config = ActiveRecord\Config::instance();
+     * $config = Activerecord\Config::instance();
      * </code>
      *
      * @var string
@@ -61,7 +61,7 @@ class Config
     /**
      * Directory for the auto_loading of model classes.
      *
-     * @see \activerecord_autoload
+     * @see \Activerecord_autoload
      * @var string
      */
     private $model_directory;
@@ -94,7 +94,7 @@ class Config
      * This method is just syntatic sugar.
      *
      * <code>
-     * ActiveRecord\Config::initialize(function($cfg) {
+     * Activerecord\Config::initialize(function($cfg) {
      *   $cfg->setModelDirectory('/path/to/your/model_directory');
      *   $cfg->setConnections(array(
      *     'development' => 'mysql://username:password@127.0.0.1/database_name'));
@@ -104,7 +104,7 @@ class Config
      * You can also initialize by grabbing the singleton object:
      *
      * <code>
-     * $cfg = ActiveRecord\Config::instance();
+     * $cfg = Activerecord\Config::instance();
      * $cfg->setModelDirectory('/path/to/your/model_directory');
      * $cfg->setConnections(array('development' =>
      *   'mysql://username:password@localhost/database_name'));

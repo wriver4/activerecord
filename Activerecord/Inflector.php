@@ -1,6 +1,6 @@
 <?php
 /**
- * @package ActiveRecord
+ * @package Activerecord
  */
 
 namespace Activerecord;
@@ -9,7 +9,7 @@ use Activerecord\StandardInflector;
 use Activerecord\Utils;
 
 /**
- * @package ActiveRecord
+ * @package Activerecord
  */
 abstract class Inflector
 {

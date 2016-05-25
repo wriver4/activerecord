@@ -9,7 +9,7 @@ use Activerecord\Column;
 use Activerecord\Connection;
 use Activerecord\Exceptions\ExceptionActiverecord;
 use Activerecord\Exceptions\ExceptionDatabase;
-use ActiveRecord\Utils;
+use Activerecord\Utils;
 use Activerecord\Inflector;
 
 /**
@@ -23,7 +23,7 @@ class Sqlite
 
     static $datetime_format = 'Y-m-d H:i:s';
 
-    protected function __construct($info)
+    public function __construct($info)
     {
         if (!\file_exists($info->host))
         {

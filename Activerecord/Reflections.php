@@ -88,7 +88,7 @@ class Reflections
     {
         if (\is_object($mixed))
         {
-            return getClass($mixed);
+            return \get_class($mixed);
         }
 
         if (!\is_null($mixed))

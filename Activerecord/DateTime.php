@@ -1,6 +1,6 @@
 <?php
 /**
- * @package ActiveRecord
+ * @package Activerecord
  */
 
 namespace Activerecord;
@@ -13,8 +13,8 @@ namespace Activerecord;
  * Example of formatting and changing the default format:
  *
  * <code>
- * $now = new ActiveRecord\DateTime('2010-01-02 03:04:05');
- * ActiveRecord\DateTime::$default_format = 'short';
+ * $now = new Activerecord\DateTime('2010-01-02 03:04:05');
+ * Activerecord\DateTime::$default_format = 'short';
  *
  * echo $now->format();         # 02 Jan 03:04
  * echo $now->format('atom');   # 2010-01-02T03:04:05-05:00
@@ -27,11 +27,11 @@ namespace Activerecord;
  * You can also add your own pre-defined friendly formatters:
  *
  * <code>
- * ActiveRecord\DateTime::$formats['awesome_format'] = 'H:i:s m/d/Y';
+ * Activerecord\DateTime::$formats['awesome_format'] = 'H:i:s m/d/Y';
  * echo $now->format('awesome_format')  # 03:04:05 01/02/2010
  * </code>
  *
- * @package ActiveRecord
+ * @package Activerecord
  * @see http://php.net/manual/en/class.datetime.php
  */
 class DateTime

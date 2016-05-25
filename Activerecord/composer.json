@@ -1,16 +1,37 @@
 {
-    "name": "wriver4/activerecord",
+    "name": "wriver4/Activerecord",
     "type": "library",
-    "description": "activerecord is an open source ORM library based on the ActiveRecord pattern.",
-    "keywords": ["activerecord", "orm"],
+    "description": "Activerecord is an open source ORM library based on the Activerecord pattern.",
+    "keywords": ["Activerecord", "orm"],
     "homepage": "http://www.whizbangdevelopers.com/",
     "license": "MIT",
+    "authors": [{
+            "name": "",
+            "email": "",
+            "homepage": "",
+            "role": "Developer"
+        },
+        {
+            "name": "",
+            "email": "",
+            "homepage": "",
+            "role": "Developer"
+        },
+        {
+            "name": "",
+            "email": "",
+            "homepage": "",
+            "role": "Developer"
+        }],
     "require": {
         "php": ">=5.4.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*"
+    },
     "autoload": {
         "psr-4": {
-            "Activerecord\\": "ActiveRecord/"
+            "Activerecord\\": "Activerecord/"
         }
     }
 }
