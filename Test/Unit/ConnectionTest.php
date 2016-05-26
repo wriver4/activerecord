@@ -5,9 +5,10 @@
  * and open the template in the editor.
  */
 
-namespace Activerecord\Test\Activerecord;
+namespace Activerecord\Test;
 
 use Activerecord\Connection;
+use Activerecord\Exceptions\ExceptionDatabase;
 
 /**
  * Description of ConnectionTest
@@ -29,7 +30,7 @@ class ConnectionTest
     }
 
     /**
-     * @expectedException Activerecord\DatabaseException
+     * @expectedException Activerecord\Exceptions\ExceptionDatabase
      */
     public function testConnectionInfoFromShouldThrowExceptionWhenNoHost()
     {
@@ -54,7 +55,7 @@ class ConnectionTest
     }
 
     /**
-     * @expectedException Activerecord\DatabaseException
+     * @expectedException Activerecord\Exceptions\ExceptionDatabase
      */
     public function testGh103SqliteConnectionStringAbsolute()
     {

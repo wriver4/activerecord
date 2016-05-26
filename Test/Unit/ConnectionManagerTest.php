@@ -5,11 +5,11 @@
  * and open the template in the editor.
  */
 
-namespace Activerecord\Test\Activerecord;
+namespace Activerecord\Test;
 
 use Activerecord\Config;
 use Activerecord\ConnectionManager;
-use Activerecord\Test\Helpers\DatabaseTest;
+use Test\Helpers\DatabaseTest;
 
 /**
  * Description of ConnectionManagerTest
