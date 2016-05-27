@@ -5,7 +5,7 @@
  * and open the template in the editor.
  */
 
-namespace Activerecord\Test;
+namespace Test;
 
 use Activerecord\Config;
 use Activerecord\DateTime;
