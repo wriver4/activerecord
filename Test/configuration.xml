@@ -7,10 +7,10 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         bootstrap="Activerecord/Test/bootstrap.php">
+         bootstrap="bootstrap.php">
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">C:\GitHub\activerecord\Activerecord</directory>
+            <directory suffix='.php'>C:\GitHub\activerecord\Activerecord</directory>
         </whitelist>
     </filter>
     <logging>
@@ -19,7 +19,7 @@
     </logging>
     <testsuites>
         <testsuite name="Activerecord Test Suite">
-            <directory>C:\GitHub\activerecord\Activerecord\Test</directory>
+            <directory>C:\GitHub\activerecord\Test</directory>
         </testsuite>
     </testsuites>
 </phpunit>
