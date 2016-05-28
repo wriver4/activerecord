@@ -6,11 +6,6 @@ use Activerecord\DateTime;
 use Activerecord\Exceptions\ExceptionDatabase;
 use Test\Models\Author;
 
-/**
- * Description of DateTimeTest
- *
- * @author mark weisser <mark at whizbangdevelopers.com>
- */
 class DateTimeTest
         extends \PHPUnit_Framework_TestCase
 {

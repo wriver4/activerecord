@@ -7,8 +7,6 @@ class Author
 {
 
     static $pk = 'author_id';
-//	static $has_one = array(array('awesome_person', 'foreign_key' => 'author_id', 'primary_key' => 'author_id'),
-//	array('parent_author', 'class_name' => 'Author', 'foreign_key' => 'parent_author_id'));
     static $has_many = ['books'];
     static $has_one = [
         [

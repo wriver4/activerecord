@@ -6,11 +6,6 @@ use Activerecord\Expressions;
 use Activerecord\ConnectionManager;
 use Activerecord\Exceptions\ExceptionDatabase;
 
-/**
- * Description of ExpressionsTest
- *
- * @author mark weisser <mark at whizbangdevelopers.com>
- */
 class ExpressionsTest
         extends \PHPUnit_Framework_TestCase
 {

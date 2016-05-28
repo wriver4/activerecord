@@ -4,11 +4,6 @@ namespace Test;
 
 use Activerecord\Connection;
 
-/**
- * Description of ConnectionTest
- *
- * @author mark weisser <mark at whizbangdevelopers.com>
- */
 class ConnectionTest
         extends \PHPUnit_Framework_TestCase
 {

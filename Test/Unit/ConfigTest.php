@@ -4,11 +4,6 @@ namespace Test;
 
 use Activerecord\Config;
 
-/**
- * Description of ConfigTest
- *
- * @author mark weisser <mark at whizbangdevelopers.com>
- */
 class ConfigTest
         extends \PHPUnit_Framework_TestCase
 {

@@ -2,11 +2,6 @@
 
 namespace Test;
 
-/**
- * Description of ConfigTest
- *
- * @author mark weisser <mark at whizbangdevelopers.com>
- */
 class LoggerTest
         extends \PHPUnit_Framework_TestCase
 {
