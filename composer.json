@@ -7,9 +7,9 @@
     "license": "MIT",
     "autoload-dev": {
         "psr-4": {
-            "Activerecord\\Test\\Activerecord\\": "Activerecord/Test/Activerecord/",
-            "Activerecord\\Test\\Helpers\\": "Activerecord/Test/Helpers/",
-            "Activerecord\\Test\\Models\\": "Activerecord/Test/Models/"
+            "Test\\": "Activerecord/Test/",
+            "Test\\Helpers\\": "Activerecord/Test/Helpers/",
+            "Test\\Models\\": "Activerecord/Test/Models/"
         }
     },
     "autoload": {

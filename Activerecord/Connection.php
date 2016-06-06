@@ -485,9 +485,13 @@ abstract class Connection
      * @return string sequence name or null if not supported.
      */
     /* public function getSequenceName($table, $column_name) original */
-    public function getSequenceName($table)
+    // public function getSequenceName($table)
+    // {
+    //     return "{$table}_seq";
+    // }
+    public function getSequenceName($table, $column_name)
     {
-        return "{$table}_seq";
+        return "{$table}_{$column_name}_seq";
     }
 
     /** todo fix this and model

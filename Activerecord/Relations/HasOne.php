@@ -46,7 +46,7 @@ class HasOne
 
     }
 
-    public function load(Model $model)
+    public function load(\Activerecord\Model $model)
     {
 
     }

@@ -7,7 +7,7 @@ use Activerecord\Exceptions\ExceptionCache;
 class Memcache
 {
 
-    const default_port = 11211;
+    const DEFAULT_PORT = 11211;
 
     private $memcache;
 
@@ -25,9 +25,12 @@ class Memcache
     public function __construct($options)
     {
         $this->memcache = new \Memcache();
-        $options['port'] = isset($options['port']) ? $options['port'] : self::default_port;
+        $options['port'] = isset($options['port']) ? $options['port'] : self::DEFAULT_PORT;
 
-        if (!$this->memcache->connect($options['host'], $options['port'])) throw new ExceptionCache("Could not connect to $options[host]:$options[port]");
+        if (!$this->memcache->connect($options['host'], $options['port']))
+        {
+            throw new ExceptionCache("Could not connect to $options[host]:$options[port]");
+        }
     }
 
     public function flush()

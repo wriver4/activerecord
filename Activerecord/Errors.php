@@ -80,7 +80,8 @@ class Errors
     }
 
     /**
-     * Adds an error message only if the attribute value is {@link http://www.php.net/empty empty}.
+     * Adds an error message only if the attribute value is
+     * {@link http://www.php.net/empty empty}.
      *
      * @param string $attribute Name of an attribute on the model
      * @param string $msg The error message
@@ -115,7 +116,8 @@ class Errors
     }
 
     /**
-     * Adds the error message only if the attribute value was null or an empty string.
+     * Adds the error message only if the attribute value was null or an
+     * empty string.
      *
      * @param string $attribute Name of an attribute on the model
      * @param string $msg The error message
@@ -148,7 +150,8 @@ class Errors
      * Returns the error message(s) for the specified attribute or null if none.
      *
      * @param string $attribute Name of an attribute on the model
-     * @return string/array	Array of strings if several error occured on this attribute.
+     * @return string/array
+     * Array of strings if several error occured on this attribute.
      */
     public function on($attribute)
     {
@@ -214,9 +217,10 @@ class Errors
      * # )
      * </code>
      *
-     * @param callable $closure Closure to fetch the errors in some other format (optional)
-     *                       This closure has the signature function($attribute, $message)
-     *                       and is called for each available error message.
+     * @param callable $closure
+     * Closure to fetch the errors in some other format (optional)
+     * This closure has the signature function($attribute, $message)
+     * and is called for each available error message.
      * @return array
      */
     public function toArray($closure = null)
@@ -233,7 +237,6 @@ class Errors
                     {
                         continue;
                     }
-
                     $errors[$attribute][] = ($message = Utils::humanAttribute($attribute).' '.$msg);
 
                     if ($closure)

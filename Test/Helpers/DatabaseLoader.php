@@ -49,7 +49,7 @@ class DatabaseLoader
         }
     }
 
-    public function dropDables()
+    public function dropTables()
     {
         $tables = $this->db->tables();
 
@@ -122,7 +122,7 @@ class DatabaseLoader
 
     public function loadFixtureData($table)
     {
-        $fp = \fopen(__DIR__."/../fixtures/$table.csv", 'r');
+        $fp = \fopen("../Fixtures/$table.csv", 'r');
         $fields = \fgetcsv($fp);
 
         if (!empty($fields))

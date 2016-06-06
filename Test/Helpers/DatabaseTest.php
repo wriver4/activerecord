@@ -2,7 +2,6 @@
 
 namespace Test\Helpers;
 
-use Test\Helpers\DatabaseLoader;
 use Activerecord\Table;
 use Activerecord\Config;
 use Activerecord\Adapters\Sqlite;
@@ -20,6 +19,7 @@ class DatabaseTest
 
     public function setUp($connection_name = null)
     {
+        require_once 'DatabaseLoader.php';
         Table::clearCache();
 
         $config = Config::instance();
