@@ -4,7 +4,6 @@ namespace Test;
 
 use Activerecord\Cache;
 use Activerecord\Config;
-use Activerecord\Test\Models\Author;
 
 class CacheTest
         extends \PHPUnit_Framework_TestCase
@@ -22,6 +21,7 @@ class CacheTest
         // Cache::initialize('memcache://localhost');
         Config::instance()->setCache('memcache://127.0.0.1');
         Cache::initialize('memcache://127.0.0.1');
+        Cache::set("1337", "abcd");
     }
 
     public function tearDown()
@@ -82,23 +82,6 @@ class CacheTest
         $this->assertEquals("abcd", $this->cacheGet());
     }
 
-    public function testCacheExpire()
-    {
-        Cache::$options['expire'] = 1;
-        $this->cacheGet();
-        sleep(2);
-
-        $this->assertSame(false, Cache::$adapter->read("1337"));
-    }
-
-    public function testExplicitDefaultExpire()
-    {
-        Config::instance()->setCache('memcache://localhost',
-                array(
-            'expire' => 1));
-        $this->assertEquals(1, Cache::$options['expire']);
-    }
-
     public function testNamespaceIsSetProperly()
     {
         Cache::$options['namespace'] = 'myapp';
@@ -111,14 +94,10 @@ class CacheTest
         $this->assertEquals(30, Cache::$options['expire']);
     }
 
-    /*
-      public function testCachesColumnMetaData()
-      {
-      Author::first();
+    public function testSetCachetExpire()
+    {
+        Config::instance()->setCache('memcache://localhost', ['expire' => 1]);
+        $this->assertEquals(1, Cache::$options['expire']);
+    }
 
-      $table_name = Author::table()->getFullyQualifiedTableName(!($this->conn instanceof Pgsql));
-      $value = Cache::$adapter->read("get_meta_data-$table_name");
-      $this->assertTrue(\is_array($value));
-      }
-     */
 }

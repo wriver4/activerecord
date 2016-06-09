@@ -69,7 +69,7 @@ class DatabaseTest
         }
     }
 
-    public function assertExceptionMessageContains($contains, $closure)
+    public function testAssertExceptionMessageContains($contains, $closure)
     {
         $message = "";
 
@@ -91,7 +91,7 @@ class DatabaseTest
      * Takes database specific quotes into account by removing them. So, this won't
      * work if you have actual quotes in your strings.
      */
-    public function assertSqlHas($needle, $haystack)
+    public function testAssertSqlHas($needle, $haystack)
     {
         $needle = \str_replace([
             '"',
@@ -102,7 +102,7 @@ class DatabaseTest
         return $this->assertContains($needle, $haystack);
     }
 
-    public function assertSqlDoesNotContain($needle, $haystack)
+    public function testAssertSqlDoesNotContain($needle, $haystack)
     {
         $needle = \str_replace([
             '"',

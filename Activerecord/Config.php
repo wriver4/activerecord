@@ -6,10 +6,10 @@
 namespace Activerecord;
 
 use Activerecord\Cache;
-use Activerecord\Exceptions\ExceptionConfig;
+use Activerecord\Singleton;
 use Activerecord\Reflections;
 use Activerecord\Serializers\AbstractSerialize;
-use Activerecord\Singleton;
+use Activerecord\Exceptions\ExceptionConfig;
 
 /**
  * Manages configuration options for Activerecord.
@@ -210,31 +210,34 @@ class Config
      * @param string $dir Directory path containing your models
      * @return void
      */
-    public function setModelDirectory($dir)
-    {
-        $this->model_directory = $dir;
-    }
-
+    /*
+      public function setModelDirectory($dir)
+      {
+      $this->model_directory = $dir;
+      }
+     */
     /**
      * Returns the model directory.
      *
      * @return string
      * @throws Config if specified directory was not found
      */
-    public function getModelDirectory()
-    {
+    /*
+      public function getModelDirectory()
+      {
 
-        foreach (\glob("$this->model_directory/*.php") as $filename)
-        {
-            require_once $filename;
-        }
-        if ($this->model_directory && !\file_exists($this->model_directory))
-        {
-            throw new ExceptionConfig('Invalid or non-existent directory: '.$this->model_directory);
-        }
+      foreach (\glob("$this->model_directory/*.php") as $filename)
+      {
+      require_once $filename;
+      }
+      if ($this->model_directory && !\file_exists($this->model_directory))
+      {
+      throw new ExceptionConfig('Invalid or non-existent directory: '.$this->model_directory);
+      }
 
-        return $this->model_directory;
-    }
+      return $this->model_directory;
+      }
+     */
 
     /**
      * Turn on/off logging

@@ -13,7 +13,7 @@ if (\getenv('LOG') !== 'false')
 
 Activerecord\Config::initialize(function($cfg)
 {
-    $cfg->setModelDirectory(\realpath('Models'));
+    //$cfg->setModelDirectory(\realpath('Models'));
     $cfg->setConnections(array(
         'mysql' => \getenv('PHPAR_MYSQL') ? : 'mysql://root:root@127.0.0.1/Activerecord_Test',
         'pgsql' => \getenv('PHPAR_PGSQL') ? : 'pgsql://test:test@127.0.0.1/test',

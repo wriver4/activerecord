@@ -3,6 +3,7 @@
 namespace Test\Helpers;
 
 class DatabaseLoader
+// extends \PHPUnit_Framework_TestCase
 {
 
     private $db;
@@ -84,7 +85,7 @@ class DatabaseLoader
         }
     }
 
-    public function execSqlScript($file)
+    public function testExecSqlScript($file)
     {
         foreach (\explode(';', $this->getSql($file)) as $sql)
         {
@@ -108,7 +109,7 @@ class DatabaseLoader
         return $tables;
     }
 
-    public function getSql($file)
+    public function testGetSql($file)
     {
         $file = __DIR__."/../sql/$file.sql";
 
