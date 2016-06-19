@@ -2,10 +2,10 @@
 
 namespace Test\Adapters;
 
-use Activerecord\Column;
 use Activerecord\Connection;
 use Activerecord\Config;
-use Test\Helpers\AdapterTest;
+use Activerecord\Column;
+use Test\Functional\AdapterTest;
 
 class MysqlTest
         extends AdapterTest
@@ -49,4 +49,12 @@ class MysqlTest
         $this->assertTrue(\strpos($this->conn->last_query, 'LIMIT 1') !== false);
     }
 
+    public function testColumnsSequence()
+    {
+
+    }
+
 }
+//echo '<pre> after MysqlTest  ';
+//print_r(array_diff(get_declared_classes(), $predefinedClasses));
+//echo '</pre>';

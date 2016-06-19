@@ -13,11 +13,25 @@ class DateTimeTest
     public function setUp()
     {
         $this->date = new DateTime();
+        //require_once 'bootstrap.php';
     }
 
     public function tearDown()
     {
 
+    }
+
+    private function getModel()
+    {
+        try
+        {
+            $model = new Author();
+        }
+        catch (DatabaseException $e)
+        {
+            $this->markTestSkipped('failed to connect. '.$e->getMessage());
+        }
+        return $model;
     }
 
     private function assertDirtifies($method /* , method params, ... */)
@@ -124,4 +138,33 @@ class DateTimeTest
 
     }
 
+    /*
+      public function testClone()
+      {
+      $model = $this->getModel();
+      $model_attribute = 'some_date';
+
+      $datetime = new DateTime();
+      $datetime->attributeOf($model, $model_attribute);
+
+      $cloned_datetime = clone $datetime;
+
+      // Assert initial state
+      $this->assertFalse($model->attributeIsDirty($model_attribute));
+
+      $cloned_datetime->add(new DateInterval('PT1S'));
+
+      // Assert that modifying the cloned object didn't flag the model
+      $this->assertFalse($model->attributeIsDirty($model_attribute));
+
+      $datetime->add(new DateInterval('PT1S'));
+
+      // Assert that modifying the model-attached object did flag the model
+      $this->assertTrue($model->attributeIsDirty($model_attribute));
+
+      // Assert that the dates are equal but not the same instance
+      $this->assertEquals($datetime, $cloned_datetime);
+      $this->assertNotSame($datetime, $cloned_datetime);
+      }
+     */
 }

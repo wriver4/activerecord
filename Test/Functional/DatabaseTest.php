@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Helpers;
+namespace Test\Functional;
 
 use Activerecord\Table;
 use Activerecord\Config;
@@ -8,6 +8,7 @@ use Activerecord\Adapters\Sqlite;
 use Activerecord\ConnectionManager;
 use Activerecord\Exceptions\ExceptionDatabase;
 use Activerecord\Exceptions\ExceptionUndefinedProperty;
+use Test\DatabaseLoader;
 
 class DatabaseTest
         extends \PHPUnit_Framework_TestCase
@@ -25,17 +26,15 @@ class DatabaseTest
         $config = Config::instance();
         $this->original_default_connection = $config->getDefaultConnection();
 
-        // $this->original_date_class = $config->getDateClass();
-
         if ($connection_name)
         {
             $config->setDefaultConnection($connection_name);
         }
 
-        if ($connection_name == 'sqlite' || $config->getDefaultConnection() == 'sqlite')
+        if ($connection_name === 'sqlite' || $config->getDefaultConnection() === 'sqlite')
         {
             // need to create the db. the adapter specifically does not create it for us.
-            static::$db = substr(Config::instance()->getConnection('sqlite'), 9);
+            static::$db = \substr(Config::instance()->getConnection('sqlite'), 9);
             new Sqlite(static::$db);
         }
 
@@ -54,6 +53,7 @@ class DatabaseTest
         $loader = new DatabaseLoader($this->conn);
         $loader->resetTableData();
 
+
         if (self::$log)
         {
             $GLOBALS['Activerecord_LOG'] = true;
@@ -69,48 +69,51 @@ class DatabaseTest
         }
     }
 
-    public function testAssertExceptionMessageContains($contains, $closure)
-    {
-        $message = "";
+    /*
+      public function testAssertExceptionMessageContains($contains, $closure)
+      {
+      $message = "";
 
-        try
-        {
-            $closure();
-        }
-        catch (ExceptionUndefinedProperty $e)
-        {
-            $message = $e->getMessage();
-        }
+      try
+      {
+      $closure();
+      }
+      catch (ExceptionUndefinedProperty $e)
+      {
+      $message = $e->getMessage();
+      }
 
-        $this->assertContains($contains, $message);
-    }
-
+      $this->assertContains($contains, $message);
+      }
+     */
     /**
      * Returns true if $regex matches $actual.
      *
      * Takes database specific quotes into account by removing them. So, this won't
      * work if you have actual quotes in your strings.
      */
-    public function testAssertSqlHas($needle, $haystack)
-    {
-        $needle = \str_replace([
-            '"',
-            '`'], '', $needle);
-        $haystack = \str_replace([
-            '"',
-            '`'], '', $haystack);
-        return $this->assertContains($needle, $haystack);
-    }
-
-    public function testAssertSqlDoesNotContain($needle, $haystack)
-    {
-        $needle = \str_replace([
-            '"',
-            '`'], '', $needle);
-        $haystack = \str_replace([
-            '"',
-            '`'], '', $haystack);
-        return $this->assertNotContains($needle, $haystack);
-    }
-
+    /*
+      public function testAssertSqlHas($needle, $haystack)
+      {
+      $needle = \str_replace([
+      '"',
+      '`'], '', $needle);
+      $haystack = \str_replace([
+      '"',
+      '`'], '', $haystack);
+      return $this->assertContains($needle, $haystack);
+      }
+     */
+    /*
+      public function testAssertSqlDoesNotContain($needle, $haystack)
+      {
+      $needle = \str_replace([
+      '"',
+      '`'], '', $needle);
+      $haystack = \str_replace([
+      '"',
+      '`'], '', $haystack);
+      return $this->assertNotContains($needle, $haystack);
+      }
+     */
 }

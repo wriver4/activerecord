@@ -5,10 +5,10 @@ namespace Test\Adapters;
 use Activerecord\Adapters\Sqlite;
 use Activerecord\Connection;
 use Activerecord\Exceptions\ExceptionDatabase;
-use Test\Helpers\DatabaseTest;
+use Test\Functional\AdapterTest;
 
 class SqliteTest
-        extends DatabaseTest
+        extends AdapterTest
 {
 
     public function setUp($connection_name = null)

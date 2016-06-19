@@ -4,7 +4,7 @@ namespace Test\Adapters;
 
 use Activerecord\Config;
 use Activerecord\Connection;
-use Test\Helpers\AdapterTest;
+use Test\Functional\AdapterTest;
 
 class OciTest
         extends AdapterTest

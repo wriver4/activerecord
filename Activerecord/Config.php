@@ -64,7 +64,7 @@ class Config
      * @see \Activerecord_autoload
      * @var string
      */
-    private $model_directory;
+    //private $model_directory;
 
     /**
      * Switch for logging.

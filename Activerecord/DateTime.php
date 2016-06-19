@@ -124,6 +124,20 @@ class DateTime
         return $this->format();
     }
 
+    /**
+     * Handle PHP object `clone`.
+     *
+     * This makes sure that the object doesn't still flag an attached model as
+     * dirty after cloning the DateTime object and making modifications to it.
+     *
+     * @return void
+     */
+    public function __clone()
+    {
+        $this->model = null;
+        $this->attribute_name = null;
+    }
+
     private function flagDirty()
     {
         if ($this->model)

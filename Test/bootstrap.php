@@ -1,24 +1,35 @@
 <?php
+opcache_reset();
+//$predefinedClasses = get_declared_classes();
 $loader = require_once '../vendor/autoload.php';
-$loader->addPsr4('Test\\Models\\', '\Test\Models');
-require_once '../Test/Helpers/DatabaseTest.php';
-require_once '../Test/Helpers/AdapterTest.php';
+$loader->addPsr4('Test\\Models\\', __dir__.'/Models');
+$loader->addPsr4('Test\\Functional\\', __dir__.'/Functional');
 
-use Test\Helpers\DatabaseTest;
+//var_dump($loader);
+//require_once '../Test/Helpers/DatabaseTest.php';
+//require_once '../Test/Helpers/AdapterTest.php';
+
+use Test\Functional\DatabaseTest;
+use Test\Models;
 
 if (\getenv('LOG') !== 'false')
 {
     DatabaseTest::$log = true;
 }
+// whether or not to run the slow non-crucial tests
+$GLOBALS['slow_tests'] = false;
+
+// whether or not to show warnings when Log or Memcache is missing
+$GLOBALS['show_warnings'] = true;
 
 Activerecord\Config::initialize(function($cfg)
 {
     //$cfg->setModelDirectory(\realpath('Models'));
     $cfg->setConnections(array(
-        'mysql' => \getenv('PHPAR_MYSQL') ? : 'mysql://root:root@127.0.0.1/Activerecord_Test',
+        'mysql' => \getenv('PHPAR_MYSQL') ? : 'mysql://root:root@127.0.0.1/activerecord_test',
         'pgsql' => \getenv('PHPAR_PGSQL') ? : 'pgsql://test:test@127.0.0.1/test',
         'oci' => \getenv('PHPAR_OCI') ? : 'oci://test:test@127.0.0.1/dev',
-        'sqlite' => \getenv('PHPAR_SQLITE') ? : 'sqlite://test.db'));
+        'sqlite' => \getenv('PHPAR_SQLITE') ? : 'sqlite://windows(C%A/Github/Activerecord/Test/test.sqlite'));
 
     $cfg->setDefaultConnection('mysql');
     $cfg->setCache('memcache://localhost:11211');
@@ -71,3 +82,7 @@ Activerecord\Config::initialize(function($cfg)
 });
 
 error_reporting(E_ALL | E_STRICT);
+
+//echo '<pre> after bootstrap  ';
+//print_r(array_diff(get_declared_classes(), $predefinedClasses));
+//echo '</pre>';

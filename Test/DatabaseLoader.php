@@ -1,6 +1,8 @@
 <?php
 
-namespace Test\Helpers;
+namespace Test;
+
+use Activerecord\Exceptions\ExceptionDatabase;
 
 class DatabaseLoader
 // extends \PHPUnit_Framework_TestCase
@@ -21,7 +23,9 @@ class DatabaseLoader
         if (static::$instances[$db->protocol] ++ == 0)
         {
             // drop and re-create the tables one time only
+            // $this->db->query('DELETE FROM '.$this->quoteName($table));
             $this->dropTables();
+            var_dump($this);
             $this->execSqlScript($db->protocol);
         }
     }
@@ -30,48 +34,52 @@ class DatabaseLoader
     {
         foreach ($this->getFixtureTables() as $table)
         {
-            if ($this->db->protocol == 'oci' && $table == 'rm-bldg')
+            if ($this->db->protocol === 'oci' && $table === 'rm-bldg')
             {
                 continue;
             }
 
             $this->db->query('DELETE FROM '.$this->quoteName($table));
+            // $this->dropTables();
             $this->loadFixtureData($table);
         }
 
-        $after_fixtures = $this->db->protocol.'-after-fixtures';
-        try
-        {
-            $this->execSqlScript($after_fixtures);
-        }
-        catch (Exception $e)
-        {
-            // pass
-        }
+        //  $after_fixtures = $this->db->protocol.'-after-fixtures';
+        // try
+        //  {
+        //      $this->execSqlScript($after_fixtures);
+        //  }
+        //  catch (\Exception $e)
+        //  {
+        //      // pass
+        //  }
     }
 
     public function dropTables()
     {
+        //$tables = $this->db->tables();
         $tables = $this->db->tables();
-
         foreach ($this->getFixtureTables() as $table)
         {
-            if ($this->db->protocol == 'oci')
+            if ($this->db->protocol === 'oci')
             {
                 $table = \strtoupper($table);
 
-                if ($table == 'RM-BLDG')
+                if ($table === 'RM-BLDG')
                 {
                     continue;
                 }
             }
-
+            // var_dump($tables);
+            var_dump('drop tables');
+            var_dump($table);
             if (\in_array($table, $tables))
             {
+                //$this->db->query('DROP TABLE IF EXISTS '.$this->quoteName($table));
                 $this->db->query('DROP TABLE '.$this->quoteName($table));
             }
 
-            if ($this->db->protocol == 'oci')
+            if ($this->db->protocol === 'oci')
             {
                 try
                 {
@@ -85,12 +93,13 @@ class DatabaseLoader
         }
     }
 
-    public function testExecSqlScript($file)
+    public function execSqlScript($file)
     {
         foreach (\explode(';', $this->getSql($file)) as $sql)
         {
             if (\trim($sql) != '')
             {
+                //var_dump($this);
                 $this->db->query($sql);
             }
         }
@@ -100,7 +109,7 @@ class DatabaseLoader
     {
         $tables = [];
 
-        foreach (glob(__DIR__.'/../fixtures/*.csv') as $file)
+        foreach (\glob('/Fixtures/Csv/*.csv') as $file)
         {
             $info = pathinfo($file);
             $tables[] = $info['filename'];
@@ -109,13 +118,13 @@ class DatabaseLoader
         return $tables;
     }
 
-    public function testGetSql($file)
+    public function getSql($file)
     {
-        $file = __DIR__."/../sql/$file.sql";
+        $file = __DIR__."/Fixtures/Sql/$file.sql";
 
         if (!\file_exists($file))
         {
-            throw new Exception("File not found: $file");
+            throw new \Exception("File not found: $file");
         }
 
         return \file_get_contents($file);
@@ -123,9 +132,9 @@ class DatabaseLoader
 
     public function loadFixtureData($table)
     {
-        $fp = \fopen("../Fixtures/$table.csv", 'r');
+        $fp = \fopen("../Test/Fixtures/$table.csv", 'r');
         $fields = \fgetcsv($fp);
-
+        var_dump($fields);
         if (!empty($fields))
         {
             $markers = \join(',', \array_fill(0, \count($fields), '?'));
@@ -149,7 +158,7 @@ class DatabaseLoader
 
     public function quoteName($name)
     {
-        if ($this->db->protocol == 'oci')
+        if ($this->db->protocol === 'oci')
         {
             $name = \strtoupper($name);
         }

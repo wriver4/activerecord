@@ -4,7 +4,7 @@ namespace Test\Adapters;
 
 use Activerecord\Connection;
 use Activerecord\Config;
-use Test\Helpers\AdapterTest;
+use Test\Functional\AdapterTest;
 
 class PgsqlTest
         extends AdapterTest

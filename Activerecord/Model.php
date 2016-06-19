@@ -289,7 +289,6 @@ class Model
             $new_record = true)
     {
         $this->new_record = $new_record;
-
         // initialize attributes applying defaults
         if (!$instantiating_via_find)
         {
@@ -499,7 +498,7 @@ class Model
             }
             else
             {
-                $col = $table->get_column_by_inflected_name($name);
+                $col = $table->getColumnByInflectedName($name);
                 if (!\is_null($col))
                 {
                     $value = $col->cast($value, static::connection());
@@ -929,10 +928,11 @@ class Model
             $table->insert($attributes);
         }
 
-        // if we've got an autoincrementing/sequenced pk set it
-        // don't need this check until the day comes that we decide to support composite pks
-        // if (count($pk) == 1)
-
+        /* if we've got an autoincrementing/sequenced pk set it
+         * don't need this check until the day comes that we decide to
+         * support composite pks
+         * if (count($pk) == 1)
+         */
         $column = $table->getColumnByInflectedName($pk);
 
         if ($column->auto_increment || $use_sequence)
@@ -1222,7 +1222,9 @@ class Model
             }
         }
 
-        // need to store reference b4 validating so that custom validators have access to add errors
+        /* need to store reference before validating so that custom validators
+         * have access to add errors
+         */
         $this->errors = $validator->getRecord();
         $validator->validate();
 
@@ -1292,8 +1294,8 @@ class Model
 
     /**
      * Mass update the model with an array of attribute data and saves to the database.
-     *
-     * @param array $attributes An attribute data array in the form array(name => value, ...)
+     * @param array $attributes An attribute data array in the form
+     * array(name => value, ...)
      * @return boolean True if successfully updated and saved otherwise false
      */
     public function updateAttributes($attributes)
@@ -1418,7 +1420,8 @@ class Model
         {
             if ($rel->isPoly())
             {
-                // if the related model is null and it is a poly then we should have an empty array
+                // if the related model is null and it is a poly then we
+                // should have an empty array
                 if (\is_null($model))
                 {
                     return $this->relationships[$name] = [];
@@ -1938,7 +1941,8 @@ class Model
      */
     public static function isOptionsHash($array, $throw = true)
     {
-        if (Utils::isHash($array))
+        $utils = new Utils();
+        if ($utils->isHash($array))
         {
             $keys = \array_keys($array);
             $diff = \array_diff($keys, self::$valid_options);

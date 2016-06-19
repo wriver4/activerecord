@@ -168,7 +168,8 @@ abstract class Connection
      * protocol://username:password@unix(/some/file/path)/dbname
      * </code>
      *
-     * Sqlite has a special syntax, as it does not need a database name or user authentication:
+     * Sqlite has a special syntax, as it does not need a database
+     * name or user authentication:
      *
      * <code>
      * sqlite://file.db
@@ -424,14 +425,41 @@ abstract class Connection
      * @return array Array containing table names.
      * example $list = Activerecord\Connection::tables('permissions', 'site_rbac_com');
      */
-    public function tables($table, $db)
+    /*  public function tables($db,$table)
+      {
+      $model = rtrim($table, "s");
+      foreach ($model::findBySql('SHOW TABLES') as $value)
+      {
+      $tables[] = $value->{"tables_in_".$db};
+      }
+      return $tables;
+      }
+     */
+
+    /**
+     * Returns all tables for the current database.
+     *
+     * @return array Array containing table names.
+     */
+    /* public function tables()
+      {
+      $tables = array();
+      $sth = $this->queryForTables();
+      while (($row = $sth->fetch(PDO::FETCH_NUM)))
+      {
+      $tables[] = $row[0];
+      }
+      return $tables;
+      }
+     */
+
+    public function tables()
     {
-        $model = rtrim($table, "s");
-        foreach ($model::findBySql('SHOW TABLES') as $value)
-        {
-            $tables[] = $value->{"tables_in_".$db};
-        }
-        return $tables;
+
+        $conn = $this->connection;
+        $pdo = $this->instance();
+        $query = $pdo->query('SHOW TABLES');
+        return [$query];
     }
 
     /**
@@ -549,7 +577,7 @@ abstract class Connection
      */
     public function stringToDatetime($string)
     {
-        $date = date_create($string);
+        $date = dateCreate($string);
         $errors = \DateTime::getLastErrors();
 
         if ($errors['warning_count'] > 0 || $errors['error_count'] > 0)

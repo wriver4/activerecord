@@ -86,8 +86,8 @@ abstract class AbstractRelations
     {
         $this->attribute_name = $options[0];
         $this->options = $this->mergeAssociationOptions($options);
-
-        $relationship = \strtolower(denamespace(\get_called_class()));
+        $this->utils = new Utils();
+        $relationship = \strtolower($this->utils->denamespace(\get_called_class()));
 
         if ($relationship === 'hasmany' || $relationship === 'hasandbelongstomany')
         {
@@ -169,7 +169,7 @@ abstract class AbstractRelations
 
         if (isset($options['conditions']) && \strlen($options['conditions'][0]) > 1)
         {
-            Utils::addCondition($options['conditions'], $conditions);
+            $utils->addCondition($options['conditions'], $conditions);
         }
         else
         {
@@ -335,20 +335,22 @@ abstract class AbstractRelations
     /**
      * Infers the $this->class_name based on $this->attribute_name.
      *
-     * Will try to guess the appropriate class by singularizing and uppercasing $this->attribute_name.
+     * Will try to guess the appropriate class by singularizing
+     * and uppercasing $this->attribute_name.
      *
      * @return void
      * @see attribute_name
      */
     protected function setInferredClassName()
     {
+        $utils = new Utils();
         $singularize = ($this instanceOf HasMany ? true : false);
-        $this->setClassName(classify($this->attribute_name, $singularize));
+        $this->setClassName($utils->classify($this->attribute_name, $singularize));
     }
 
     protected function setClassName($class_name)
     {
-        if (!hasAbsoluteNamespace($class_name) && isset($this->options['namespace']))
+        if (!$this->utils->hasAbsoluteNamespace($class_name) && isset($this->options['namespace']))
         {
             $class_name = $this->options['namespace'].'\\'.$class_name;
         }
