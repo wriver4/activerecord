@@ -27,6 +27,7 @@ class DatabaseLoader
             $this->dropTables();
             // var_dump($this);
             $this->execSqlScript($db->protocol);
+            var_dump('++');
         }
     }
 
@@ -41,7 +42,8 @@ class DatabaseLoader
 
             //$this->db->query('DELETE FROM '.$this->quoteName($table));
             // $this->dropTables();
-
+            //truncate
+            $this->db->query('TRUNCATE TABLE '.$this->quoteName($table));
             $this->loadFixtureData($table);
         }
 
@@ -92,6 +94,7 @@ class DatabaseLoader
                 }
             }
         }
+        var_dump('drop tables');
     }
 
     public function execSqlScript($file)
@@ -105,6 +108,7 @@ class DatabaseLoader
                 $this->db->query($sql);
             }
         }
+        var_dump('execSqlScript');
     }
 
     public function getFixtureTables()
@@ -128,7 +132,7 @@ class DatabaseLoader
         {
             throw new \Exception("File not found: $file");
         }
-        // var_dump('get sqlfile');
+        var_dump('get sqlfile');
         // var_dump($file);
         return \file_get_contents($file);
     }
@@ -157,6 +161,7 @@ class DatabaseLoader
             }
         }
         \fclose($fp);
+        var_dump('loadFixtureData');
     }
 
     public function quoteName($name)

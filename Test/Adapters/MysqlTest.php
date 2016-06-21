@@ -19,7 +19,7 @@ class MysqlTest
 
     public function tearDown()
     {
-        DatabaseLoader::dropTables();
+        
     }
 
     public function testEnum()
