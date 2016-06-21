@@ -1,16 +1,14 @@
 <?php
 opcache_reset();
 //$predefinedClasses = get_declared_classes();
+set_include_path(get_include_path().PATH_SEPARATOR.'C:/xampp/php/pear/log');
 $loader = require_once '../vendor/autoload.php';
 $loader->addPsr4('Test\\Models\\', __dir__.'/Models');
 $loader->addPsr4('Test\\Functional\\', __dir__.'/Functional');
 
 //var_dump($loader);
-//require_once '../Test/Helpers/DatabaseTest.php';
-//require_once '../Test/Helpers/AdapterTest.php';
 
 use Test\Functional\DatabaseTest;
-use Test\Models;
 
 if (\getenv('LOG') !== 'false')
 {
@@ -25,15 +23,16 @@ $GLOBALS['show_warnings'] = true;
 Activerecord\Config::initialize(function($cfg)
 {
     //$cfg->setModelDirectory(\realpath('Models'));
-    $cfg->setConnections(array(
+    $cfg->setConnections([
         'mysql' => \getenv('PHPAR_MYSQL') ? : 'mysql://root:root@127.0.0.1/activerecord_test',
-        'pgsql' => \getenv('PHPAR_PGSQL') ? : 'pgsql://test:test@127.0.0.1/test',
-        'oci' => \getenv('PHPAR_OCI') ? : 'oci://test:test@127.0.0.1/dev',
-        'sqlite' => \getenv('PHPAR_SQLITE') ? : 'sqlite://windows(C%A/Github/Activerecord/Test/test.sqlite'));
+        //'pgsql' => \getenv('PHPAR_PGSQL') ? : 'pgsql://test:test@127.0.0.1/test',
+        // 'oci' => \getenv('PHPAR_OCI') ? : 'oci://test:test@127.0.0.1/dev',
+        'sqlite' => \getenv('PHPAR_SQLITE') ? : 'sqlite://Fixtures\test1.sqlite3']);
 
     $cfg->setDefaultConnection('mysql');
     $cfg->setCache('memcache://localhost:11211');
-
+    var_dump('$cfg');
+    var_dump($cfg);
     for ($i = 0; $i < \count($GLOBALS['argv']); ++$i)
     {
         if ($GLOBALS['argv'][$i] == '--adapter')

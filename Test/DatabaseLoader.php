@@ -2,7 +2,7 @@
 
 namespace Test;
 
-use Activerecord\Exceptions\ExceptionDatabase;
+use \Activerecord\Exceptions\ExceptionDatabase;
 
 class DatabaseLoader
 // extends \PHPUnit_Framework_TestCase
@@ -25,7 +25,7 @@ class DatabaseLoader
             // drop and re-create the tables one time only
             // $this->db->query('DELETE FROM '.$this->quoteName($table));
             $this->dropTables();
-            var_dump($this);
+            // var_dump($this);
             $this->execSqlScript($db->protocol);
         }
     }
@@ -39,20 +39,21 @@ class DatabaseLoader
                 continue;
             }
 
-            $this->db->query('DELETE FROM '.$this->quoteName($table));
+            //$this->db->query('DELETE FROM '.$this->quoteName($table));
             // $this->dropTables();
+
             $this->loadFixtureData($table);
         }
 
-        //  $after_fixtures = $this->db->protocol.'-after-fixtures';
-        // try
-        //  {
-        //      $this->execSqlScript($after_fixtures);
-        //  }
-        //  catch (\Exception $e)
-        //  {
-        //      // pass
-        //  }
+        $after_fixtures = $this->db->protocol.'-after-fixtures';
+        try
+        {
+            $this->execSqlScript($after_fixtures);
+        }
+        catch (\Exception $e)
+        {
+            // pass
+        }
     }
 
     public function dropTables()
@@ -70,9 +71,9 @@ class DatabaseLoader
                     continue;
                 }
             }
-            // var_dump($tables);
-            var_dump('drop tables');
-            var_dump($table);
+            //var_dump($tables);
+            // var_dump('drop tables');
+            // var_dump($table);
             if (\in_array($table, $tables))
             {
                 //$this->db->query('DROP TABLE IF EXISTS '.$this->quoteName($table));
@@ -100,6 +101,7 @@ class DatabaseLoader
             if (\trim($sql) != '')
             {
                 //var_dump($this);
+                //note to self might be a way to seperate unit from functional
                 $this->db->query($sql);
             }
         }
@@ -109,7 +111,7 @@ class DatabaseLoader
     {
         $tables = [];
 
-        foreach (\glob('/Fixtures/Csv/*.csv') as $file)
+        foreach (\glob(__dir__.'/Fixtures/Csv/*.csv') as $file)
         {
             $info = pathinfo($file);
             $tables[] = $info['filename'];
@@ -126,15 +128,16 @@ class DatabaseLoader
         {
             throw new \Exception("File not found: $file");
         }
-
+        // var_dump('get sqlfile');
+        // var_dump($file);
         return \file_get_contents($file);
     }
 
     public function loadFixtureData($table)
     {
-        $fp = \fopen("../Test/Fixtures/$table.csv", 'r');
+        $fp = \fopen(__dir__."/Fixtures/Csv/$table.csv", 'r');
         $fields = \fgetcsv($fp);
-        var_dump($fields);
+
         if (!empty($fields))
         {
             $markers = \join(',', \array_fill(0, \count($fields), '?'));

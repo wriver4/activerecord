@@ -1,7 +1,4 @@
 <?php
-/**
- * @package Activerecord
- */
 
 namespace Activerecord\Adapters;
 

@@ -20,14 +20,14 @@ class SqliteTest
     {
         parent::tearDown();
 
-        @\unlink(self::InvalidDb);
+        \unlink(self::InvalidDb);
     }
 
     public static function tearDownAfterClass()
     {
         parent::tearDownAfterClass();
 
-        @\unlink(static::$db);
+        \unlink(static::$db);
     }
 
     public function testConnectToInvalidDatabaseShouldNotCreateDbFile()

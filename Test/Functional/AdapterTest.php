@@ -3,6 +3,7 @@
 namespace Test\Functional;
 
 use Activerecord\DateTime;
+use Activerecord\Adapters\Mysql;
 use Activerecord\Adapters\Oci;
 use Activerecord\Adapters\Sqlite;
 use Activerecord\Column;
@@ -11,9 +12,10 @@ use Activerecord\Connection;
 use Activerecord\Exceptions\ExceptionDatabase;
 use Activerecord\Utils;
 use Test\Functional\DatabaseTest;
-use \PDO;
-use \SebastianBergmann\RecursionContext\Exception;
-use function \array_key_exists;
+
+//use \PDO;
+//use \SebastianBergmann\RecursionContext\Exception;
+//use function \array_key_exists;
 
 class AdapterTest
         extends DatabaseTest
@@ -24,7 +26,7 @@ class AdapterTest
     public function setUp($connection_name = null)
     {
         if (($connection_name && !\in_array($connection_name,
-                        PDO::getAvailableDrivers())) ||
+                        \PDO::getAvailableDrivers())) ||
                 Config::instance()->getConnection($connection_name) === 'skip')
         {
             $this->markTestSkipped($connection_name.' drivers are not present');
@@ -33,17 +35,15 @@ class AdapterTest
         parent::setUp($connection_name);
     }
 
-    /*
-      public function testDefaultPortExceptSqlite()
-      {
-      if ($this->conn instanceof Sqlite)
-      {
-      return;
-      }
-      $c = $this->conn;
-      $this->assertTrue($c::$default_port > 0);
-      }
-     */
+    public function testDefaultPortExceptSqlite()
+    {
+        if ($this->conn instanceof Sqlite)
+        {
+            return;
+        }
+        $c = $this->conn;
+        $this->assertTrue($c::$default_port > 0);
+    }
 
     public function testShouldSetAdapterVariables()
     {

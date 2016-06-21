@@ -5,6 +5,7 @@ namespace Test\Adapters;
 use Activerecord\Connection;
 use Activerecord\Config;
 use Activerecord\Column;
+use Test\DatabaseLoader;
 use Test\Functional\AdapterTest;
 
 class MysqlTest
@@ -18,7 +19,7 @@ class MysqlTest
 
     public function tearDown()
     {
-
+        DatabaseLoader::dropTables();
     }
 
     public function testEnum()

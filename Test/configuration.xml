@@ -7,7 +7,8 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         bootstrap="bootstrap.php">
+         bootstrap="bootstrap.php"
+         verbose="true">
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix='.php'>C:\GitHub\activerecord\Activerecord</directory>
@@ -16,7 +17,7 @@
     <logging>
         <log type="coverage-html" target="C:\xampp\tmp\report" lowUpperBound="35"
              highLowerBound="70"/>
-        <log type="log-json" target="C:\xampp\tmp\logfile.json" lowUpperBound="35"
+        <log type="json" target="C:\xampp\tmp\logfile.json" lowUpperBound="35"
              highLowerBound="70"/>
     </logging>
     <testsuites>

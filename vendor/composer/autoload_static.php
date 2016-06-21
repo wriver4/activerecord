@@ -9,8 +9,6 @@ class ComposerStaticInite20cbe2fec4c2d13168dc87a3dd0a1fc
     public static $prefixLengthsPsr4 = array (
         'T' => 
         array (
-            'Test\\Models\\' => 12,
-            'Test\\Helpers\\' => 13,
             'Test\\' => 5,
         ),
         'A' => 
@@ -20,14 +18,6 @@ class ComposerStaticInite20cbe2fec4c2d13168dc87a3dd0a1fc
     );
 
     public static $prefixDirsPsr4 = array (
-        'Test\\Models\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/Activerecord/Test/Models',
-        ),
-        'Test\\Helpers\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/Activerecord/Test/Helpers',
-        ),
         'Test\\' => 
         array (
             0 => __DIR__ . '/../..' . '/Activerecord/Test',

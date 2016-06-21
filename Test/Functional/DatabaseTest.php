@@ -8,6 +8,7 @@ use Activerecord\Adapters\Sqlite;
 use Activerecord\ConnectionManager;
 use Activerecord\Exceptions\ExceptionDatabase;
 use Activerecord\Exceptions\ExceptionUndefinedProperty;
+use Test\Functional\AdapterTest;
 use Test\DatabaseLoader;
 
 class DatabaseTest
@@ -21,6 +22,7 @@ class DatabaseTest
     public function setUp($connection_name = null)
     {
         require_once 'DatabaseLoader.php';
+        //require_once 'AdapterTest.php';
         Table::clearCache();
 
         $config = Config::instance();
@@ -67,6 +69,7 @@ class DatabaseTest
         {
             Config::instance()->setDefaultConnection($this->original_default_connection);
         }
+        // AdapterTest::dropTables();
     }
 
     /*
