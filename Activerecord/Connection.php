@@ -48,6 +48,7 @@ abstract class Connection
      * @var string
      */
     public $protocol;
+    static $sqlite_dbname;
 
     /**
      * Database's date format
@@ -175,7 +176,7 @@ abstract class Connection
      * sqlite://file.db
      * sqlite://../relative/path/to/file.db
      * sqlite://unix(/absolute/path/to/file.db)
-     * sqlite://windows(c%2A/absolute/path/to/file.db)
+     * sqlite://windows(c%3A/absolute/path/to/file.db)
      * </code>
      *
      * @param string $connection_url A connection URL
@@ -196,6 +197,8 @@ abstract class Connection
         $info->db = isset($url['path']) ? \substr($url['path'], 1) : null;
         $info->user = isset($url['user']) ? $url['user'] : null;
         $info->pass = isset($url['pass']) ? $url['pass'] : null;
+
+        static::$sqlite_dbname = $info->db;
 
         $allow_blank_db = ($info->protocol == 'sqlite');
 
@@ -348,19 +351,28 @@ abstract class Connection
      */
     public function query($sql, &$values = [])
     {
+        /* if ($this->logging)
+          {
+          $this->logger->log($sql);
+          if ($values)
+          {
+          $this->logger->log($values);
+          }
+          }
+         *
+         */
         if ($this->logging)
         {
-            $this->logger->log($sql);
+            $this->logger->debug($sql);
             if ($values)
             {
-                $this->logger->log($values);
+                $this->logger->logger->debug("Values:", $values);
             }
         }
-
         $this->last_query = $sql;
-
         try
         {
+
             if (!($sth = $this->connection->prepare($sql)))
             {
                 throw new ExceptionDatabase($this);
@@ -458,7 +470,15 @@ abstract class Connection
 
         $conn = $this->connection;
         $pdo = $this->instance();
-        $query = $pdo->query('SHOW TABLES');
+        if ($this->protocol !== 'sqlite')
+        {
+            $query = $pdo->query('SHOW TABLES');
+        }
+        else
+        {
+            $query = $pdo->query('SELECT * FROM '.self::$sqlite_dbname.'.sqlite_master WHERE type=\'table\'');
+        }
+
         return [$query];
     }
 

@@ -261,11 +261,16 @@ class Config
     {
         $reflect = Reflections::instance()->add($logger)->get($logger);
 
-        if (!$reflect->getMethod('log') || !$reflect->getMethod('log')->isPublic())
+        /* if (!$reflect->getMethod('log') || !$reflect->getMethod('log')->isPublic())
+          {
+          throw new ExceptionConfig("Logger object must implement a public log method");
+          }
+         *
+         */
+        if (!$reflect->getMethod('debug') || !$reflect->getMethod('debug')->isPublic())
         {
-            throw new ExceptionConfig("Logger object must implement a public log method");
+            throw new ExceptionConfig("Logger object must implement a public debug method");
         }
-
         $this->logger = $logger;
     }
 

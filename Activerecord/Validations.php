@@ -460,7 +460,7 @@ class Validations
             $attribute = $options[0];
             $var = $this->model->$attribute;
 
-            if (\is_null($options['with']) || !\is_string($options['with']) || !\is_string($options['with']))
+            if (\is_null($options['with']) || !\is_string($options['with']))
             {
                 throw new ExceptionValidation('Argument Error A regular expression must be supplied as the [with] option of the configuration array.');
             }
@@ -641,7 +641,7 @@ class Validations
         {
             $options = \array_merge($configuration, $attr);
             $pk = $this->model->getPrimaryKey();
-            $pk_value = $this->model->$pk[0];
+            $pk_value = $this->model->{$pk[0]};
 
             if (\is_array($options[0]))
             {

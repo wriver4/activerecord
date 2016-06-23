@@ -2,8 +2,6 @@
 
 namespace Test\Functional;
 
-use Activerecord\DateTime;
-use Activerecord\Adapters\Mysql;
 use Activerecord\Adapters\Oci;
 use Activerecord\Adapters\Sqlite;
 use Activerecord\Column;
@@ -12,10 +10,6 @@ use Activerecord\Connection;
 use Activerecord\Exceptions\ExceptionDatabase;
 use Activerecord\Utils;
 use Test\Functional\DatabaseTest;
-
-//use \PDO;
-//use \SebastianBergmann\RecursionContext\Exception;
-//use function \array_key_exists;
 
 class AdapterTest
         extends DatabaseTest

@@ -6,8 +6,6 @@ $loader = require_once '../vendor/autoload.php';
 $loader->addPsr4('Test\\Models\\', __dir__.'/Models');
 $loader->addPsr4('Test\\Functional\\', __dir__.'/Functional');
 
-//var_dump($loader);
-
 use Test\Functional\DatabaseTest;
 
 if (\getenv('LOG') !== 'false')
@@ -22,17 +20,15 @@ $GLOBALS['show_warnings'] = true;
 
 Activerecord\Config::initialize(function($cfg)
 {
-    //$cfg->setModelDirectory(\realpath('Models'));
     $cfg->setConnections([
-        'mysql' => \getenv('PHPAR_MYSQL') ? : 'mysql://root:root@127.0.0.1/activerecord_test',
+        //'mysql' => \getenv('PHPAR_MYSQL') ? : 'mysql://root:root@127.0.0.1/activerecord_test',
         //'pgsql' => \getenv('PHPAR_PGSQL') ? : 'pgsql://test:test@127.0.0.1/test',
         // 'oci' => \getenv('PHPAR_OCI') ? : 'oci://test:test@127.0.0.1/dev',
-        'sqlite' => \getenv('PHPAR_SQLITE') ? : 'sqlite://Fixtures\test1.sqlite3']);
-
+        'sqlite' => \getenv('PHPAR_SQLITE') ? : 'sqlite://windows(c%3A/GitHub/activerecord/Test/Fixtures/test.db)']);
+//sqlite://windows(c%3A/GitHub/activerecord/Test/Fixtures/test.db)
     $cfg->setDefaultConnection('mysql');
     $cfg->setCache('memcache://localhost:11211');
-    var_dump('$cfg');
-    var_dump($cfg);
+
     for ($i = 0; $i < \count($GLOBALS['argv']); ++$i)
     {
         if ($GLOBALS['argv'][$i] == '--adapter')
@@ -79,7 +75,14 @@ Activerecord\Config::initialize(function($cfg)
 
     $GLOBALS['show_warnings_done'] = true;
 });
-
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+{
+    $GLOBALS['OS'] = 'WIN';
+}
+else
+{
+    $GLOBALS['OS'] = 'X';
+}
 error_reporting(E_ALL | E_STRICT);
 
 //echo '<pre> after bootstrap  ';

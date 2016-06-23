@@ -2,10 +2,9 @@
 
 namespace Test;
 
-use \Activerecord\Exceptions\ExceptionDatabase;
+use Activerecord\Exceptions\ExceptionDatabase;
 
 class DatabaseLoader
-// extends \PHPUnit_Framework_TestCase
 {
 
     private $db;
@@ -22,12 +21,8 @@ class DatabaseLoader
 
         if (static::$instances[$db->protocol] ++ == 0)
         {
-            // drop and re-create the tables one time only
-            // $this->db->query('DELETE FROM '.$this->quoteName($table));
             $this->dropTables();
-            // var_dump($this);
             $this->execSqlScript($db->protocol);
-            var_dump('++');
         }
     }
 
@@ -39,11 +34,17 @@ class DatabaseLoader
             {
                 continue;
             }
+            if ($this->db->protocol !== 'sqlite')
+            {
+                $this->db->query('TRUNCATE TABLE '.$this->quoteName($table));
+            }
+            else
+            {
+                $this->db->query('DELETE FROM '.$this->quoteName($table));
+                $this->db->query('VACUUM');
+            }
 
-            //$this->db->query('DELETE FROM '.$this->quoteName($table));
-            // $this->dropTables();
-            //truncate
-            $this->db->query('TRUNCATE TABLE '.$this->quoteName($table));
+
             $this->loadFixtureData($table);
         }
 
@@ -60,7 +61,6 @@ class DatabaseLoader
 
     public function dropTables()
     {
-        //$tables = $this->db->tables();
         $tables = $this->db->tables();
         foreach ($this->getFixtureTables() as $table)
         {
@@ -73,14 +73,17 @@ class DatabaseLoader
                     continue;
                 }
             }
-            //var_dump($tables);
-            // var_dump('drop tables');
-            // var_dump($table);
-            if (\in_array($table, $tables))
+
+            if (\in_array($table, $tables) && $this->db->protocol !== 'sqlite')
             {
-                //$this->db->query('DROP TABLE IF EXISTS '.$this->quoteName($table));
                 $this->db->query('DROP TABLE '.$this->quoteName($table));
             }
+            else
+            {
+                $this->db->query('DELETE FROM '.$this->quoteName($table));
+                $this->db->query('VACUUM');
+            }
+
 
             if ($this->db->protocol === 'oci')
             {
@@ -94,7 +97,6 @@ class DatabaseLoader
                 }
             }
         }
-        var_dump('drop tables');
     }
 
     public function execSqlScript($file)
@@ -103,12 +105,10 @@ class DatabaseLoader
         {
             if (\trim($sql) != '')
             {
-                //var_dump($this);
                 //note to self might be a way to seperate unit from functional
                 $this->db->query($sql);
             }
         }
-        var_dump('execSqlScript');
     }
 
     public function getFixtureTables()
@@ -132,8 +132,6 @@ class DatabaseLoader
         {
             throw new \Exception("File not found: $file");
         }
-        var_dump('get sqlfile');
-        // var_dump($file);
         return \file_get_contents($file);
     }
 
@@ -161,7 +159,6 @@ class DatabaseLoader
             }
         }
         \fclose($fp);
-        var_dump('loadFixtureData');
     }
 
     public function quoteName($name)

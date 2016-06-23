@@ -1022,7 +1022,7 @@ class Model
      * Delete all using a string:
      *
      * <code>
-     * YourModel::deleteAll(array('conditions' => 'name = "Tito"));
+     * YourModel::deleteAll(array('conditions' => 'name = "Tito"'));
      * </code>
      *
      * An options array takes the following parameters:
@@ -1665,7 +1665,8 @@ class Model
         $table = static::table();
         $sql = $table->optionsToSql($options);
         $values = $sql->getWhereValues();
-        return static::connection()->queryAndFetchOne($sql->to_s(), $values);
+        return (int) static::connection()->queryAndFetchOne($sql->to_s(),
+                        $values);
     }
 
     /**

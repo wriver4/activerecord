@@ -22,7 +22,6 @@ class DatabaseTest
     public function setUp($connection_name = null)
     {
         require_once 'DatabaseLoader.php';
-        //require_once 'AdapterTest.php';
         Table::clearCache();
 
         $config = Config::instance();
@@ -32,14 +31,26 @@ class DatabaseTest
         {
             $config->setDefaultConnection($connection_name);
         }
-
-        if ($connection_name === 'sqlite' || $config->getDefaultConnection() === 'sqlite')
-        {
-            // need to create the db. the adapter specifically does not create it for us.
-            static::$db = \substr(Config::instance()->getConnection('sqlite'), 9);
-            new Sqlite(static::$db);
-        }
-
+        /*
+          if ($connection_name === 'sqlite' || $config->getDefaultConnection() === 'sqlite')
+          {
+          // need to create the db. the adapter specifically does not create it for us.
+          //static::$db = \substr(Config::instance()->getConnection('sqlite'), 9);
+          //new Sqlite(static::$db);
+          //$file_db = new PDO('sqlite:messaging.sqlite3');
+          if ($GLOBALS['OS'] !== 'WIN')
+          {
+          new \PDO('sqlite:../Fixtures/test.db');
+          }
+          else
+          {
+          new \PDO('sqlite:../Fixtures/test.db');
+          }
+          var_dump($config);
+          var_dump($GLOBALS['OS']);
+          exit();
+          }
+         */
         $this->connection_name = $connection_name;
         try
         {
@@ -69,7 +80,6 @@ class DatabaseTest
         {
             Config::instance()->setDefaultConnection($this->original_default_connection);
         }
-        // AdapterTest::dropTables();
     }
 
     /*
